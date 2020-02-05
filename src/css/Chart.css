@@ -1,0 +1,17 @@
+.chart{ 
+}
+
+.char-bar {
+    transition-duration: 700ms; 
+    height:100%; 
+    background-color: coral
+}
+
+.success-chart{
+    background-color: green;
+     
+}
+.warning-chart{
+    background-color: orange;
+    
+}

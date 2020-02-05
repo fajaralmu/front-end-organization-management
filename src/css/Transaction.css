@@ -1,0 +1,25 @@
+.form-panel{ 
+    background-color: white;
+    min-width: 40%;
+    padding:5px;
+    border:solid 1px lightgray;
+}
+
+.transaction-container{
+    width:90%
+}
+
+.transaction-receipt{
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: white;
+    text-align: left
+}
+
+.totalprice-info{
+    background-color: antiquewhite;
+    padding:3px;
+    width:max-content;
+    font-family: monospace
+}

@@ -1,0 +1,17 @@
+.carousel-item{
+    margin:5%;
+    width:90%;
+    height:70%;
+    transition-duration: 500ms
+}
+
+.carousel{
+    width: 400px;
+    height: 300px;
+    margin-bottom: 20px;
+    border:solid;
+    border-width:2px;
+    border-color:lightgray;
+    text-align: center;
+    background-color: white
+}

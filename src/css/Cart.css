@@ -1,0 +1,31 @@
+.cart-info{
+    background-color: lightgrey;
+    color:dimgray;   
+    min-height:10vh; 
+    width:170px;
+    right:0px;
+    position: fixed;
+    text-align: left;
+    font-size: 17px;
+    transition-duration: 200ms;
+    border-left: solid 3px ;
+}
+.cart-info:hover{
+    background-color: goldenrod;
+    color: black;
+    cursor: pointer;
+}
+
+.cart-bg{
+    padding-top:20px;
+    background-color: rgb(216, 213, 213);
+    margin:5px;
+    padding-bottom: 20px;
+}
+
+.cart-container{
+    background-color: antiquewhite; 
+    margin:auto;
+    width:50%; 
+    padding:10px;
+}

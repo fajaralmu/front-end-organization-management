@@ -1,0 +1,69 @@
+.box-shadow{
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 1px
+		rgba(0, 0, 0, 0.19);
+} 
+
+.paper-shadow{
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) 
+ } 
+
+h2{
+    font-family: 'Segoe UI';
+    font-weight: lighter
+}
+h3{
+    font-family: 'Segoe UI';
+    font-weight: lighter
+}
+h1{
+    font-family: 'Segoe UI';
+    font-weight: lighter
+}
+
+.rounded{
+    border-radius: 5px;
+}
+
+.rounded-top{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.panel-title{
+    background-color: darkcyan;
+    color:lightyellow;
+    font-size: 1.1em; 
+    padding: 5px;
+} 
+.section-container{
+    margin:3%;
+    text-align: left; 
+} 
+.clickable:hover{
+    cursor: pointer;
+    color:cadetblue
+} 
+.img-panel{
+    width:300px;
+    margin:5px;
+    padding:5px;
+    background-color: white
+} 
+.img-panel img{
+    width:100%;
+    border : solid 1px wheat
+}
+
+.quantity-label{
+    padding-left:3px;
+    padding-right:3px;
+    background-color: brown;
+    color:yellow;
+    border-radius:5px;
+}
+
+body{
+    background-color: lightgrey
+}
