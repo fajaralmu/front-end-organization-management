@@ -16,7 +16,7 @@ class Menu extends Component {
         let userLink = "";
         if (this.props.loggedUser != null) {
             userLink = <li id="user-link">
-                <div className="fill" >Welcome, {this.props.loggedUser.displayName} </div>
+                <div className="fill" >{"Welcome, "+this.props.loggedUser.name} </div>
             </li>
         }
 

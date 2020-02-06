@@ -164,7 +164,7 @@ class App extends Component {
     return (
       <div className="App">
         {loadingComponent}
-        <Header title="Universal Good Shop" enableShopping={this.state.enableShopping} cart={this.props.cart} />
+        <Header title="MPI Monitoring" enableShopping={this.state.enableShopping} cart={this.props.cart} />
         {/*this.props.loginStatus == true?"Logged In":"Un Logged"*/}
       
         <div id="main-layout">

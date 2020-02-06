@@ -1,10 +1,10 @@
 import * as types from './types'
 const hostCloud = "https://nuswantoroshop.herokuapp.com/";
-const hostLocal = "http://localhost:8080/universal-good-shop/";
+const hostLocal = "http://localhost:50084/Web/";
 const usedHost = hostLocal;
-const apiBaseUrl = usedHost + "api/public/"
-const apiEntityBaseUrl = usedHost + "api/entity/"
-const apiAccount = usedHost + "api/account/"
+const apiBaseUrl = usedHost + "AppId/"
+const apiEntityBaseUrl = usedHost + "Management/"
+const apiAccount = usedHost + "Account/"
 const apiAdmin = usedHost + "api/admin/"
 const apiTransaction = usedHost + "api/transaction/";
 
@@ -43,7 +43,7 @@ export const updateEntity = (request, referer, callback) => {
         },
         meta: {
             type: types.UPDATE_ENTITY,
-            url: request.isNewRecord ? apiEntityBaseUrl.concat("add") : apiEntityBaseUrl.concat("update"),
+            url: request.isNewRecord ? apiEntityBaseUrl.concat("Add") : apiEntityBaseUrl.concat("Update"),
             app: referer.props.app,
             callback: callback,
             referer: referer
@@ -66,7 +66,7 @@ export const getEntitiesWithCallback = (request, referer, callback) => {
         },
         meta: {
             type: types.GET_ENTITY_WITH_CALLBACK,
-            url: apiEntityBaseUrl.concat("get"),
+            url: apiEntityBaseUrl.concat("Get"),
             app: referer.props.app,
             referer: referer,
             callback: callback
@@ -92,7 +92,7 @@ export const getEntityById = (name, id, app) => {
         },
         meta: {
             type: types.GET_ENTITY_BY_ID,
-            url: apiEntityBaseUrl.concat("get"),
+            url: apiEntityBaseUrl.concat("Get"),
             app: app
         }
     };
@@ -116,7 +116,7 @@ export const getEntityList = (request, app) => {
         },
         meta: {
             type: types.GET_ENTITY,
-            url: apiEntityBaseUrl.concat("get"),
+            url: apiEntityBaseUrl.concat("Get"),
             app: app,
             entityConfig: request.entityConfig
         }
@@ -143,7 +143,7 @@ export const requestAppId = (app) => {
         payload: {},
         meta: {
             app: app, type: types.REQUEST_ID,
-            url: apiBaseUrl.concat("requestid")
+            url: apiBaseUrl.concat("Generate")
         }
     };
 }
@@ -248,7 +248,7 @@ export const getProductListTrx = (name, app) => {
             entity: "product", filter: { page: 0, limit: 10, fieldsFilter: { name: name } }
         },
         meta: {
-            type: types.FETCH_PRODUCT_LIST, url: apiEntityBaseUrl.concat("get"), app: app
+            type: types.FETCH_PRODUCT_LIST, url: apiEntityBaseUrl.concat("Get"), app: app
         }
     }
 }
@@ -261,7 +261,7 @@ export const getCustomerList = (name, app) => {
             entity: "customer", filter: { page: 0, limit: 10, fieldsFilter: { name: name } }
         },
         meta: {
-            type: types.FETCH_CUSTOMER_LIST, url: apiEntityBaseUrl.concat("get"), app: app
+            type: types.FETCH_CUSTOMER_LIST, url: apiEntityBaseUrl.concat("Get"), app: app
         }
     }
 }
@@ -318,7 +318,7 @@ export const performLogout = (app) => {
     let loginRequest = {
         type: types.DO_LOGOUT,
         payload: {},
-        meta: { app: app, type: types.DO_LOGOUT, url: apiAccount.concat("logout") }
+        meta: { app: app, type: types.DO_LOGOUT, url: apiAccount.concat("Logout") }
     };
     return loginRequest;
 }
@@ -330,7 +330,7 @@ export const performLogin = (username, password, app) => {
         payload: {
             user: { username: username, password: password }
         },
-        meta: { type: types.DO_LOGIN, url: apiAccount.concat("login"), app: app }
+        meta: { type: types.DO_LOGIN, url: apiAccount.concat("Login"), app: app }
     };
     return loginRequest;
 }
@@ -359,7 +359,7 @@ export const getAllProductCategories = () => ({
     },
     meta: {
         type: types.FETCH_PRODUCT_CATEGORIES_ALL,
-        url: apiEntityBaseUrl.concat("get")
+        url: apiEntityBaseUrl.concat("Get")
     }
 })
 

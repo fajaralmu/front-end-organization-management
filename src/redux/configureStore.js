@@ -150,8 +150,7 @@ const getEntityListMiddleware = store => next => action => {
         .then(data => {
             console.debug("Response:", data);
             if (data.entities == null || data.entities.length == 0) {
-                alert("Data not found!");
-                return;
+                data.entitie = [];
             }
             data.entityConfig = action.meta.entityConfig;
             let newAction = Object.assign({}, action, {
@@ -240,7 +239,7 @@ const requestAppIdMiddleware = store => next => action => {
             delete newAction.meta;
             store.dispatch(newAction);
         })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
+        .catch(err => console.error(err)).finally(param => action.meta.app.endLoading());
 }
 
 const getProductStocksMiddleware = store => next => action => {
@@ -607,7 +606,7 @@ const performLoginMiddleware = store => next => action => {
                 payload: {
                     loginStatus: loginSuccess,
                     loginKey: loginKey,
-                    loggedUser: responseJson.entity
+                    loggedUser: responseJson.user
                 }
             });
             delete newAction.meta;

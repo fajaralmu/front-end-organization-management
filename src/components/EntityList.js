@@ -204,6 +204,15 @@ class EntityList extends Component {
                     } else if(fieldItem.type == "longDate") {
                         const dateStr  = new Date(entityValue).toDateString();
                         entityValue = <Label text={dateStr}/>;
+                    } else   if (fieldItem.type == "staticDropdown") {
+                        const options = fieldItem.options;
+                        
+                        options.forEach(opt => {
+                            if(opt.value == entityValue){
+                                entityValue = opt.text;
+                            }
+                        });
+
                     }
                 }
 

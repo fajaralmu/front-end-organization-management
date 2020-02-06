@@ -1,3 +1,158 @@
+export const divisionConfig = {
+    title: "Badan Pengurus",
+    entityName: "division",
+    id: "id",
+    fieldNames: [
+        { name: "name", lableName: "Nama" },
+        { name: "description" }, { name: "institution.name" }
+    ],
+    formData: [
+        {
+            lableName: "Nama BPD",
+            inputType: "text",
+            name: "name"
+        },
+
+        {
+            lableName: "Deskripsi BPD",
+            inputType: "textarea",
+            name: "description"
+        },
+        {
+            lableName: "Division Insitusi",
+            inputType: "dynamicDropdown",
+            name: "institution.name",
+            reffEntity: "Institution",
+            idField: "id",
+            displayField: "name"
+        }
+    ]
+}
+
+export const sectionConfig = {
+    title: "Divisi",
+    entityName: "section",
+    id: "id",
+    fieldNames: [
+        { name: "name" },
+        { name: "division.name" }
+    ],
+    formData: [
+        {
+            lableName: "Nama Divisi",
+            inputType: "text",
+            name: "name"
+        },
+
+        {
+            lableName: "BPD",
+            inputType: "dynamicDropdown",
+            name: "division.name",
+            reffEntity: "division",
+            idField: "id",
+            displayField: "name"
+        }
+    ]
+}
+
+export const programConfig = {
+    title: "Program Kerja",
+    entityName: "program",
+    id: "id",
+    fieldNames: [
+        { name: "name" },
+        { name: "description" }
+        ,
+        { name: "section.name" }
+    ],
+    formData: [
+        {
+            lableName: "Nama Proker",
+            inputType: "text",
+            name: "name"
+        },
+        {
+            lableName: "Deskripsi Proker",
+            inputType: "textarea",
+            name: "description"
+        },
+        {
+            lableName: "Nama Divisi",
+            inputType: "dynamicDropdown",
+            name: "section.name",
+            reffEntity: "section",
+            idField: "id",
+            displayField: "name"
+        }
+    ]
+}
+export const eventConfig = {
+    title: "Kegiatan",
+    entityName: "event",
+    id: "id",
+    fieldNames: [
+        { name: "name" },
+        { name: "info" },
+        { name: "date" },
+        { name: "location" },
+        { name: "program.name" },
+        { name: "participant" },
+        {
+            name: "done", type: "staticDropdown", options: [
+                { text: "Done", value: 1 },
+                { text: "UnDone", value: 0 }
+            ]
+        }
+    ],
+    formData: [
+        {
+            lableName: "Nama Kegiatan",
+            inputType: "text",
+            name: "name"
+        },
+        {
+            lableName: "Waktu Kegiatan",
+            inputType: "date",
+            name: "date"
+        },
+        {
+            lableName: "Info Kegiatan",
+            inputType: "textarea",
+            name: "info"
+        }, {
+            lableName: "Lokasi Kegiatan",
+            inputType: "text",
+            name: "location"
+        },
+        {
+            lableName: "Nama Program",
+            inputType: "dynamicDropdown",
+            name: "program.name",
+            reffEntity: "program",
+            idField: "id",
+            displayField: "name"
+        },
+        {
+            lableName: "Status Kegiatan",
+            inputType: "staticDropDown",
+            name: "done",
+            options: [
+                { text: "Done", value: 1 },
+                { text: "UnDone", value: 0 }
+            ]
+        },
+        {
+            lableName: "Peserta",
+            inputType: "number",
+            name: "participant"
+        },
+    ]
+}
+
+/**
+ * SAMPLE
+ */
+
 export const productConfig = {
     title: "Product",
     entityName: "product",
@@ -129,10 +284,10 @@ export const customerList = {
 export const transactionConfig = {
     title: "Transaction",
     entityName: "transaction",
-    disabled:true,
+    disabled: true,
     id: "id",
     fieldNames: [
-        { name: "code" }, { name: "transactionDate", type:"longDate" },
+        { name: "code" }, { name: "transactionDate", type: "longDate" },
         { name: "type" }, { name: "supplier.name" },
         { name: "customer.name" }
     ],
@@ -160,8 +315,8 @@ export const transactionConfig = {
         {
             lableName: "Customer",
             inputType: "text",
-            name: "customer.name", 
+            name: "customer.name",
         },
-         
+
     ]
 }

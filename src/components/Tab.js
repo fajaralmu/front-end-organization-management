@@ -10,7 +10,7 @@ class Tab extends React.Component {
     render() {
         let tabsData = this.props.tabsData ? this.props.tabsData : [];
 
-        let autoColumns = "5% "+("min-content ".repeat(tabsData.length ))+" auto";
+        let autoColumns = "5% "+("max-content ".repeat(tabsData.length ))+" auto";
         return (
             <div className="tab-container" style={{
                 ...this.props.style,

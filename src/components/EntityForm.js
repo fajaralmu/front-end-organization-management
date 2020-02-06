@@ -3,6 +3,7 @@ import '../css/Entity.css'
 import '../css/Common.css'
 import Label from './Label'
 import InputDropdown from './InputDropdown'
+import ComboBox from './ComboBox'
 import InputField from './InputField';
 import ActionButtons from './ActionButtons';
 import { _byId } from '../utils/ComponentUtil'
@@ -366,6 +367,10 @@ class EntityForm extends Component {
             this.updateSelectedEntity(displayPropName, selectedOption.entity);
             this.setState({ activeId: null, dropdownList: currentDropdownList, dropdownValues: dropdownValues, selectedEntities: selectedEntities });
         }
+
+        this.handleStaticDropdownChange = (value, propName) =>{
+            this.updateSelectedEntity(propName, value);
+        }
     }
 
     componentDidUpdate() {
@@ -433,6 +438,17 @@ class EntityForm extends Component {
                             value={value}
                             dropdownList={this.state.dropdownList[data.name]}
                             onKeyUp={(value, id) => { this.onKeyUpDynamicDropdown(value, id, data.name, data.reffEntity) }} />
+
+                    } else  if (data.inputType == "staticDropDown") {
+                        /**
+                         * if static drop down
+                         */
+                        console.log("STATIC DROPDOWN VALUE: ",value);
+                        inputComponent = <ComboBox 
+                             defaultValue={new String(value)}
+                            onChange={(val)=>this.handleStaticDropdownChange(val,data.name)}
+                            options={data.options} id={stringUtil.uniqueId()}
+                         />
 
                     } else if (data.inputType == "singleImage") {
                         /**

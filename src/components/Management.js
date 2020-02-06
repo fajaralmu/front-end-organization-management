@@ -62,25 +62,40 @@ class Management extends Component {
         this.getButtonsData = () => {
             return [
                 {
-                    text: "Product",
-                    active: this.checkIfCurrentMenuName("product"),
-                    onClick: () => { this.loadEntityManagement(entityConfig.productConfig) }
+                    text: "Badan Pengurus",
+                    active: this.checkIfCurrentMenuName("division"),
+                    onClick: () => { this.loadEntityManagement(entityConfig.divisionConfig) }
                 },
                 {
-                    active: this.checkIfCurrentMenuName("supplier"),
-                    text: "Supplier",
-                    onClick: () => { this.loadEntityManagement(entityConfig.supplierList) }
+                    text: "Divisi",
+                    active: this.checkIfCurrentMenuName("section"),
+                    onClick: () => { this.loadEntityManagement(entityConfig.sectionConfig) }
                 },
                 {
-                    active: this.checkIfCurrentMenuName("customer"),
-                    text: "Customer",
-                    onClick: () => { this.loadEntityManagement(entityConfig.customerList) }
+                    text: "Program Kerja",
+                    active: this.checkIfCurrentMenuName("program"),
+                    onClick: () => { this.loadEntityManagement(entityConfig.programConfig) }
                 },
                 {
-                    active: this.checkIfCurrentMenuName("transaction"),
-                    text: "Transaction",
-                    onClick: () => { this.loadEntityManagement(entityConfig.transactionConfig) }
-                }
+                    text: "Kegiatan",
+                    active: this.checkIfCurrentMenuName("event"),
+                    onClick: () => { this.loadEntityManagement(entityConfig.eventConfig) }
+                },
+                // {
+                //     active: this.checkIfCurrentMenuName("supplier"),
+                //     text: "Supplier",
+                //     onClick: () => { this.loadEntityManagement(entityConfig.supplierList) }
+                // },
+                // {
+                //     active: this.checkIfCurrentMenuName("customer"),
+                //     text: "Customer",
+                //     onClick: () => { this.loadEntityManagement(entityConfig.customerList) }
+                // },
+                // {
+                //     active: this.checkIfCurrentMenuName("transaction"),
+                //     text: "Transaction",
+                //     onClick: () => { this.loadEntityManagement(entityConfig.transactionConfig) }
+                // }
             ];
         }
 
