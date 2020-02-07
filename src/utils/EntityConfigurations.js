@@ -93,7 +93,7 @@ export const eventConfig = {
     fieldNames: [
         { name: "name" },
         { name: "info" },
-        { name: "date" },
+        { name: "date" ,type:"date"},
         { name: "location" },
         { name: "program.name" },
         { name: "participant" },

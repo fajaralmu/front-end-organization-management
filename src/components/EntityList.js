@@ -12,6 +12,7 @@ import ActionButton from './ActionButton'
 import EntityForm from './EntityForm';
 import * as url from '../constant/Url'
 import Label from './Label'
+import GridComponent from './GridComponent'
 
 class EntityList extends Component {
     constructor(props) {
@@ -86,20 +87,41 @@ class EntityList extends Component {
         this.createFilterInputs = (fieldNames) => {
             let inputs = new Array();
             for (let i = 0; i < fieldNames.length; i++) {
-                const name = fieldNames[i];
-                let headerName = name.name;
+                const fieldName = fieldNames[i];
+                let headerName = fieldName.name;
                 if (headerName.split(".").length > 1) {
                     headerName = headerName.split(".")[0];
                 }
 
                 let value = "";
+                
                 if (this.state.filter[headerName] != null) {
                     value = this.state.filter[headerName];
+                    
                 }
 
-                const input = <InputField value={value} id={headerName + "_filter_id"}
+                let input = <InputField value={value} id={headerName + "_filter_id"}
                     onKeyUp={this.handleFilterChange} key={"input_field_" + stringUtil.uniqueId()}
                     placeholder={headerName} />
+
+                if (fieldName.type == "date") {
+                    const valueDay = this.state.filter[headerName + "-day"];
+                    const valueMonth = this.state.filter[headerName + "-month"];
+                    const valueYear = this.state.filter[headerName + "-year"];
+
+                    const inputDay = <InputField value={valueDay} id={headerName + "-day_filter_id"}
+                        onKeyUp={this.handleFilterChange} key={"input_field_d" + stringUtil.uniqueId()}
+                        placeholder={"day"} />;
+                    const inputMonth = <InputField value={valueMonth} id={headerName + "-month_filter_id"}
+                        onKeyUp={this.handleFilterChange} key={"input_field_m" + stringUtil.uniqueId()}
+                        placeholder={"month"} />;
+                    const inputYear = <InputField value={valueYear} id={headerName + "-year_filter_id"}
+                        onKeyUp={this.handleFilterChange} key={"input_field_y" + stringUtil.uniqueId()}
+                        placeholder={"year"} />;
+
+                    input = <GridComponent width="50px" items={[inputDay, inputMonth, inputYear]} />
+                }
+
 
                 let orderType = "asc";
                 if (this.state.orderBy && this.state.orderBy == headerName) {
@@ -201,18 +223,17 @@ class EntityList extends Component {
                         let imgName = entityValue.split("~")[0];
 
                         entityValue = <img width="60" height="60" src={url.baseImageUrl + imgName} />
-                    } else if(fieldItem.type == "longDate") {
-                        const dateStr  = new Date(entityValue).toDateString();
-                        entityValue = <Label text={dateStr}/>;
-                    } else   if (fieldItem.type == "staticDropdown") {
+                    } else if (fieldItem.type == "longDate") {
+                        const dateStr = new Date(entityValue).toDateString();
+                        entityValue = <Label text={dateStr} />;
+                    } else if (fieldItem.type == "staticDropdown") {
                         const options = fieldItem.options;
-                        
+
                         options.forEach(opt => {
-                            if(opt.value == entityValue){
+                            if (opt.value == entityValue) {
                                 entityValue = opt.text;
                             }
                         });
-
                     }
                 }
 
@@ -225,7 +246,7 @@ class EntityList extends Component {
                     values: rowValues,
                     handleDelete: this.handleDelete,
                     handleEdit: this.handleEdit,
-                    disabled: entityConfig.disabled == true?true:false
+                    disabled: entityConfig.disabled == true ? true : false
                 }
             )
         }
@@ -267,7 +288,7 @@ class EntityList extends Component {
                     width: "100%",
                     margin: "5px",
                 }}
-               rows={rows} />
+                rows={rows} />
         </div>
 
         return (
@@ -279,7 +300,7 @@ class EntityList extends Component {
                     }} > </div>
                     {navButtons}
                     <div className="entityForm">
-                        <EntityForm 
+                        <EntityForm
                             app={this.props.app}
                             updateEntity={this.props.updateEntity}
                             removeManagedEntity={this.props.removeManagedEntity}
