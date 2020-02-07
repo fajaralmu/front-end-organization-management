@@ -4,8 +4,7 @@ import '../css/Management.css'
 import { withRouter } from 'react-router';
 import * as actions from '../redux/actionCreators'
 import { connect } from 'react-redux'
-import ContentTitle from './ContentTitle'
-import ActionButtons from './ActionButtons';
+import ContentTitle from './ContentTitle' 
 import * as entityConfig from '../utils/EntityConfigurations'
 import EntityList from './EntityList';
 import Tab from './Tab';
@@ -81,6 +80,16 @@ class Management extends Component {
                     active: this.checkIfCurrentMenuName("event"),
                     onClick: () => { this.loadEntityManagement(entityConfig.eventConfig) }
                 },
+                {
+                    text: "Posisi",
+                    active: this.checkIfCurrentMenuName("position"),
+                    onClick: () => { this.loadEntityManagement(entityConfig.positionConfig) }
+                },
+                {
+                    text: "Anggota",
+                    active: this.checkIfCurrentMenuName("member"),
+                    onClick: () => { this.loadEntityManagement(entityConfig.memberConfig) }
+                }, 
                 // {
                 //     active: this.checkIfCurrentMenuName("supplier"),
                 //     text: "Supplier",

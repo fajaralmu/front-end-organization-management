@@ -93,7 +93,7 @@ export const eventConfig = {
     fieldNames: [
         { name: "name" },
         { name: "info" },
-        { name: "date" ,type:"date"},
+        { name: "date", type: "date" },
         { name: "location" },
         { name: "program.name" },
         { name: "participant" },
@@ -148,6 +148,81 @@ export const eventConfig = {
         },
     ]
 }
+
+export const positionConfig = {
+    title: "Posisi",
+    entityName: "position",
+    id: "id",
+    fieldNames: [
+        { name: "name" },
+        { name: "description" },
+
+    ],
+    formData: [
+        {
+            lableName: "Nama Posisi",
+            inputType: "text",
+            name: "name"
+        },
+        {
+            lableName: "Deskripsi",
+            inputType: "textarea",
+            name: "description"
+        },
+
+    ]
+}
+
+
+export const memberConfig = {
+    title: "Anggota",
+    entityName: "member",
+    id: "id",
+    fieldNames: [
+        { name: "name" },
+        { name: "position" },
+        { name: "section" },
+        { name: "description" }
+
+    ],
+    formData: [
+        {
+            lableName: "Nama Anggota",
+            inputType: "text",
+            name: "name"
+        },
+        {
+            lableName: "Nama Posisi",
+            inputType: "dynamicDropdown",
+            name: "position.name",
+            reffEntity: "position",
+            idField: "id",
+            displayField: "name"
+        },
+        {
+            lableName: "Nama Divisi",
+            inputType: "dynamicDropdown",
+            name: "section.name",
+            reffEntity: "section",
+            idField: "id",
+            displayField: "name"
+        },
+        {
+            lableName: "Deskripsi",
+            inputType: "textarea",
+            name: "name"
+        },
+
+    ]
+}
+
+
+
+
+
+
+
+//==============OLD STUFF==============//
 
 /**
  * SAMPLE
