@@ -206,7 +206,7 @@ export const getProductSalesDetail = (request, app) => {
 }
 
 export const getProductSales = (request) => {
-    request.referrer.props.app.startLoading(true);
+    request.referrer.props.app.startLoading( );
     return {
         type: types.GET_PRODUCT_SALES,
         payload: {
@@ -219,26 +219,16 @@ export const getProductSales = (request) => {
         }
     };
 }
-export const getCashflowDetail = (request, app) => {
-    app.startLoading(true);
+export const selectDivision = (id, app) => {
+    app.startLoading( );
     return {
-        type: types.GET_CASHFLOW_DETAIL,
-        payload: { filter: { month: request.fromMonth, year: request.fromYear, monthTo: request.toMonth, yearTo: request.toYear } },
+        type: types.SELECT_DIVISION,
+        payload: { divisionId:id },
         meta: {
-            app: app, type: types.GET_CASHFLOW_DETAIL, url: apiTransaction.concat("cashflowdetail")
+            app: app, type: types.SELECT_DIVISION, url: apiAccount.concat("SetDivision")
         }
     };
-}
-export const getCashflowInfo = (month, year, type, app) => {
-    app.startLoading();
-    return {
-        type: types.GET_CASHFLOW_INFO,
-        payload: { filter: { year: year, month: month, module: type } },
-        meta: {
-            app: app, type: types.GET_CASHFLOW_INFO, url: apiTransaction.concat("cashflowinfo")
-        }
-    };
-}
+} 
 
 export const getProductListTrx = (name, app) => {
     app.startLoading();
@@ -322,7 +312,7 @@ export const performLogout = (app) => {
     };
     return loginRequest;
 }
-
+///ok
 export const performLogin = (username, password, app) => {
     app.startLoading();
     let loginRequest = {
@@ -341,6 +331,19 @@ export const refreshLoginStatus = ( ) => {
         type: types.REFRESH_LOGIN,
         payload: { },
         meta: { type: types.REFRESH_LOGIN  }
+    };
+    return loginRequest;
+}
+
+//ok
+export const getDivisons = (  app) => {
+    app.startLoading();
+    let loginRequest = {
+        type: types.GET_DIVISIONS,
+        payload: {
+             
+        },
+        meta: { type: types.GET_DIVISIONS, url: apiAccount.concat("Divisions"), app: app }
     };
     return loginRequest;
 }

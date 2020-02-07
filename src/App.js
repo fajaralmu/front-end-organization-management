@@ -1,6 +1,5 @@
 
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react'; 
 import './App.css';
 
 import Header from './components/Header'
@@ -9,21 +8,16 @@ import Home from './components/Home'
 import About from './components/About'
 import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
 import * as actions from './redux/actionCreators'
-import { connect } from 'react-redux'
-import * as hardCoded from './utils/HardCodedEntites'
+import { connect } from 'react-redux' 
 import Catalog from './components/Catalog'
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import * as menus from './constant/Menus'
-import SupplierList from './components/SupplierList';
 import Message from './components/Message';
 import Footer from './components/Footer';
 import SockJsClient from 'react-stomp';
 import ChatRoom from './components/ChatRoom';
-import CartInfo from './components/CartInfo';
-import CartDetail from './components/CartDetail';
-import Management from './components/Management';
-import ContentTitle from './components/ContentTitle';
+import Management from './components/Management'; 
 
 
 class App extends Component {
@@ -170,6 +164,7 @@ class App extends Component {
         <div id="main-layout">
           <div id="main-menu">
             <Menu loggedUser={this.props.loggedUser}
+              division = {this.props.division}
               handleMenuCLick={this.handleMenuCLick}
               activeCode={this.state.menuCode}
               menus={menus} />
@@ -185,10 +180,7 @@ class App extends Component {
                 (renderProps) =>
                   <Home setMenuCode={this.setMenuCode} content="hello, this is home page" />
               } />
-              <Route exact path="/suppliers" render={
-                (renderProps) =>
-                  <SupplierList app={this} setMenuCode={this.setMenuCode} />
-              } />
+              
               <Route exact path="/chatroom" render={
                 (renderProps) =>
                   <ChatRoom app={this} setMenuCode={this.setMenuCode} />
@@ -203,10 +195,6 @@ class App extends Component {
                     enableShopping={this.state.enableShopping}
                     setMenuCode={this.setMenuCode}
                     setDetailMode={this.setDetailMode} detailMode={this.state.detailMode} />
-
-              }></Route>
-              <Route exact path="/cart" render={
-                (renderProps) => <CartDetail enableShopping={this.state.enableShopping} cart={this.props.cart} app={this} setMenuCode={this.setMenuCode} />
 
               }></Route>
                <Route exact path="/login" render={
@@ -256,7 +244,8 @@ const mapStateToProps = state => {
     menus: state.userState.menus,
     loggedUser: state.userState.loggedUser,
     loginAttempt: state.userState.loginAttempt,
-    requestId: state.shopState.requestId,
+    requestId: state.userState.requestId,
+    division: state.userState.division,
     cart: state.shopState.cart
   }
 }

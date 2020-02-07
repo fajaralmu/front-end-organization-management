@@ -21,28 +21,14 @@ export const menus = [
     url:"about",
     active: false,
     authenticated: false
-  } ,
-  {
-    code:"supplierlist",
-    name:"Our Supplier",
-    url:"suppliers",
-    active: false,
-    authenticated: false
-  }, 
+  } , 
   {
     code:"chatroom",
     name:"Chat Room",
     url:"chatroom",
     active: false,
     authenticated: false
-  } ,
-  {
-    code:"cart",
-    name:"My Cart",
-    url:"cart",
-    active: false,
-    authenticated: false
-  } ,
+  } , 
   {
     code:"login",
     name:"Login",

@@ -26,6 +26,7 @@ export const configureStore = () => {
             performLoginMiddleware,
             performLogoutMiddleware,
             refreshLoginStatusMiddleware,
+            getDivisionsMiddleware,
 
             //transaction
             getStockInfoMiddleware,
@@ -33,9 +34,8 @@ export const configureStore = () => {
             submitSupplyTransactionMiddleware,
             resetPurchaseTransactionMiddleware,
             getCustomerListMiddleware,
-            getProductListTrxMiddleware,
-            getCashflowInfoMiddleware,
-            getCashflowDetailMiddleware,
+            getProductListTrxMiddleware, 
+            selectDivisionMiddleware,
             getProductSalesMiddleware,
             resetProductsMiddleware,
             resetSuppliersMiddleware,
@@ -306,14 +306,14 @@ const getProductSalesMiddleware = store => next => action => {
         .catch(err => console.log(err)).finally(param => action.meta.referrer.props.app.endLoading());
 }
 
-const getCashflowDetailMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_CASHFLOW_DETAIL) { return next(action); }
+const selectDivisionMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.SELECT_DIVISION) { return next(action); }
     fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
-            console.debug("getCashflowDetailMiddleware Response:", data);
+            console.debug("selectDivisionMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Server error");
                 return;
@@ -326,29 +326,23 @@ const getCashflowDetailMiddleware = store => next => action => {
         .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
 }
 
-const getCashflowInfoMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_CASHFLOW_INFO) { return next(action); }
+const getDivisionsMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.GET_DIVISIONS) { return next(action); }
     fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
-            console.debug("getCashflowInfoMiddleware Response:", data);
+            console.debug("getDivisionsMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Server error");
                 return;
             }
 
-            if (data.entity == null) {
-                alert("Data for cashflow: " + action.payload.filter.module + " in " + action.payload.filter.month + "/" + action.payload.filter.year + " period not found!");
+            if (data.divisions == null  )  { 
                 return;
             }
-
-            if (data.entity.amount == null) {
-                data.entity.amount = 0;
-                data.entity.count = 0;
-                console.log("DATA:", data);
-            }
+ 
             let newAction = Object.assign({}, action, { payload: data });
             delete newAction.meta;
             store.dispatch(newAction);
@@ -606,7 +600,9 @@ const performLoginMiddleware = store => next => action => {
                 payload: {
                     loginStatus: loginSuccess,
                     loginKey: loginKey,
-                    loggedUser: responseJson.user
+                    loggedUser: responseJson.user,
+                    divisions: responseJson.divisions,
+                    division: responseJson.sessionData?responseJson.sessionData.division:null
                 }
             });
             delete newAction.meta;

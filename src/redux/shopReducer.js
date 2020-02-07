@@ -5,8 +5,7 @@ export const initState = {
     entities: [],
     entity: {},
     categories: [],
-    suppliersData: [],
-    requestId: null,
+    suppliersData: [], 
     messages: null,
     userAlias: "anonymous_" + new Date().getTime(),
     cart: []
@@ -36,8 +35,7 @@ export const reducer = (state = initState, action) => {
             return { ...state, entity: currentProduct };
         case types.FETCH_PRODUCT_CATEGORIES_ALL:
             return { ...state, categories: action.payload.entities };
-        case types.REQUEST_ID:
-            return { ...state, requestId: action.payload.message };
+      
         case types.SEND_MESSAGE:
             return { ...state, messages: action.payload.entities, userAlias: action.payload.username };
         case types.STORE_MESSAGE:

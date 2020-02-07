@@ -9,10 +9,13 @@ export const initState = {
     loginFailed: false,
     menus: menus.menus,
     loggedUser: null,
-    loginAttempt: false
+    loginAttempt: false,
+    divisions: null,
+    division: null,
+    requestId: null
 };
 
-export const reducer = (state = initState, action) => { 
+export const reducer = (state = initState, action) => {
     /*
         ========setting menu========
     */
@@ -36,7 +39,7 @@ export const reducer = (state = initState, action) => {
         case types.DO_LOGIN:
             let result = {
                 ...state,
-                loginAttempt:true,
+                loginAttempt: true,
                 loginStatus: action.payload.loginStatus,
                 loginKey: action.payload.loginKey,
                 loginFailed: action.payload.loginStatus == false,
@@ -44,12 +47,26 @@ export const reducer = (state = initState, action) => {
                 loggedUser: action.payload.loggedUser
             };
 
-            if(result.loginStatus == true){
+            if (result.loginStatus == true) {
                 localStorage.setItem("loginKey", result.loginKey);
                 localStorage.setItem("loggedUser", JSON.stringify(result.loggedUser));
+                result.divisions = action.payload.divisions
             }
 
-            console.log("logged user: ",result.loggedUser);
+            console.log("logged user: ", result.loggedUser);
+            return result;
+        case types.REQUEST_ID:
+            result = { ...state, requestId: action.payload.message };
+
+            if (!action.payload.loggedIn) {
+                result.loginStatus = false;
+                result.loggedUser = null;
+            }else{
+                if(action.payload.sessionData){
+                    result.division = action.payload.sessionData.Division
+                }
+            }
+
             return result;
         case types.DO_LOGOUT:
             result = {
@@ -58,16 +75,28 @@ export const reducer = (state = initState, action) => {
                 menus: updatedMenus,
                 loggedUser: null
             };
-            localStorage.removeItem("loginKey" );
+            localStorage.removeItem("loginKey");
             localStorage.removeItem("loggedUser");
             return result;
         case types.REFRESH_LOGIN:
-                
+
             result = {
                 ...state,
                 loginStatus: action.payload.loginStatus,
                 menus: updatedMenus,
-                loggedUser:  action.payload.loggedUser
+                loggedUser: action.payload.loggedUser
+            };
+            return result;
+        case types.GET_DIVISIONS:
+            result = {
+                ...state,
+                divisions: action.payload.divisions,
+            };
+            return result;
+        case types.SELECT_DIVISION:
+            result = {
+                ...state,
+                division: action.payload.entity,
             };
             return result;
         default:

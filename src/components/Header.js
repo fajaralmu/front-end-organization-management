@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import '../css/Header.css'
-import CartInfo from './CartInfo';
+import '../css/Header.css' 
 
 class Header extends Component{
 
@@ -11,15 +10,11 @@ class Header extends Component{
         }
     }
 
-    render(){
-        let cartInfo = this.props.enableShopping ? 
-        <CartInfo onClick={this.handleClick} cart={this.props.cart} />:
-        null;
-
+    render(){ 
         return (
             <div className="App-header">
                 {this.props.title}
-                {cartInfo}
+                
             </div>
         )
     }

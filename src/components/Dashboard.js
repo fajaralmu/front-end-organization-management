@@ -2,32 +2,19 @@ import React, { Component } from 'react'
 import '../css/Common.css'
 import '../css/Dashboard.css'
 import * as menus from '../constant/Menus'
-import DashboardMenu from './DashboardMenu';
-import TransactionOut from './TransactionOut';
-import ErrorPage from './ErrorPage';
 import { withRouter } from 'react-router';
-import TransactionIn from './TransactionIn';
-import Cashflow from './Cashflow';
-import ComboBoxes from './ComboBoxes';
-import * as componentUtil from '../utils/ComponentUtil'
-import ActionButton from './ActionButton';
 import { connect } from 'react-redux'
 import * as actions from '../redux/actionCreators'
-import InstantTable from './InstantTable';
-import Card from './Card'
-import * as stringUtil from '../utils/StringUtil'
-import Label from './Label';
-import ProductSales from './ProductSales';
+import Tab from './Tab';
 import ContentTitle from './ContentTitle';
+import DashboardMain from './DashboardMain';
 
 class Dashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            featureCode: 'main',
-            cashflowYear: componentUtil.getCurrentMMYY()[1],
-            cashflowMonth: componentUtil.getCurrentMMYY()[0]
+            menu: "home"
         }
 
         this.setFeatureCode = (code) => {
@@ -36,12 +23,12 @@ class Dashboard extends Component {
         this.validateLoginStatus = () => {
             if (this.props.loginStatus != true) this.props.history.push("/login");
         }
-        this.getCashflowInfo = () => {
-            let month =  this.state.cashflowMonth;
-            let year = this.state.cashflowYear;
-            this.props.getCashflowInfo(month, year, "OUT", this.props.app);
-            this.props.getCashflowInfo(month, year, "IN", this.props.app);
+        this.getDivisons = () => {  
+            this.props.getDivisons( this.props.app);  
+        }
 
+        this.selectDivision = (divisionId) => {
+            this.props.selectDivision(divisionId, this.props.app);
         }
     }
 
@@ -51,107 +38,64 @@ class Dashboard extends Component {
             return;
         this.props.setMenuCode(menus.DASHBOARD);
         document.title = "Dashboard";
-        this.getCashflowInfo();
-    }
 
+        this.getDivisons();
+    }
+    getButtonsData = () => {
+        return [
+            {
+                text: "Home",
+                active: this.state.menu == "home",
+                onClick: () => { }
+            },
+            {
+                text: "Time Line",
+                active: false
+            } 
+        ];
+    }
+ 
     componentDidUpdate() {
         this.validateLoginStatus();
     }
 
     render() {
-        let minYear, maxYear = new Date().getFullYear();  
+        const buttonsData = this.getButtonsData();
 
-        minYear = this.props.transactionYears[0];
-        maxYear = this.props.transactionYears[1]; 
-
-        let cashflowInfoIn = this.props.cashflowInfoIn ? this.props.cashflowInfoIn : { amount: "loading...", count: "loading..." };
-        let cashflowInfoOut = this.props.cashflowInfoOut ? this.props.cashflowInfoOut : { amount: "loading...", count: "loading..." };
-
-        console.log("this.props.cashflowInfoIn ",this.props.cashflowInfoIn );
-        let earningContent = <div>
-            <Label text="Value" />
-            <Label style={{fontFamily:"Arial Black"}}  text={stringUtil.beautifyNominal(cashflowInfoOut.amount) + ",00"} />
-            <Label text="Item" />
-            <Label text={stringUtil.beautifyNominal(cashflowInfoOut.count)} />
-        </div>;
-        let spendingContent = <div>
-            <Label text="Value" />
-            <Label style={{fontFamily:"Arial Black"}} text={stringUtil.beautifyNominal(cashflowInfoIn.amount) + ",00"} />
-            <Label text="Item" />
-            <Label text={stringUtil.beautifyNominal(cashflowInfoIn.count)} />
-        </div>
-
-        let mainComponent = <div>
-            <div className="cashflow-info">
-                <h3>Cashflow Info</h3>
-                <ComboBoxes values={[
-                    {
-                        id: "select-month",
-                        defaultValue:  this.state.cashflowMonth? this.state.cashflowMonth: componentUtil.getCurrentMMYY()[0],
-                        options: componentUtil.getDropdownOptionsMonth(),
-                        handleOnChange: (value)=>this.setState({cashflowMonth:value})
-                    },
-                    {
-                        id: "select-year",
-                        defaultValue: this.state.cashflowYear? this.state.cashflowYear: componentUtil.getCurrentMMYY()[1],
-                        options: componentUtil.getDropdownOptionsYear(minYear, maxYear),
-                        handleOnChange: (value)=>this.setState({cashflowYear:value})
-                    }
-                ]} />
-                <ActionButton status="success" id="btn-get-cashflow-info" text="Search" onClick={this.getCashflowInfo} />
-                <div className="cashflow-info-wrapper">
-                    <InstantTable disabled={true}
-                        rows={[{
-                            values: [
-                                <Card title={"My earning in " + stringUtil.monthYearString(cashflowInfoOut.month, cashflowInfoOut.year)} content={earningContent} />,
-                                <Card title={"My spending in " + stringUtil.monthYearString(cashflowInfoIn.month, cashflowInfoIn.year)} content={spendingContent} />
-                            ]
-                        }]} />
-                </div>
-            </div>
-        </div>;
-
-        if (this.state.featureCode != null) {
-            switch (this.state.featureCode) {
-                case 'trxOut':
-                    mainComponent = <TransactionOut app={this.props.app} setFeatureCode={this.setFeatureCode} />
-                    break;
-                case 'trxIn':
-                    mainComponent = <TransactionIn app={this.props.app} setFeatureCode={this.setFeatureCode} />
-                    break;
-                case 'cashflow':
-                    mainComponent = <Cashflow app={this.props.app} transactionYears={this.props.transactionYears} setFeatureCode={this.setFeatureCode} />
-                    break;
-                case 'productSales':
-                    mainComponent = <ProductSales app={this.props.app} transactionYears={this.props.transactionYears} setFeatureCode={this.setFeatureCode} />
-                    break;
-                default:
-                    break;
-            }
+        let content = null;
+        switch (this.state.menu) {
+            case 'home':
+                content = <DashboardMain  division={this.props.division} 
+                    selectDivision={this.selectDivision} 
+                    divisions={this.props.divisions} />
+                break;
+        
+            default:
+                break;
         }
-        if (this.props.loginStatus == true)
-            return (
-                <div className="section-container"> 
-                    <ContentTitle title="Admin Page" description = "Have a Nice Shop Keeping!" />
-                    <DashboardMenu currentMenu={this.state.featureCode} goToMenu={this.setFeatureCode} />
-                    {mainComponent}
-                </div>
-            )
-        else
-            return <ErrorPage message="OOPS! Page not found" />
+
+        return (<div className="section-container">
+            <ContentTitle title={"Admin Page"}
+                description="management organisasi" />
+            <div className="management-container">
+                <Tab tabsData={buttonsData} />
+                {content}
+            </div>
+        </div>)
+
     }
 
 }
 const mapStateToProps = state => {
     return {
-        cashflowInfoIn: state.transactionState.cashflowInfoIn,
-        cashflowInfoOut: state.transactionState.cashflowInfoOut,
-        transactionYears: state.transactionState.transactionYears
+        divisions: state.userState.divisions,
+        division: state.userState.division,
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    getCashflowInfo: (month, year, type, app) => dispatch(actions.getCashflowInfo(month, year, type, app)),
+    getDivisons: ( app) => dispatch(actions.getDivisons( app)),
+    selectDivision: (divisionId, app) => dispatch(actions.selectDivision(divisionId, app))
 
 })
 export default withRouter(connect(

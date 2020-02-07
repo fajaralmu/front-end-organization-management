@@ -21,7 +21,7 @@ class Tab extends React.Component {
             }} >
                  <div style={{width:'100%', borderBottom:'solid 1px lightgray'}}></div>
                 {tabsData.map(tabData => {
-                    return <div className={tabData.active ? "tab-element tab-item-active rounded-top" : "tab-element tab-item"} onClick={tabData.onClick ? tabData.onClick : () => { }}>
+                    return <div key={stringUtil.uniqueId()} className={tabData.active ? "tab-element tab-item-active rounded-top" : "tab-element tab-item"} onClick={tabData.onClick ? tabData.onClick : () => { }}>
                         {tabData.text}
                     </div>
                 })}

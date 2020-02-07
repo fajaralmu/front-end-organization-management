@@ -9,14 +9,20 @@ class Menu extends Component {
 
     }
 
-    componentDidUpdate() { 
+    componentDidUpdate() {
     }
 
     render() {
         let userLink = "";
+        let divisionInfo = null;
+        if (this.props.division) {
+            divisionInfo = <div className="fill" >{this.props.division.name} </div>;
+        }
+
         if (this.props.loggedUser != null) {
             userLink = <li id="user-link">
-                <div className="fill" >{"Welcome, "+this.props.loggedUser.name} </div>
+                <div className="fill" >{"Welcome, " + this.props.loggedUser.name} </div>
+                {divisionInfo}
             </li>
         }
 
@@ -24,7 +30,7 @@ class Menu extends Component {
         if (this.props.menus != null) {
             renderedMenus = this.props.menus;
         }
-        
+
         return (
 
             <div className="side-menu" >
@@ -35,7 +41,7 @@ class Menu extends Component {
                             e => {
                                 if (e.url == "#") {
                                     return (<li onClick={() => this.props.handleMenuCLick(e)} className={this.props.activeCode == e.code ? "active" : ""} key={e.name}
-                                        id={e.name}> <Link key={e.name}  className="App-link"
+                                        id={e.name}> <Link key={e.name} className="App-link"
                                             to="#" ><div className="fill" >{e.name} </div></Link></li >
                                     )
                                 }

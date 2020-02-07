@@ -50,19 +50,7 @@ export const reducer = (state = initState, action) => {
             return { ...state, productsData: action.payload.entities };
         case types.RESET_PRODUCTS:
             return { ...state, productsData: null };
-
-        case types.GET_CASHFLOW_INFO:
-            result = state;
-
-            if (action.payload.entity.module == "OUT")
-                result.cashflowInfoOut = action.payload.entity;
-            if (action.payload.entity.module == "IN")
-                result.cashflowInfoIn = action.payload.entity;
-
-            return result;
-
-        case types.GET_CASHFLOW_DETAIL:
-            return { ...state, cashflowDetail: action.payload };
+ 
         case types.GET_PRODUCT_SALES:
             let currentProductSalesData = action.payload;
             if (action.loadMore == true) {

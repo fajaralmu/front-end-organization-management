@@ -7,10 +7,9 @@ import * as stringUtil from '../utils/StringUtil'
 class ComboBox extends Component {
     constructor(props) {
         super(props);
-        this.handleOnChange = () => {
+        this.handleOnChange = (e) => {
             if (this.props.onChange) {
-                this.props.onChange(_byId(this.props.id).value);
-                console.log("x x x CHANGED VALUE: ", _byId(this.props.id).value);
+                this.props.onChange(e.target.value); 
             }
             else {
                 console.log("Not supported");
@@ -29,8 +28,7 @@ class ComboBox extends Component {
         let options = [];
         if (this.props.options) {
             options = this.props.options;
-        }
-        console.log("this.props.defaultValue: ",this.props.defaultValue)
+        } 
         return (
             <div className="input-field ">
                 <select value={this.props.defaultValue ? this.props.defaultValue : ""} className="rounded" id={this.props.id}
