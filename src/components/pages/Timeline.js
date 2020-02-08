@@ -6,6 +6,7 @@ import ActionButton from '../buttons/ActionButton';
 import ComboBox from '../input/ComboBox';
 import InputField from '../input/InputField'
 import { _byId } from '../../utils/ComponentUtil'
+import GridComponent from '../layout/GridComponent';
 
 
 
@@ -18,6 +19,8 @@ class Timeline extends Component {
             inputYearValue: new Date().getFullYear(),
             activeId: ""
         }
+
+        this.calendarData = [];
 
         this.month_now = 7;// 0;
         //let this.begin = { week: 2, day: 1, dayCount: 31 };
@@ -42,6 +45,34 @@ class Timeline extends Component {
         this.changeInputYear = (val, id) => {
             this.setState({ inputYearValue: val, activeId: id });
         }
+
+        this.createTable = () => {
+            //console.log("BUAT this.tabel");
+            let tBody = document.createElement("tbody");
+            let calendarData = [];
+            for (let r = 1; r <= 6; r++) {
+                let tr = document.createElement("tr");
+                // tr.setAttribute("week",r); 
+                for (let i = 1; i <= 7; i++) {
+                    let col = document.createElement("td");
+                    col.setAttribute("class", "date_element");
+                    col.setAttribute("day", +i);
+                    col.setAttribute("week", +r);
+                    col.style.wordWrap = "normal";
+                    tr.appendChild(col);
+                    //set state data
+                    calendarData.push({ day: i, week: r });
+                }
+                tBody.appendChild(tr);
+            }
+
+            this.calendarData = calendarData;
+            this.tabel.className = "table table-bordered";
+            this.tabel.style.tableLayout = "fixed";
+            this.tabel.appendChild(tBody);
+
+
+        }
     }
 
     initEntity(entityName, propName, dateID) {
@@ -52,12 +83,8 @@ class Timeline extends Component {
 
     }
 
-
-
     componentDidUpdate() {
-
-        console.log("Yr: ", this.state.inputYearValue);
-
+        console.log("CALENDAR ROW:", this.calendarData);
         this.updateFields();
         if (_byId(this.state.activeId)) {
             _byId(this.state.activeId).focus();
@@ -84,54 +111,16 @@ class Timeline extends Component {
     }
 
     loadCalendar() {
-
         this.updateFields();
-
         this.createTable();
         this.begin_old = this.begin;
         this.begin = this.fillDay(this.month_now, true, this.begin);
-        this.fillInputMonth();
+
         this.input_month.value = new Date().getMonth() + 1;
         this.setState({ inputYearValue: new Date().getFullYear() });
         this.setCalendar();
-
         this.setState({ updated: new Date() })
-
     }
-
-    fillInputMonth() {
-        // this.input_month.innerHTML = "";
-        // for (let i = 0; i < timeLineConstant.month.length; i++) {
-        //     //  console.log("option ", i, this.input_month);
-        //     let opt = document.createElement("option");
-        //     opt.value = i + 1;
-        //     opt.innerHTML = timeLineConstant.month[i].name;
-        //     this.input_month.appendChild(opt);
-        // }
-    }
-
-    createTable() {
-        //console.log("BUAT this.tabel");
-        let tBody = document.createElement("tbody");
-        for (let r = 1; r <= 6; r++) {
-            let tr = document.createElement("tr");
-            // tr.setAttribute("week",r);
-            for (let i = 1; i <= 7; i++) {
-                let col = document.createElement("td");
-                col.setAttribute("class", "date_element");
-                col.setAttribute("day", +i);
-                col.setAttribute("week", +r);
-                col.style.wordWrap = "normal";
-
-                tr.appendChild(col);
-            }
-            tBody.appendChild(tr);
-        }
-        this.tabel.className = "table table-bordered";
-        this.tabel.style.tableLayout = "fixed";
-        this.tabel.appendChild(tBody);
-    }
-
     setCalendar() {
         this.doSetCalendar();
     }
@@ -210,7 +199,7 @@ class Timeline extends Component {
         if (this.date_info)
             this.date_info.value = timeLineConstant.month[this.month_now].name + " " + this.year_now;
         this.refresh();
-       
+
     }
 
     clearDateFilter() {
@@ -237,10 +226,7 @@ class Timeline extends Component {
         this.loadJSON();
     }
 
-    loadJSON() {
-
-
-    }
+    loadJSON() { }
 
     fillEventData(eventList) {
         let dateCells = document.getElementsByClassName("date_element");
@@ -304,9 +290,8 @@ class Timeline extends Component {
                 this.running_year--;
             }
         }
-        let begin_prev = this.caribegin(this.begin_old, this.begin_old.dayCount);
-        //console.log("old", this.begin_old.day, this.begin_old.week, "prev");
-        //console.log("begin_PREV", begin_prev.day, begin_prev.week, "prev");
+        let begin_prev = this.findBegin(this.begin_old, this.begin_old.dayCount);
+
         this.begin_old = {
             week: begin_prev.week,
             day: begin_prev.day,
@@ -327,7 +312,7 @@ class Timeline extends Component {
         return this.doNextMonth(false);
     }
 
-    refresh() { 
+    refresh() {
         this.setState({ updated: new Date(), selectedMonth: this.month_now + 1, inputYearValue: this.year_now })
     }
 
@@ -362,7 +347,7 @@ class Timeline extends Component {
 
     }
 
-    caribegin(begin_old_, totalday) {
+    findBegin(begin_old_, totalday) {
         let M = this.month_now - 1;
         if (M < 0) {
             M = 11;
@@ -387,57 +372,40 @@ class Timeline extends Component {
         return begin_prev_;
     }
 
-    setElementByAttr(attr, val, attr2, val2, day) {
+    setElementByAttr(val, val2, day) {
         let dates = document.getElementsByClassName("date_element");
+
+        let calendarData = this.calendarData;
+        
         let a = 0;
-        for (let i = 0; i < dates.length; i++) {
-            let cek = dates[i].getAttribute(attr) == val;
-            let cek2 = dates[i].getAttribute(attr2) == val2;
+        for (let i = 0; i < calendarData.length; i++) {
+            let data = calendarData[i];
+
+            let cek = data.week == val;
+            let cek2 = data.day == val2;
             if (cek && cek2) {
+
                 dates[i].innerHTML = "";
                 dates[i].id = "date-" + day;
                 if (new Date().getDate() == day && new Date().getMonth() == this.month_now && new Date().getYear() + 1900 == this.year_now) {
                     console.log("NOW", i);
                     dates[i].setAttribute("style", "background-color:yellow");
+
+                    calendarData[i].now = true;
                 } else {
                     dates[i].setAttribute("style", "background-color:white");
                     console.log("NOT NOW", i);
+
+                    calendarData[i].now = false;
                 }
-                let dateStr = this.addZero(day, 10).concat("-").concat(this.addZero((+this.month_now + 1), 10)).concat("-").concat(this.year_now);
-
-                let addBtn = document.createElement("code");
-                addBtn.innerHTML = "+";
-                addBtn.className = "btn btn-default btn-xs";
-                addBtn.style.cssFloat = "right";
-                addBtn.setAttribute("data-toggle", "tooltip");
-                addBtn.setAttribute("title", "Add an event at " + dateStr + "!");
-                addBtn.setAttribute("onclick", "addNewEvent(" + day + "," + (+this.month_now + 1) + "," + this.year_now + ")");
-                dates[i].appendChild(addBtn);
-
-                let detailBtn = document.createElement("code");
-                detailBtn.innerHTML = "&#10296;";
-                detailBtn.className = "btn btn-default btn-xs";
-                detailBtn.style.cssFloat = "right";
-                detailBtn.setAttribute("data-toggle", "tooltip");
-                detailBtn.setAttribute("title", "See events at " + dateStr + "!");
-                detailBtn.setAttribute("onclick", "detail(" + day + "," + (+this.month_now + 1) + "," + this.year_now + ")");
-                dates[i].appendChild(detailBtn);
 
                 let span = document.createElement("span");
                 span.innerHTML = day;
+
+                calendarData[i].text = day;
                 dates[i].appendChild(span);
-
-                let ul = document.createElement("ul");
-                ul.style.listStyle = "none";
-                ul.id = "date-list-" + day;
-                dates[i].appendChild(ul);
-
-
-
             }
-
         }
-
     }
 
     addNewEvent(day, month, year) {
@@ -470,6 +438,11 @@ class Timeline extends Component {
         for (let i = 0; i < dates.length; i++) {
             dates[i].innerHTML = "";
         }
+
+        for(let i=0;i<this.calendarData.length;i++){
+            this.calendarData[i].text  = "";
+        }
+
         timeLineConstant.month[1].day = 28 + (+this.year_now % 4 == 0 ? 1 : 0);
     }
 
@@ -501,7 +474,7 @@ class Timeline extends Component {
                 week_++;
             }
             if (isNow) {
-                this.setElementByAttr("week", week_, "day", day_, d);
+                this.setElementByAttr(week_, day_, d);
             }
             day_++;
         }
@@ -525,8 +498,25 @@ class Timeline extends Component {
 
         let selectedYear = this.state.inputYearValue;
 
+        let calendarData = this.calendarData.map(
+            data => {
+                let style = {};
+                if (data.now == true) {
+                    style = {
+                        backgroundColor: 'lightgreen'
+                    }
+                }
+
+                return (
+                    <div style={style}>
+                        {data.text}
+                    </div>
+                )
+            }
+        )
+
         return (
-            <div class="container">
+            <div className="container">
                 <h2>TimeLine {this.state.inputYearValue}</h2>
                 <div id="calendar-wrapper">
                     <table className="table" style={{
@@ -572,7 +562,9 @@ class Timeline extends Component {
                                 <th>Ahad</th>
                             </tr>
                         </thead>
+
                     </table>
+                    <GridComponent cols={7} items={calendarData} />
                 </div>
 
             </div>
