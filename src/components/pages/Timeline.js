@@ -22,6 +22,8 @@ class Timeline extends Component {
         }
 
         this.calendarData = [];
+        this.days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"];
+
 
         this.month_now = 7;// 0;
         //let this.begin = { week: 2, day: 1, dayCount: 31 };
@@ -29,8 +31,7 @@ class Timeline extends Component {
         this.begin_old = { week: 0, day: 0, dayCount: 0, info: "" };
         this.year_now = 1945;
         //let month_label = document.getElementById("month");
-        //let year_label = document.getElementById("year");
-        this.tabel = document.getElementById("calendarTable");
+        //let year_label = document.getElementById("year"); 
         this.input_month = document.getElementById("input_month");
         this.date_info = document.getElementById("date-info");
         this.running_month = 7;
@@ -89,7 +90,6 @@ class Timeline extends Component {
     }
 
     updateFields() {
-        this.tabel = document.getElementById("calendarTable");
         this.input_month = document.getElementById("input_month");
         this.date_info = document.getElementById("date-info");
     }
@@ -191,26 +191,10 @@ class Timeline extends Component {
     }
 
     detail(day, month, year) {
-        let filterDay = document.getElementById(this.filterDayId);
-        let filterMonth = document.getElementById(this.filterMonthId);
-        let filterYear = document.getElementById(this.dateFormId);
+        console.log("DETAIL: ",day, month, year);
 
-        console.log("DETAIL", day, month, year);
-        if (filterDay == null || filterMonth == null || filterYear == null) {
-            console.log("NULL", this.filterDayId, this.filterMonthId, this.dateFormId)
-            return;
-        }
-        filterDay.value = day;
-        filterMonth.value = month;
-        filterYear.value = year;
-
-        this.filterEntity(null, null, null);
-
-        this.loadList("externalRequest");
-        this.loadJSON();
     }
 
-    loadJSON() { }
 
     fillEventData(eventList) {
         let dateCells = document.getElementsByClassName("date_element");
@@ -357,24 +341,21 @@ class Timeline extends Component {
     }
 
     setElementByAttr(val, val2, day) {
-        let calendarData = this.calendarData;
-        for (let i = 0; i < calendarData.length; i++) {
-            let data = calendarData[i];
+        for (let i = 0; i < this.calendarData.length; i++) {
+            let data = this.calendarData[i];
 
-            let cek = data.week == val;
-            let cek2 = data.day == val2;
-            if (cek && cek2) {
+            if (data.week == val && data.day == val2) {
                 if (new Date().getDate() == day &&
                     new Date().getMonth() == this.month_now &&
                     new Date().getYear() + 1900 == this.year_now) {
 
                     console.log("NOW", i);
-                    calendarData[i].now = true;
+                    this.calendarData[i].now = true;
                 } else {
                     console.log("NOT NOW", i);
-                    calendarData[i].now = false;
+                    this.calendarData[i].now = false;
                 }
-                calendarData[i].text = day;
+                this.calendarData[i].text = day;
             }
         }
     }
@@ -461,10 +442,10 @@ class Timeline extends Component {
     }
 
     render() {
-        let days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"];
+
         let selectedYear = this.state.inputYearValue;
 
-        let totalCalendarData = days.map(day => {
+        let totalCalendarData = this.days.map(day => {
             return ({ text: day, title: true })
         })
 
@@ -479,28 +460,22 @@ class Timeline extends Component {
                     return <div></div>
                 }
 
-                let style = {
-                    width:'80%',
-                    height:'100px',
-                    marginBottom:'15px'
-
-                };
+                let style = { width: '80%', height: '100px', marginBottom: '15px' };
 
                 if (data.title == true) {
-                    return (
-                        <div>{data.text}</div>
-                    )
+                    return (<div>{data.text}</div>)
                 }
 
                 if (data.now == true) {
-                    style = { ...style,
+                    style = {
+                        ...style,
                         backgroundColor: 'lightgreen'
                     }
                 }
 
                 return (
-                    <Card style={style} title=
-                        {data.text}
+                    <Card style={style} title={data.text}
+                        onClick={()=>this.detail(data.text, this.state.selectedMonth, this.year_now)}
                     />
                 )
             }
