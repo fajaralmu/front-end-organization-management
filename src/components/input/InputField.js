@@ -9,14 +9,14 @@ import { _byId } from '../../utils/ComponentUtil'
 class InputField extends Component {
     constructor(props) {
         super(props);
-        this.handleKeyup = () => {
+        this.handleKeyup = (e) => {
             if (this.props.onKeyUp && this.props.id)
-                this.props.onKeyUp(_byId(this.props.id).value, this.props.id);
+                this.props.onKeyUp(e.target.value, this.props.id);
         }
 
-        this.onChange = () => {
+        this.onChange = (e) => {
             if (this.props.type == "date") {
-                this.handleKeyup();
+                this.handleKeyup(e);
             }
             if (this.props.id && this.props.type == "checkbox") {
                 this.props.onChange(this.props.id);
@@ -50,7 +50,7 @@ class InputField extends Component {
             placeholder={placeholder}
             checked={this.props.checked}
             onChange={this.onChange}
-
+           
         />;
 
         if (this.props.disabled == true) {
@@ -62,7 +62,7 @@ class InputField extends Component {
                 id={this.props.id}
                 type={type} onKeyUp={this.handleKeyup}
                 placeholder={placeholder}
-
+               
                 disabled />
         }
 

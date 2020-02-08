@@ -2,12 +2,23 @@ import React, { Component } from 'react'
 import '../../css/Common.css'
 import '../../css/Timeline.css'
 import * as timeLineConstant from '../../constant/TimelineConstant'
+import ActionButton from '../buttons/ActionButton';
+import ComboBox from '../input/ComboBox';
+import InputField from '../input/InputField'
+import { _byId } from '../../utils/ComponentUtil'
 
 
 
 class Timeline extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            selectedMonth: new Date().getMonth(),
+            inputYearValue: new Date().getFullYear(),
+            activeId: ""
+        }
+
         this.month_now = 7;// 0;
         //let this.begin = { week: 2, day: 1, dayCount: 31 };
         this.begin = { week: 1, day: 3, dayCount: 31, info: "" };
@@ -17,13 +28,20 @@ class Timeline extends Component {
         //let year_label = document.getElementById("year");
         this.tabel = document.getElementById("calendarTable");
         this.input_month = document.getElementById("input_month");
-        this.input_year = document.getElementById("input_year");
         this.date_info = document.getElementById("date-info");
         this.running_month = 7;
         this.running_year = 1945;
         this.filterDayId = 0;
         this.filterMonthId = 0; this.dateFormId = 0;
         this.entity_Name = 0; this.entity_Prop = 0; this.dateFormId = 0;
+
+
+        this.setSelectedMonth = (val) => {
+            this.setState({ selectedMonth: val })
+        }
+        this.changeInputYear = (val, id) => {
+            this.setState({ inputYearValue: val, activeId: id });
+        }
     }
 
     initEntity(entityName, propName, dateID) {
@@ -34,8 +52,16 @@ class Timeline extends Component {
 
     }
 
+
+
     componentDidUpdate() {
+
+        console.log("Yr: ", this.state.inputYearValue);
+
         this.updateFields();
+        if (_byId(this.state.activeId)) {
+            _byId(this.state.activeId).focus();
+        }
     }
 
     componentDidMount() {
@@ -54,7 +80,6 @@ class Timeline extends Component {
     updateFields() {
         this.tabel = document.getElementById("calendarTable");
         this.input_month = document.getElementById("input_month");
-        this.input_year = document.getElementById("input_year");
         this.date_info = document.getElementById("date-info");
     }
 
@@ -67,7 +92,7 @@ class Timeline extends Component {
         this.begin = this.fillDay(this.month_now, true, this.begin);
         this.fillInputMonth();
         this.input_month.value = new Date().getMonth() + 1;
-        this.input_year.value = new Date().getFullYear();
+        this.setState({ inputYearValue: new Date().getFullYear() });
         this.setCalendar();
 
         this.setState({ updated: new Date() })
@@ -75,14 +100,14 @@ class Timeline extends Component {
     }
 
     fillInputMonth() {
-        this.input_month.innerHTML = "";
-        for (let i = 0; i < timeLineConstant.month.length; i++) {
-            //  console.log("option ", i, this.input_month);
-            let opt = document.createElement("option");
-            opt.value = i + 1;
-            opt.innerHTML = timeLineConstant.month[i].name;
-            this.input_month.appendChild(opt);
-        }
+        // this.input_month.innerHTML = "";
+        // for (let i = 0; i < timeLineConstant.month.length; i++) {
+        //     //  console.log("option ", i, this.input_month);
+        //     let opt = document.createElement("option");
+        //     opt.value = i + 1;
+        //     opt.innerHTML = timeLineConstant.month[i].name;
+        //     this.input_month.appendChild(opt);
+        // }
     }
 
     createTable() {
@@ -115,7 +140,7 @@ class Timeline extends Component {
         console.log("==start==");
 
         this.running_month = this.input_month ? this.input_month.value - 1 : new Date().getMonth();
-        this.running_year = this.input_year ? this.input_year.value : new Date().getFullYear();
+        this.running_year = this.state.inputYearValue ? this.state.inputYearValue : new Date().getFullYear();
         let diff_year = +Math.abs(this.running_year - this.year_now);
         // alert("diff_year year:" + diff_year);
         let monthCount = 0;
@@ -184,6 +209,8 @@ class Timeline extends Component {
     fillInfo() {
         if (this.date_info)
             this.date_info.value = timeLineConstant.month[this.month_now].name + " " + this.year_now;
+        this.refresh();
+       
     }
 
     clearDateFilter() {
@@ -260,6 +287,7 @@ class Timeline extends Component {
     }
 
     prevMonth() {
+        this.setState({ activeId: "xx" })
         return this.doPrevMonth(false);
     }
 
@@ -295,11 +323,12 @@ class Timeline extends Component {
     }
 
     nextMonth() {
+        this.setState({ activeId: "xx" })
         return this.doNextMonth(false);
     }
 
-    refresh(){
-        this.setState({updated:new Date()})
+    refresh() { 
+        this.setState({ updated: new Date(), selectedMonth: this.month_now + 1, inputYearValue: this.year_now })
     }
 
     doNextMonth(next) {
@@ -494,38 +523,44 @@ class Timeline extends Component {
 
     render() {
 
+        let selectedYear = this.state.inputYearValue;
+
         return (
             <div class="container">
-                <h2>TimeLine</h2>
+                <h2>TimeLine {this.state.inputYearValue}</h2>
                 <div id="calendar-wrapper">
-                    <table className="table table-nonfluid" style={{
+                    <table className="table" style={{
                         tableLayout: "fixed",
-                        width: '40%', textAlign: "center"
+                        width: '70%', textAlign: "center"
                     }}>
                         <tr>
                             <td>
-                                <select id="input_month" className="form-control"></select>
+                                <ComboBox id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
+                                    options={timeLineConstant.month} />
                             </td>
                             <td>
-                                <input className="form-control" type="number" id="input_year" />
+                                <InputField type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />
+
                             </td>
                             <td>
-                                <button className="btn btn-default" id="prev" onClick={(e) => this.setCalendar()}>Go</button>
+                                <ActionButton onClick={(e) => this.setCalendar()} text={"Go"} />
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button className="btn" id="prev" onClick={(e) => this.doPrevMonth(true)}>&#10096;</button>
+                                <ActionButton onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />
                             </td>
                             <td>
-                                <input readonly className="form-control" id="date-info" />
+                                <input disabled className="form-control" id="date-info" />
                             </td>
                             <td>
-                                <button className="btn" id="next" onClick={(e) => this.doNextMonth(true)}>&#10097;</button>
+                                <ActionButton onClick={(e) => this.doNextMonth(true)} text={"Next"} />
                             </td>
                         </tr>
                     </table>
-                    <table className="table" id="calendarTable">
+                    <table className="table" id="calendarTable"
+                        style={{ width: '100%', tableLayout: 'fixed' }}
+                    >
                         <thead>
                             <tr>
                                 <th>Senin</th>
