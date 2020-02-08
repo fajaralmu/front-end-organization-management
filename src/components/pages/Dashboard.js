@@ -8,6 +8,7 @@ import * as actions from '../../redux/actionCreators'
 import Tab from '../buttons/Tab';
 import ContentTitle from '../layout/ContentTitle';
 import DashboardMain from './DashboardMain';
+import Timeline from './Timeline'
 
 class Dashboard extends Component {
 
@@ -17,8 +18,8 @@ class Dashboard extends Component {
             menu: "home"
         }
 
-        this.setFeatureCode = (code) => {
-            this.setState({ featureCode: code });
+        this.setMenuCode = (code) => {
+            this.setState({ menu: code });
         }
         this.validateLoginStatus = () => {
             if (this.props.loginStatus != true) this.props.history.push("/login");
@@ -46,11 +47,12 @@ class Dashboard extends Component {
             {
                 text: "Home",
                 active: this.state.menu == "home",
-                onClick: () => { }
+                onClick: () => {this.setMenuCode('home') }
             },
             {
                 text: "Time Line",
-                active: false
+                active: false,
+                onClick: () => {this.setMenuCode('timeline') }
             } 
         ];
     }
@@ -69,7 +71,9 @@ class Dashboard extends Component {
                     selectDivision={this.selectDivision} 
                     divisions={this.props.divisions} />
                 break;
-        
+            case "timeline":
+                    content = <Timeline />
+                break;
             default:
                 break;
         }
