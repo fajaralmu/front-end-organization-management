@@ -1,0 +1,66 @@
+﻿<html>
+<body>
+
+<div class="container">
+	<h2>TimeLine</h2>
+    <div id="calendar-wrapper">
+        <table class="table table-nonfluid" style="table-layout:fixed; width:40%; text-align:center">
+            <tr>
+                <td>
+                    <select id="input_month" class="form-control"></select>
+                </td>
+                <td>
+                    <input class="form-control" type="number" id="input_year" />
+                </td>
+                <td>
+                    <button class="btn btn-default" id="prev" onclick="setCalendar()">Go</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn" id="prev" onclick="doPrevMonth(true)">&#10096;</button>
+                </td>
+                <td>
+                    <input readonly class="form-control" id="date-info"/>
+                </td>
+                <td>
+                    <button class="btn" id="next" onclick="doNextMonth(true)">&#10097;</button>
+                </td>
+            </tr>
+        </table>
+        <table class="table" id="calendarTable">
+            <thead>
+                <tr>
+                    <th>
+                        Senin
+                    </th>
+                    <th>
+                        Selasa
+                    </th>
+                    <th>
+                        Rabu
+                    </th>
+                    <th>
+                        Kamis
+                    </th>
+                    <th>
+                        Jumat
+                    </th>
+                    <th>
+                        Sabtu
+                    </th>
+                    <th>
+                        Ahad
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+<script type="text/javascript" src="activity.js" ></script>
+<script type="text/javascript" >
+		loadCalendar();
+</script>
+</body>
+</html>

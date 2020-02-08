@@ -2,22 +2,21 @@
 import React, { Component } from 'react'; 
 import './App.css';
 
-import Header from './components/Header'
-import Menu from './components/Menu'
-import Home from './components/Home'
-import About from './components/About'
+import Header from './components/layout/Header'
+import Menu from './components/buttons/Menu'
+import Home from './components/pages/Home'
+import About from './components/pages/About'
 import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
 import * as actions from './redux/actionCreators'
-import { connect } from 'react-redux' 
-import Catalog from './components/Catalog'
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import { connect } from 'react-redux'  
+import Login from './components/pages/Login';
+import Dashboard from './components/pages/Dashboard';
 import * as menus from './constant/Menus'
 import Message from './components/Message';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 import SockJsClient from 'react-stomp';
-import ChatRoom from './components/ChatRoom';
-import Management from './components/Management'; 
+import ChatRoom from './components/pages/ChatRoom';
+import Management from './components/pages/Management'; 
 
 
 class App extends Component {
@@ -189,14 +188,7 @@ class App extends Component {
                 (renderProps) =>
                   <About setMenuCode={this.setMenuCode} />
               }></Route>
-              <Route exact path="/catalog" render={
-                (renderProps) =>
-                  <Catalog app={this}
-                    enableShopping={this.state.enableShopping}
-                    setMenuCode={this.setMenuCode}
-                    setDetailMode={this.setDetailMode} detailMode={this.state.detailMode} />
-
-              }></Route>
+               
                <Route exact path="/login" render={
                 (renderProps) => loginComponent
 
