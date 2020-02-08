@@ -51,7 +51,7 @@ class Dashboard extends Component {
             },
             {
                 text: "Time Line",
-                active: false,
+                active: this.state.menu == "timeline", 
                 onClick: () => {this.setMenuCode('timeline') }
             } 
         ];

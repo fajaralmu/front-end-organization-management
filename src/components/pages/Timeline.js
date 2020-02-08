@@ -7,6 +7,7 @@ import ComboBox from '../input/ComboBox';
 import InputField from '../input/InputField'
 import { _byId } from '../../utils/ComponentUtil'
 import GridComponent from '../layout/GridComponent';
+import Card from '../card/Card';
 
 
 
@@ -47,31 +48,14 @@ class Timeline extends Component {
         }
 
         this.createTable = () => {
-            //console.log("BUAT this.tabel");
-            let tBody = document.createElement("tbody");
+            //console.log("BUAT this.tabel"); 
             let calendarData = [];
             for (let r = 1; r <= 6; r++) {
-                let tr = document.createElement("tr");
-                // tr.setAttribute("week",r); 
                 for (let i = 1; i <= 7; i++) {
-                    let col = document.createElement("td");
-                    col.setAttribute("class", "date_element");
-                    col.setAttribute("day", +i);
-                    col.setAttribute("week", +r);
-                    col.style.wordWrap = "normal";
-                    tr.appendChild(col);
-                    //set state data
                     calendarData.push({ day: i, week: r });
                 }
-                tBody.appendChild(tr);
             }
-
             this.calendarData = calendarData;
-            this.tabel.className = "table table-bordered";
-            this.tabel.style.tableLayout = "fixed";
-            this.tabel.appendChild(tBody);
-
-
         }
     }
 
@@ -373,37 +357,24 @@ class Timeline extends Component {
     }
 
     setElementByAttr(val, val2, day) {
-        let dates = document.getElementsByClassName("date_element");
-
         let calendarData = this.calendarData;
-        
-        let a = 0;
         for (let i = 0; i < calendarData.length; i++) {
             let data = calendarData[i];
 
             let cek = data.week == val;
             let cek2 = data.day == val2;
             if (cek && cek2) {
+                if (new Date().getDate() == day &&
+                    new Date().getMonth() == this.month_now &&
+                    new Date().getYear() + 1900 == this.year_now) {
 
-                dates[i].innerHTML = "";
-                dates[i].id = "date-" + day;
-                if (new Date().getDate() == day && new Date().getMonth() == this.month_now && new Date().getYear() + 1900 == this.year_now) {
                     console.log("NOW", i);
-                    dates[i].setAttribute("style", "background-color:yellow");
-
                     calendarData[i].now = true;
                 } else {
-                    dates[i].setAttribute("style", "background-color:white");
                     console.log("NOT NOW", i);
-
                     calendarData[i].now = false;
                 }
-
-                let span = document.createElement("span");
-                span.innerHTML = day;
-
                 calendarData[i].text = day;
-                dates[i].appendChild(span);
             }
         }
     }
@@ -433,14 +404,9 @@ class Timeline extends Component {
     }
 
     clear() {
-        let dates = document.getElementsByClassName("date_element");
-        let a = 0;
-        for (let i = 0; i < dates.length; i++) {
-            dates[i].innerHTML = "";
-        }
 
-        for(let i=0;i<this.calendarData.length;i++){
-            this.calendarData[i].text  = "";
+        for (let i = 0; i < this.calendarData.length; i++) {
+            this.calendarData[i].text = "";
         }
 
         timeLineConstant.month[1].day = 28 + (+this.year_now % 4 == 0 ? 1 : 0);
@@ -495,22 +461,47 @@ class Timeline extends Component {
     }
 
     render() {
-
+        let days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"];
         let selectedYear = this.state.inputYearValue;
 
-        let calendarData = this.calendarData.map(
+        let totalCalendarData = days.map(day => {
+            return ({ text: day, title: true })
+        })
+
+        this.calendarData.forEach(element => {
+            totalCalendarData.push(element);
+        });
+
+        let calendarData = totalCalendarData.map(
             data => {
-                let style = {};
+
+                if (data.text == null || data.text == "") {
+                    return <div></div>
+                }
+
+                let style = {
+                    width:'80%',
+                    height:'100px',
+                    marginBottom:'15px'
+
+                };
+
+                if (data.title == true) {
+                    return (
+                        <div>{data.text}</div>
+                    )
+                }
+
                 if (data.now == true) {
-                    style = {
+                    style = { ...style,
                         backgroundColor: 'lightgreen'
                     }
                 }
 
                 return (
-                    <div style={style}>
+                    <Card style={style} title=
                         {data.text}
-                    </div>
+                    />
                 )
             }
         )
@@ -519,51 +510,22 @@ class Timeline extends Component {
             <div className="container">
                 <h2>TimeLine {this.state.inputYearValue}</h2>
                 <div id="calendar-wrapper">
-                    <table className="table" style={{
-                        tableLayout: "fixed",
-                        width: '70%', textAlign: "center"
-                    }}>
-                        <tr>
-                            <td>
-                                <ComboBox id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
-                                    options={timeLineConstant.month} />
-                            </td>
-                            <td>
-                                <InputField type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />
 
-                            </td>
-                            <td>
-                                <ActionButton onClick={(e) => this.setCalendar()} text={"Go"} />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <ActionButton onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />
-                            </td>
-                            <td>
-                                <input disabled className="form-control" id="date-info" />
-                            </td>
-                            <td>
-                                <ActionButton onClick={(e) => this.doNextMonth(true)} text={"Next"} />
-                            </td>
-                        </tr>
-                    </table>
-                    <table className="table" id="calendarTable"
-                        style={{ width: '100%', tableLayout: 'fixed' }}
-                    >
-                        <thead>
-                            <tr>
-                                <th>Senin</th>
-                                <th>Selasa</th>
-                                <th>Rabu</th>
-                                <th>Kamis</th>
-                                <th>Jumat</th>
-                                <th>Sabtu</th>
-                                <th>Ahad</th>
-                            </tr>
-                        </thead>
+                    <GridComponent cols={3} style={{
+                        textAlign: 'center', width: '400px'
+                    }} items={[
+                        <ComboBox id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
+                            options={timeLineConstant.month} />,
+                        <InputField type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />,
+                        <ActionButton onClick={(e) => this.setCalendar()} text={"Go"} />,
+                        <ActionButton onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />,
+                        <input disabled className="form-control" id="date-info" />,
+                        <ActionButton onClick={(e) => this.doNextMonth(true)} text={"Next"} />
+                    ]}
 
-                    </table>
+                    />
+                    <p></p>
+                    <p></p>
                     <GridComponent cols={7} items={calendarData} />
                 </div>
 

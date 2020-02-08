@@ -14,8 +14,9 @@ class GridComponent extends Component {
         const repeat = this.props.cols ? this.props.cols : items.length;
         const gridAutoColumns = width.repeat(repeat);
 
+       
         return (
-            <div style={{ ...this.props.style, display: 'grid', verticalAlign: 'middle', gridTemplateColumns: gridAutoColumns }} >
+            <div style={{ ...this.props.style, display: 'grid',   verticalAlign: 'middle', gridTemplateColumns: gridAutoColumns }} >
                 {items.map(item => {
                     return item;
                 })}
