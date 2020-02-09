@@ -92,6 +92,9 @@ class Timeline extends Component {
     }
 
     componentDidUpdate() {
+        if(!this.props.division){
+            return;
+        }
         console.log("CALENDAR ROW:", this.calendarData);
         this.updateFields();
         if (_byId(this.state.activeId)) {
@@ -100,7 +103,8 @@ class Timeline extends Component {
     }
 
     componentDidMount() {
-        this.loadCalendar();
+        if(this.props.division)
+            this.loadCalendar();
     }
 
     setDateElementId(dateID) {
@@ -425,6 +429,12 @@ class Timeline extends Component {
     }
 
     render() {
+
+
+        //validate division
+        if(this.props.division == null){
+            return <h2>Silakan Pilih Badan Pengurus MPI</h2>
+        }
 
         let selectedYear = this.state.inputYearValue;
 

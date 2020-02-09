@@ -73,6 +73,7 @@ export const reducer = (state = initState, action) => {
                 ...state,
                 loginStatus: action.payload.loginStatus,
                 menus: updatedMenus,
+                division:null,
                 loggedUser: null
             };
             localStorage.removeItem("loginKey");
