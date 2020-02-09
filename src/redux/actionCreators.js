@@ -1,5 +1,5 @@
 import * as types from './types'
-const hostCloud = "http://mpimedianet.freeasphost.net/Web/";
+const hostCloud = "/Web/";
 const hostLocal = "http://localhost:50084/Web/";
 const usedHost = hostLocal;
 const apiBaseUrl = usedHost + "Public.aspx/"
