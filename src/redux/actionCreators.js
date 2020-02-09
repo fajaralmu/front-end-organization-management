@@ -2,10 +2,10 @@ import * as types from './types'
 const hostCloud = "https://nuswantoroshop.herokuapp.com/";
 const hostLocal = "http://localhost:50084/Web/";
 const usedHost = hostLocal;
-const apiBaseUrl = usedHost + "AppId/"
-const apiEntityBaseUrl = usedHost + "Management/"
-const apiAccount = usedHost + "Account/"
-const apiAdmin = usedHost + "Admin/"
+const apiBaseUrl = usedHost + "AppId.aspx/"
+const apiEntityBaseUrl = usedHost + "Management.aspx/"
+const apiAccount = usedHost + "Account.aspx/"
+const apiAdmin = usedHost + "Admin.aspx/"
 const apiTransaction = usedHost + "api/transaction/";
 
 export const resetProductStocks = () => {

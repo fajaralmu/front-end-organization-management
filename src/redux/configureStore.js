@@ -28,13 +28,8 @@ export const configureStore = () => {
             refreshLoginStatusMiddleware,
             getDivisionsMiddleware,
 
-            //transaction
-            getStockInfoMiddleware,
-            submitPurchaseTransactionMiddleware,
-            submitSupplyTransactionMiddleware,
-            resetPurchaseTransactionMiddleware,
-            getCustomerListMiddleware,
-            getProductListTrxMiddleware,
+            //transaction  
+            resetPurchaseTransactionMiddleware,  
             selectDivisionMiddleware,
             getEventByDateMiddleware,
             resetProductsMiddleware,
@@ -72,6 +67,7 @@ const getEntitiesWithCallbackMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
+            data = JSON.parse(data.d);
             if (data.entities == null || data.entities.length == 0) {
                 alert("Data not found!");
                 return;
@@ -98,6 +94,7 @@ const updateEntityMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
+            data = JSON.parse(data.d);
             console.debug("Response updateEntityMiddleware:", data);
             if (data.code != "00") {
                 alert("Error Update Entity!");
@@ -124,6 +121,7 @@ const getEntityByIdMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
+            data = JSON.parse(data.d);
             console.debug("Response:", data);
             if (data.entities == null || data.entities.length == 0) {
                 alert("Data not found!");
@@ -148,6 +146,7 @@ const getEntityListMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
+            data = JSON.parse(data.d);
             console.debug("Response:", data);
             if (data.entities == null || data.entities.length == 0) {
                 data.entitie = [];
@@ -218,11 +217,8 @@ const removeManagedEntityMiddleware = store => next => action => {
 const requestAppIdMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.REQUEST_ID) { return next(action); }
 
-    let headers = commonAuthorizedHeader();
-    const loginKey = localStorage.getItem("loginKey");
-    if (loginKey) {
-        headers['loginKey'] = loginKey;
-    }
+    let headers ={'requestId': localStorage.getItem("requestId")}
+     
 
     fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
@@ -293,6 +289,9 @@ const getEventByDateMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
+
+            data = JSON.parse(data.d);
+
             if (data.code != "00") {
                 alert("Server error");
                 return;
@@ -312,6 +311,9 @@ const selectDivisionMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
+
+            data = JSON.parse(data.d);
+
             console.debug("selectDivisionMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Server error");
@@ -332,6 +334,9 @@ const getDivisionsMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
+
+            data = JSON.parse(data.d);
+
             console.debug("getDivisionsMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Server error");
@@ -552,6 +557,8 @@ const performLogoutMiddleware = store => next => action => {
     })
         .then(response => { return Promise.all([response.json(), response]); })
         .then(([responseJson, response]) => {
+            responseJson = JSON.parse(responseJson.d);
+
             let logoutSuccess = false;
             if (responseJson.code == "00") {
                 logoutSuccess = true;
@@ -581,6 +588,8 @@ const performLoginMiddleware = store => next => action => {
         .then(response => { return Promise.all([response.json(), response]); })
         .then(([responseJson, response]) => {
 
+            responseJson = JSON.parse(responseJson.d);
+
             let loginKey = "";
             let loginSuccess = false;
 
@@ -591,10 +600,13 @@ const performLoginMiddleware = store => next => action => {
                         break;
                     }
                 }
-                console.log("loginKey: ", loginKey);
+               
                 loginSuccess = true;
 
             }
+
+            console.log("LOGIN SUCCESS: ",loginSuccess);
+
             let newAction = Object.assign({}, action, {
                 payload: {
                     loginStatus: loginSuccess,

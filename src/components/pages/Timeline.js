@@ -524,11 +524,17 @@ class Timeline extends Component {
                     detailEvents.push(eventCard);
                 });
 
+            if(detailEvents.length == 0){
+                detailEvents = [
+                    <div>No Agenda.</div>
+                ]
+            }
+            
             content = <div className="detail-timeline">
                 <h2>Detail View Day: {this.state.selectedDay}</h2>
                 <div>
                     <ActionButton onClick={() => { this.setState({ detailView: false }) }} text="Back" />
-                    <GridComponent cols={3} items={detailEvents} />
+                    <GridComponent cols={4} items={detailEvents} />
                 </div>
             </div>
         }

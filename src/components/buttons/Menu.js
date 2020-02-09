@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import '../../css/Menu.css'
 import '../../css/Common.css'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-
+const logoUrl = "http://localhost:50084/Asset/Images/transparent.png";
 class Menu extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +26,14 @@ class Menu extends Component {
             </li>
         }
 
-        let renderedMenus = [];
+        let appIcon = <li><img src={logoUrl} style={{ width: '90%' }} /></li>;
+
+        let renderedMenus = [{
+            icon: true,
+            url: logoUrl
+        }];
+
+
         if (this.props.menus != null) {
             renderedMenus = this.props.menus;
         }
@@ -35,6 +42,7 @@ class Menu extends Component {
 
             <div className="side-menu" >
                 < ul className="menu-ul " >
+                    {appIcon}
                     {userLink}
                     {
                         renderedMenus.map(

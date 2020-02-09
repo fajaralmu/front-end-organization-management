@@ -12,7 +12,7 @@ class Footer extends Component{
 
         return (
             <div className="App-footer">
-               Somabangsa {date+" powered by React Js "+React.version}
+               BPP MPI Divisi Media {date+" powered by React Js "+React.version}
             </div>
         )
     }

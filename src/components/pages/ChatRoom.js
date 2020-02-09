@@ -60,31 +60,32 @@ class ChatRoom extends Component {
         let localHost = "http://localhost:8080/universal-good-shop/";
         const usedHost = localHost;
         return (
-            <div className="section-container">
-                <ContentTitle title="What Do You Feel?" description=
-                    {"Identified as [" + this.state.username + "]"} />
-                <InputField
-                    value={userAlias}
-                    onKeyUp={this.changeUsername}
-                    id="input-username"
-                    placeholder="identify your name" />
-                <div style={{ textAlign: 'left' }} id="chat-room">
+            // <div className="section-container">
+            //     <ContentTitle title="What Do You Feel?" description=
+            //         {"Identified as [" + this.state.username + "]"} />
+            //     <InputField
+            //         value={userAlias}
+            //         onKeyUp={this.changeUsername}
+            //         id="input-username"
+            //         placeholder="identify your name" />
+            //     <div style={{ textAlign: 'left' }} id="chat-room">
 
-                    <div className="chat-container"  >
-                        <ChatList username={this.state.username} messages={this.props.messages} />
-                    </div>
+            //         <div className="chat-container"  >
+            //             <ChatList username={this.state.username} messages={this.props.messages} />
+            //         </div>
 
-                    <GridComponent style={{ width: '50%', textAlign: 'right' }} items={[
-                        <InputField style={{ width: '130%' }} type="textarea" placeholder="input message" id="input-msg" />,
-                        <ActionButton style={{ margin: '5px' }} status="success" onClick={this.sendChatMessage} text="send" />
+            //         <GridComponent style={{ width: '50%', textAlign: 'right' }} items={[
+            //             <InputField style={{ width: '130%' }} type="textarea" placeholder="input message" id="input-msg" />,
+            //             <ActionButton style={{ margin: '5px' }} status="success" onClick={this.sendChatMessage} text="send" />
 
-                    ]} />
+            //         ]} />
 
-                    <SockJsClient url={usedHost+'shop-app'} topics={['/wsResp/messages']}
-                        onMessage={(msg) => { this.handleMessage(msg) }}
-                        ref={(client) => { this.clientRef = client }} />
-                </div>
-            </div>
+            //         <SockJsClient url={usedHost+'shop-app'} topics={['/wsResp/messages']}
+            //             onMessage={(msg) => { this.handleMessage(msg) }}
+            //             ref={(client) => { this.clientRef = client }} />
+            //     </div>
+            // </div>
+            <ContentTitle title="under construction" />
         )
     }
 }
