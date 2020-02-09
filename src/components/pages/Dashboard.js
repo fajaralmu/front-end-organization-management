@@ -72,7 +72,7 @@ class Dashboard extends Component {
                     divisions={this.props.divisions} />
                 break;
             case "timeline":
-                    content = <Timeline />
+                    content = <Timeline app={this.props.app} />
                 break;
             default:
                 break;

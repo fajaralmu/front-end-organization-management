@@ -34,9 +34,9 @@ export const configureStore = () => {
             submitSupplyTransactionMiddleware,
             resetPurchaseTransactionMiddleware,
             getCustomerListMiddleware,
-            getProductListTrxMiddleware, 
+            getProductListTrxMiddleware,
             selectDivisionMiddleware,
-            getProductSalesMiddleware,
+            getEventByDateMiddleware,
             resetProductsMiddleware,
             resetSuppliersMiddleware,
             resetCustomersMiddleware,
@@ -253,7 +253,7 @@ const getProductStocksMiddleware = store => next => action => {
         }
     }).then(response => response.json())
         .then(data => {
-            console.debug("getProductSalesMiddleware Response:", data, "load more:", action.meta.loadMore);
+            console.debug("getEventByDateMiddleware Response:", data, "load more:", action.meta.loadMore);
             if (data.code != "00") {
                 alert("Data not found");
                 return;
@@ -286,24 +286,23 @@ const getProductSalesDetailMiddleware = store => next => action => {
         .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
 }
 
-const getProductSalesMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_PRODUCT_SALES) { return next(action); }
+const getEventByDateMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.GET_EVENTS_BY_DATE) { return next(action); }
     fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
-            console.debug("getProductSalesMiddleware Response:", data, "load more:", action.meta.loadMore);
             if (data.code != "00") {
                 alert("Server error");
                 return;
             }
 
-            let newAction = Object.assign({}, action, { payload: data, loadMore: action.meta.loadMore, referrer: action.meta.referrer });
+            let newAction = Object.assign({}, action, { payload: data });
             delete newAction.meta;
             store.dispatch(newAction);
         })
-        .catch(err => console.log(err)).finally(param => action.meta.referrer.props.app.endLoading());
+        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
 }
 
 const selectDivisionMiddleware = store => next => action => {
@@ -339,10 +338,10 @@ const getDivisionsMiddleware = store => next => action => {
                 return;
             }
 
-            if (data.divisions == null  )  { 
+            if (data.divisions == null) {
                 return;
             }
- 
+
             let newAction = Object.assign({}, action, { payload: data });
             delete newAction.meta;
             store.dispatch(newAction);
@@ -602,7 +601,7 @@ const performLoginMiddleware = store => next => action => {
                     loginKey: loginKey,
                     loggedUser: responseJson.user,
                     divisions: responseJson.divisions,
-                    division: responseJson.sessionData?responseJson.sessionData.division:null
+                    division: responseJson.sessionData ? responseJson.sessionData.division : null
                 }
             });
             delete newAction.meta;

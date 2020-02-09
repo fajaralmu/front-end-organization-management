@@ -5,7 +5,7 @@ const usedHost = hostLocal;
 const apiBaseUrl = usedHost + "AppId/"
 const apiEntityBaseUrl = usedHost + "Management/"
 const apiAccount = usedHost + "Account/"
-const apiAdmin = usedHost + "api/admin/"
+const apiAdmin = usedHost + "Admin/"
 const apiTransaction = usedHost + "api/transaction/";
 
 export const resetProductStocks = () => {
@@ -205,30 +205,27 @@ export const getProductSalesDetail = (request, app) => {
     };
 }
 
-export const getProductSales = (request) => {
-    request.referrer.props.app.startLoading( );
+export const getEventByDate = (month, year, app) => {
+    app.startLoading();
     return {
-        type: types.GET_PRODUCT_SALES,
-        payload: {
-            product: { name: request.productName },
-            filter:
-                { page: request.page, limit: 10, month: request.fromMonth, year: request.fromYear, monthTo: request.toMonth, yearTo: request.toYear }
-        },
+        type: types.GET_EVENTS_BY_DATE,
+        payload: { year: year, month: month },
         meta: {
-            referrer: request.referrer, type: types.GET_PRODUCT_SALES, loadMore: request.loadMore == true, url: apiTransaction.concat("productsales")
+            app: app, type: types.GET_EVENTS_BY_DATE,
+            url: apiAdmin.concat("Event")
         }
     };
 }
 export const selectDivision = (id, app) => {
-    app.startLoading( );
+    app.startLoading();
     return {
         type: types.SELECT_DIVISION,
-        payload: { divisionId:id },
+        payload: { divisionId: id },
         meta: {
             app: app, type: types.SELECT_DIVISION, url: apiAccount.concat("SetDivision")
         }
     };
-} 
+}
 
 export const getProductListTrx = (name, app) => {
     app.startLoading();
@@ -325,23 +322,23 @@ export const performLogin = (username, password, app) => {
     return loginRequest;
 }
 
-export const refreshLoginStatus = ( ) => {
-   
+export const refreshLoginStatus = () => {
+
     let loginRequest = {
         type: types.REFRESH_LOGIN,
-        payload: { },
-        meta: { type: types.REFRESH_LOGIN  }
+        payload: {},
+        meta: { type: types.REFRESH_LOGIN }
     };
     return loginRequest;
 }
 
 //ok
-export const getDivisons = (  app) => {
+export const getDivisons = (app) => {
     app.startLoading();
     let loginRequest = {
         type: types.GET_DIVISIONS,
         payload: {
-             
+
         },
         meta: { type: types.GET_DIVISIONS, url: apiAccount.concat("Divisions"), app: app }
     };

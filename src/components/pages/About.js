@@ -30,9 +30,9 @@ class About extends Component {
                 }}>
                     <InstantTable
                         rows={[
-                            { values: ["Name", "Universal Good Shop"] },
+                            { values: ["Name", "Organization Management Admin"] },
                             { values: ["Version", "1.0.0"] },
-                            { values: ["Description", "Friendly shopping mart application"] },
+                            { values: ["Description", "managing your organization activities effectively"] },
 
 
                         ]} />

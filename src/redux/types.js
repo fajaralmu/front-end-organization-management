@@ -14,7 +14,8 @@ export const FETCH_CUSTOMER_LIST = "fetch_cust_list";
 export const FETCH_PRODUCT_LIST_TRX = "fetch_product_list";
 export const GET_DIVISIONS = "GET_DIVISIONS";
 export const SELECT_DIVISION = "SET_DIVISION";
-export const GET_PRODUCT_SALES = "get_product_sales";
+export const GET_EVENTS_BY_DATE = "GET_EVENTS_BY_DATE";
+
 export const RESET_SUPPLIERS = "reset_suppliers";
 export const RESET_PRODUCTS = "reset_products";
 export const RESET_PRODUCT_STOCKS = "RESET_PRODUCT_STOCKS";

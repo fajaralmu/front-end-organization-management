@@ -5,7 +5,8 @@ export const initState = {
     entitiesData: {
         entityConfig: null,
     },
-    managedEntity: null
+    managedEntity: null,
+    events: []
 
 };
 
@@ -23,6 +24,10 @@ export const reducer = (state = initState, action) => {
         case types.REMOVE_MANAGED_ENTITY:
 
             return { ...state, managedEntity: null };
+        case types.GET_EVENTS_BY_DATE:
+            
+            if (action.payload.entities)
+                return { ...state, events: action.payload.entities };
         default:
             return state;
     }

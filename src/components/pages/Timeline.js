@@ -8,8 +8,9 @@ import InputField from '../input/InputField'
 import { _byId } from '../../utils/ComponentUtil'
 import GridComponent from '../layout/GridComponent';
 import Card from '../card/Card';
-
-
+import { withRouter } from 'react-router';
+import * as actions from '../../redux/actionCreators'
+import { connect } from 'react-redux'
 
 class Timeline extends Component {
     constructor(props) {
@@ -57,6 +58,25 @@ class Timeline extends Component {
                 }
             }
             this.calendarData = calendarData;
+        }
+
+        this.getEventByDate = (month, year) => {
+
+            this.props.getEventByDate(month, year, this.props.app);
+        }
+
+        this.getEventDetail = (day) => {
+            let events = this.props.events;
+            let result = [];
+
+            events.forEach(event => {
+                let date = new Date(event.date);
+                if (date.getDate() == day) {
+                    result.push(event);
+                }
+            });
+
+            return result;
         }
     }
 
@@ -187,57 +207,11 @@ class Timeline extends Component {
     }
 
     clearDateFilter() {
-        this.detail("", "", "");
+        // this.detail("", "", "");
     }
 
     detail(day, month, year) {
-        console.log("DETAIL: ",day, month, year);
-
-    }
-
-
-    fillEventData(eventList) {
-        let dateCells = document.getElementsByClassName("date_element");
-        for (let i = 0; i <= 31; i++) {
-            if (document.getElementById("date-list-" + i) != null)
-                document.getElementById("date-list-" + i).innerHTML = "";
-        }
-
-        for (let i = 0; i < eventList.length; i++) {
-
-            let event = eventList[i];
-            var evDate = event.date.replace('/', '').replace("Date", "").replace('(', '').replace(')', '').replace('/', '');
-            let day = +(evDate) / (24 * 60 * 60 * 1000);
-            let date = new Date(+evDate);
-            let dateCell = document.getElementById("date-list-" + date.getDate());
-
-            if (dateCell.getElementsByTagName("li") != null && dateCell.getElementsByTagName("li").length >= 3) {
-                console.log("more than 3");
-                console.log("-");
-                if (dateCell.getElementsByTagName("code").length == 0) {
-                    let info = document.createElement("code");
-                    info.innerHTML = "click details <br/>to see more";
-                    dateCell.appendChild(info);
-                }
-                continue;
-            }
-            //  console.log("ID: ", "date-list-" + date.getDate(), date)
-            //console.log("-");
-            let li = document.createElement("li");
-            li.className = "li-custom li-uncheck";
-            let evtName = document.createElement("span");
-            evtName.innerHTML = event[this.entity_Prop];
-            evtName.className = "text-wrap";
-            evtName.style.fontFamily = "Calibri";
-            //  evtName.style.color = "black";
-
-            if (event.done == 1 || event.done == "1") {
-                li.className = "li-custom li-checked";
-            }
-            li.appendChild(evtName);
-
-            dateCell.appendChild(li);
-        }
+        console.log("DETAIL: ", day, month, year);
     }
 
     prevMonth() {
@@ -435,9 +409,13 @@ class Timeline extends Component {
         if (isNow) {
             this.detail(null, (+this.running_month + 1), this.running_year);
             begin_new.info = "NOW";
+            this.getEventByDate(this.running_month + 1, this.running_year);
         } else {
             begin_new.info = "SOME-DAY";
         }
+
+
+
         return begin_new;
     }
 
@@ -473,9 +451,24 @@ class Timeline extends Component {
                     }
                 }
 
+                let events = this.getEventDetail(+data.text);
+                let i = 0;
+                let eventList = events.map(event => { 
+                    if (i <= 5) {
+                        i++;
+                        return <p key={"EVT_" + i}>{event.name}</p>
+                    }else{
+                        return null;
+                    }
+
+                   
+                });
+                console.log(data.text, "EVENTS: ", events);
+
                 return (
                     <Card style={style} title={data.text}
-                        onClick={()=>this.detail(data.text, this.state.selectedMonth, this.year_now)}
+                        onClick={() => this.detail(data.text, this.state.selectedMonth, this.year_now)}
+                        content={eventList}
                     />
                 )
             }
@@ -508,5 +501,17 @@ class Timeline extends Component {
         );
     }
 }
+const mapStateToProps = state => {
+    //console.log(state);
+    return {
+        events: state.managementState.events,
+    }
+}
 
-export default Timeline;
+const mapDispatchToProps = dispatch => ({
+    getEventByDate: (m, y, app) => dispatch(actions.getEventByDate(m, y, app)),
+})
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Timeline)) 
