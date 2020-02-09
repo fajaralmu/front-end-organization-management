@@ -6,7 +6,7 @@ import Header from './components/layout/Header'
 import Menu from './components/buttons/Menu'
 import Home from './components/pages/Home'
 import About from './components/pages/About'
-import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
+import {  Route, Link, Switch, withRouter } from 'react-router-dom'
 import * as actions from './redux/actionCreators'
 import { connect } from 'react-redux'  
 import Login from './components/pages/Login';
