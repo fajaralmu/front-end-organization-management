@@ -1,8 +1,8 @@
 import * as types from './types'
-const hostCloud = "https://nuswantoroshop.herokuapp.com/";
+const hostCloud = "http://mpimedianet.freeasphost.net/Web/";
 const hostLocal = "http://localhost:50084/Web/";
 const usedHost = hostLocal;
-const apiBaseUrl = usedHost + "AppId.aspx/"
+const apiBaseUrl = usedHost + "Public.aspx/"
 const apiEntityBaseUrl = usedHost + "Management.aspx/"
 const apiAccount = usedHost + "Account.aspx/"
 const apiAdmin = usedHost + "Admin.aspx/"
@@ -143,7 +143,7 @@ export const requestAppId = (app) => {
         payload: {},
         meta: {
             app: app, type: types.REQUEST_ID,
-            url: apiBaseUrl.concat("Generate")
+            url: apiBaseUrl.concat("GenerateAppId")
         }
     };
 }

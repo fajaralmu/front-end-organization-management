@@ -217,14 +217,14 @@ const removeManagedEntityMiddleware = store => next => action => {
 const requestAppIdMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.REQUEST_ID) { return next(action); }
 
-    let headers ={'requestId': localStorage.getItem("requestId")}
-     
+    let headers = commonAuthorizedHeader(); 
 
     fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: headers
     }).then(response => response.json())
         .then(data => {
+            data = JSON.parse(data.d);
             console.debug("requestAppIdMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Error requesting app ID");
