@@ -19,7 +19,10 @@ class Timeline extends Component {
         this.state = {
             selectedMonth: new Date().getMonth(),
             inputYearValue: new Date().getFullYear(),
-            activeId: ""
+            activeId: "",
+            detailView: false,
+            detailEvents: [],
+            selectedDay: 0
         }
 
         this.calendarData = [];
@@ -212,6 +215,8 @@ class Timeline extends Component {
 
     detail(day, month, year) {
         console.log("DETAIL: ", day, month, year);
+        let events = this.getEventDetail(+day);
+        this.setState({ detailView: true, detailEvents: events, selectedDay: day })
     }
 
     prevMonth() {
@@ -407,7 +412,7 @@ class Timeline extends Component {
         //console.log("new", begin_new.day, begin_new.week);
         this.fillInfo();
         if (isNow) {
-            this.detail(null, (+this.running_month + 1), this.running_year);
+            // this.detail(null, (+this.running_month + 1), this.running_year);
             begin_new.info = "NOW";
             this.getEventByDate(this.running_month + 1, this.running_year);
         } else {
@@ -438,7 +443,7 @@ class Timeline extends Component {
                     return <div></div>
                 }
 
-                let style = { width: '80%', height: '100px', marginBottom: '15px' };
+                let style = { width: '80%', minHeight: '150px', marginBottom: '15px' };
 
                 if (data.title == true) {
                     return (<div>{data.text}</div>)
@@ -453,15 +458,18 @@ class Timeline extends Component {
 
                 let events = this.getEventDetail(+data.text);
                 let i = 0;
-                let eventList = events.map(event => { 
-                    if (i <= 5) {
-                        i++;
+                let eventList = events.map(event => {
+                    i++;
+                    if (i <= 3) {
+                        
                         return <p key={"EVT_" + i}>{event.name}</p>
-                    }else{
+                    } else if (i == 4) {
+                        return <ActionButton onClick={() => { }} text={"detail " + i} />
+                    } else {
                         return null;
                     }
 
-                   
+
                 });
                 console.log(data.text, "EVENTS: ", events);
 
@@ -474,28 +482,61 @@ class Timeline extends Component {
             }
         )
 
+
+        let content = null;
+
+        if (this.state.detailView == false) {
+            content = <div id="calendar-wrapper">
+
+                <GridComponent cols={3} style={{
+                    textAlign: 'center', width: '400px'
+                }} items={[
+                    <ComboBox id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
+                        options={timeLineConstant.month} />,
+                    <InputField type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />,
+                    <ActionButton onClick={(e) => this.setCalendar()} text={"Go"} />,
+                    <ActionButton onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />,
+                    <input disabled className="form-control" id="date-info" />,
+                    <ActionButton onClick={(e) => this.doNextMonth(true)} text={"Next"} />
+                ]}
+
+                />
+                <p></p>
+                <p></p>
+                <GridComponent cols={7} items={calendarData} />
+            </div>;
+        } else {
+            let detailEvents = [];
+            if (this.state.detailEvents)
+                this.state.detailEvents.forEach(event => {
+
+                    let content = <div>
+                        <p>{"Date:" + event.date}</p>
+                        <p>{"Info:" + event.info}</p>
+                        <p>{"Participant:" + event.participant}</p>
+                        <p>{"Location:" + event.location}</p>
+                        <p>{"Status:" + (event.done ? "done" : "not done")}</p>
+                    </div>
+
+                    let eventCard = <Card title={event.name}
+                        content={content}
+                    />
+                    detailEvents.push(eventCard);
+                });
+
+            content = <div className="detail-timeline">
+                <h2>Detail View Day: {this.state.selectedDay}</h2>
+                <div>
+                    <ActionButton onClick={() => { this.setState({ detailView: false }) }} text="Back" />
+                    <GridComponent cols={3} items={detailEvents} />
+                </div>
+            </div>
+        }
+
         return (
             <div className="container">
-                <h2>TimeLine {this.state.inputYearValue}</h2>
-                <div id="calendar-wrapper">
-
-                    <GridComponent cols={3} style={{
-                        textAlign: 'center', width: '400px'
-                    }} items={[
-                        <ComboBox id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
-                            options={timeLineConstant.month} />,
-                        <InputField type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />,
-                        <ActionButton onClick={(e) => this.setCalendar()} text={"Go"} />,
-                        <ActionButton onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />,
-                        <input disabled className="form-control" id="date-info" />,
-                        <ActionButton onClick={(e) => this.doNextMonth(true)} text={"Next"} />
-                    ]}
-
-                    />
-                    <p></p>
-                    <p></p>
-                    <GridComponent cols={7} items={calendarData} />
-                </div>
+                <h2>TimeLine {this.props.division.name +" "+ this.state.inputYearValue}</h2>
+                {content}
 
             </div>
         );
@@ -505,6 +546,7 @@ const mapStateToProps = state => {
     //console.log(state);
     return {
         events: state.managementState.events,
+        division: state.userState.division
     }
 }
 
