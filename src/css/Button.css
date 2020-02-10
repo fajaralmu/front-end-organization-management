@@ -34,3 +34,38 @@ button{
 
 .submit{  background-color:  royalblue; color: white}
 .submit:hover{  background-color:  royalblue; }
+
+
+
+/*===============TOGGLE===================*/
+.toggle-outer{
+    width:24px;
+    background-color: blue;
+    height: 14px;
+    border-radius: 7px;
+    margin-right:5px;
+     
+    transition-duration: 200ms;
+}
+.toggle-outer:hover{
+    cursor: pointer;
+}
+
+.outer-inactive{
+    background-color: gray;
+}
+
+.toggle-inner{
+    width:12px;
+    height: 12px;
+    border-radius: 6px;
+    margin-top:1px;
+    margin-left:1px;
+    transition-duration: 200ms;
+    background-color: white;
+   
+}
+
+.inner-inactive{
+    margin-left:11px;
+}

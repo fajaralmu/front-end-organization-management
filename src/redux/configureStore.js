@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { initialState, rootReducer } from './reducers'
 import * as actionCreator from './actionCreators';
 import * as types from './types';
+import * as config from '../utils/WebConfig'
 
 const commonAuthorizedHeader = () => {
     return {
@@ -67,7 +68,8 @@ const getEntitiesWithCallbackMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
             if (data.entities == null || data.entities.length == 0) {
                 alert("Data not found!");
                 return;
@@ -94,7 +96,8 @@ const updateEntityMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
             console.debug("Response updateEntityMiddleware:", data);
             if (data.code != "00") {
                 alert("Error Update Entity!");
@@ -121,7 +124,8 @@ const getEntityByIdMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
             console.debug("Response:", data);
             if (data.entities == null || data.entities.length == 0) {
                 alert("Data not found!");
@@ -146,7 +150,8 @@ const getEntityListMiddleware = store => next => action => {
     })
         .then(response => response.json())
         .then(data => {
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
             console.debug("Response:", data);
             if (data.entities == null || data.entities.length == 0) {
                 data.entitie = [];
@@ -224,8 +229,12 @@ const requestAppIdMiddleware = store => next => action => {
         headers: headers
     }).then(response => response.json())
         .then(data => {
-            data = JSON.parse(data.d);
-            console.debug("requestAppIdMiddleware Response:", data);
+            if(config.debugMode() == true){
+                data = JSON.parse(data.d);
+            }
+
+            
+            console.debug(config.debugMode(),"requestAppIdMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Error requesting app ID");
                 return;
@@ -289,8 +298,8 @@ const getEventByDateMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
-
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
 
             if (data.code != "00") {
                 alert("Server error");
@@ -311,8 +320,8 @@ const selectDivisionMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
-
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
 
             console.debug("selectDivisionMiddleware Response:", data);
             if (data.code != "00") {
@@ -334,8 +343,8 @@ const getDivisionsMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }).then(response => response.json())
         .then(data => {
-
-            data = JSON.parse(data.d);
+            if(config.debugMode() == true)
+                data = JSON.parse(data.d);
 
             console.debug("getDivisionsMiddleware Response:", data);
             if (data.code != "00") {
@@ -557,7 +566,8 @@ const performLogoutMiddleware = store => next => action => {
     })
         .then(response => { return Promise.all([response.json(), response]); })
         .then(([responseJson, response]) => {
-            responseJson = JSON.parse(responseJson.d);
+            if(config.debugMode() == true)
+                responseJson = JSON.parse(responseJson.d);
 
             let logoutSuccess = false;
             if (responseJson.code == "00") {
@@ -587,8 +597,8 @@ const performLoginMiddleware = store => next => action => {
     })
         .then(response => { return Promise.all([response.json(), response]); })
         .then(([responseJson, response]) => {
-
-            responseJson = JSON.parse(responseJson.d);
+            if(config.debugMode() == true)
+                 responseJson = JSON.parse(responseJson.d);
 
             let loginKey = "";
             let loginSuccess = false;

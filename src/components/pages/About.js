@@ -5,8 +5,10 @@ import * as menus from '../../constant/Menus'
 import InstantTable from '../layout/InstantTable'
 import * as url from '../../constant/Url'
 import '../../css/Common.css'
-import ContentTitle from '../layout/ContentTitle'
-const logoUrl = "http://localhost:50084/Asset/Images/asp.png";
+import ContentTitle from '../layout/ContentTitle' 
+
+const logoUrl = url.baseImageUrl + "/Asset/Images/asp.png";
+
 class About extends Component {
 
     constructor(props) {
@@ -39,7 +41,7 @@ class About extends Component {
                     <h2>Powered By</h2>
                     <img style={{ width: '50%' }} src={logoUrl} />
                 </div></div>
- 
+
         )
     }
 }

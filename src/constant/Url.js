@@ -1,2 +1,6 @@
-export const baseImageUrl ="http://localhost:8080//universal-good-shop/WebAsset/Shop1/Images/";
-export const baseResUrl ="http://localhost:8080//universal-good-shop/res/img/";
+import * as config from '../utils/WebConfig'
+
+export const hostLocal ="http://localhost:50084";
+export const hostCloud = "";
+export const baseImageUrl = config.debugMode()==true?hostLocal:hostCloud;
+ 

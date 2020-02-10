@@ -1,12 +1,19 @@
 import * as types from './types'
+import * as config from '../utils/WebConfig'
+
 const hostCloud = "/Web/";
 const hostLocal = "http://localhost:50084/Web/";
-const usedHost = hostLocal;
-const apiBaseUrl = usedHost + "Public.aspx/"
-const apiEntityBaseUrl = usedHost + "Management.aspx/"
-const apiAccount = usedHost + "Account.aspx/"
-const apiAdmin = usedHost + "Admin.aspx/"
-const apiTransaction = usedHost + "api/transaction/";
+const usedHost = () => {
+    if (config.debugMode() == true)
+        return hostLocal;
+    else
+        return hostCloud;
+} 
+const apiBaseUrl  = () => usedHost() + "Public.aspx/"
+const apiEntityBaseUrl  = () => usedHost() + "Management.aspx/"
+const apiAccount = () => usedHost() + "Account.aspx/"
+const apiAdmin = () => usedHost() + "Admin.aspx/"
+const apiTransaction = usedHost() + "api/transaction/";
 
 export const resetProductStocks = () => {
     return { type: types.RESET_PRODUCT_STOCKS, payload: {}, meta: { type: types.RESET_PRODUCT_STOCKS } };
@@ -43,7 +50,7 @@ export const updateEntity = (request, referer, callback) => {
         },
         meta: {
             type: types.UPDATE_ENTITY,
-            url: request.isNewRecord ? apiEntityBaseUrl.concat("Add") : apiEntityBaseUrl.concat("Update"),
+            url: request.isNewRecord ? apiEntityBaseUrl().concat("Add") : apiEntityBaseUrl().concat("Update"),
             app: referer.props.app,
             callback: callback,
             referer: referer
@@ -66,7 +73,7 @@ export const getEntitiesWithCallback = (request, referer, callback) => {
         },
         meta: {
             type: types.GET_ENTITY_WITH_CALLBACK,
-            url: apiEntityBaseUrl.concat("Get"),
+            url: apiEntityBaseUrl().concat("Get"),
             app: referer.props.app,
             referer: referer,
             callback: callback
@@ -92,7 +99,7 @@ export const getEntityById = (name, id, app) => {
         },
         meta: {
             type: types.GET_ENTITY_BY_ID,
-            url: apiEntityBaseUrl.concat("Get"),
+            url: apiEntityBaseUrl().concat("Get"),
             app: app
         }
     };
@@ -116,7 +123,7 @@ export const getEntityList = (request, app) => {
         },
         meta: {
             type: types.GET_ENTITY,
-            url: apiEntityBaseUrl.concat("Get"),
+            url: apiEntityBaseUrl().concat("Get"),
             app: app,
             entityConfig: request.entityConfig
         }
@@ -131,7 +138,7 @@ export const getProductStocks = (name, app) => {
         payload: { product: { name: name } },
         meta: {
             app: app, type: types.GET_PRODUCT_STOCKS,
-            url: apiTransaction.concat("stocks")
+            url: apiTransaction().concat("stocks")
         }
     };
 }
@@ -143,7 +150,7 @@ export const requestAppId = (app) => {
         payload: {},
         meta: {
             app: app, type: types.REQUEST_ID,
-            url: apiBaseUrl.concat("GenerateAppId")
+            url: apiBaseUrl().concat("GenerateAppId")
         }
     };
 }
@@ -155,7 +162,7 @@ export const getMessageList = (app) => {
         payload: {},
         meta: {
             type: types.GET_MESSAGE, app: app,
-            url: apiAdmin.concat("getmessages")
+            url: apiAdmin().concat("getmessages")
         }
     };
 }
@@ -184,7 +191,7 @@ export const sendChatMessage = (message, username, app) => {
         meta: {
             app: app,
             type: types.SEND_MESSAGE,
-            url: apiAdmin.concat("sendmessage")
+            url: apiAdmin().concat("sendmessage")
         }
     };
 }
@@ -200,7 +207,7 @@ export const getProductSalesDetail = (request, app) => {
         meta: {
             app: app,
             type: types.GET_PRODUCT_SALES_DETAIL,
-            loadMore: request.loadMore == true, url: apiTransaction.concat("productsalesdetail/" + request.productId)
+            loadMore: request.loadMore == true, url: apiTransaction().concat("productsalesdetail/" + request.productId)
         }
     };
 }
@@ -212,7 +219,7 @@ export const getEventByDate = (month, year, app) => {
         payload: { year: year, month: month },
         meta: {
             app: app, type: types.GET_EVENTS_BY_DATE,
-            url: apiAdmin.concat("Event")
+            url: apiAdmin().concat("Event")
         }
     };
 }
@@ -222,7 +229,7 @@ export const selectDivision = (id, app) => {
         type: types.SELECT_DIVISION,
         payload: { divisionId: id },
         meta: {
-            app: app, type: types.SELECT_DIVISION, url: apiAccount.concat("SetDivision")
+            app: app, type: types.SELECT_DIVISION, url: apiAccount().concat("SetDivision")
         }
     };
 }
@@ -235,7 +242,7 @@ export const getProductListTrx = (name, app) => {
             entity: "product", filter: { page: 0, limit: 10, fieldsFilter: { name: name } }
         },
         meta: {
-            type: types.FETCH_PRODUCT_LIST, url: apiEntityBaseUrl.concat("Get"), app: app
+            type: types.FETCH_PRODUCT_LIST, url: apiEntityBaseUrl().concat("Get"), app: app
         }
     }
 }
@@ -248,7 +255,7 @@ export const getCustomerList = (name, app) => {
             entity: "customer", filter: { page: 0, limit: 10, fieldsFilter: { name: name } }
         },
         meta: {
-            type: types.FETCH_CUSTOMER_LIST, url: apiEntityBaseUrl.concat("Get"), app: app
+            type: types.FETCH_CUSTOMER_LIST, url: apiEntityBaseUrl().concat("Get"), app: app
         }
     }
 }
@@ -268,7 +275,7 @@ export const submitPurchaseTransaction = (request, app) => {
             productFlows: request.productFlows
         },
         meta: {
-            app: app, type: types.SUBMIT_TRX_PURCHASE, url: apiTransaction.concat("purchase")
+            app: app, type: types.SUBMIT_TRX_PURCHASE, url: apiTransaction().concat("purchase")
         }
     };
     return requested;
@@ -283,7 +290,7 @@ export const submitSupplyTrx = (request, app) => {
             productFlows: request.productFlows
         },
         meta: {
-            app: app, type: types.SUBMIT_TRX_SUPPLY, url: apiTransaction.concat("supply")
+            app: app, type: types.SUBMIT_TRX_SUPPLY, url: apiTransaction().concat("supply")
         }
     };
     return requested;
@@ -295,7 +302,7 @@ export const getStockInfo = (stockId, app) => {
         type: types.GET_STOCK_INFO,
         payload: { productFlow: { id: stockId } },
         meta: {
-            app: app, type: types.GET_STOCK_INFO, url: apiTransaction.concat("stockinfo")
+            app: app, type: types.GET_STOCK_INFO, url: apiTransaction().concat("stockinfo")
         }
     }
 }
@@ -305,7 +312,7 @@ export const performLogout = (app) => {
     let loginRequest = {
         type: types.DO_LOGOUT,
         payload: {},
-        meta: { app: app, type: types.DO_LOGOUT, url: apiAccount.concat("Logout") }
+        meta: { app: app, type: types.DO_LOGOUT, url: apiAccount().concat("Logout") }
     };
     return loginRequest;
 }
@@ -317,7 +324,7 @@ export const performLogin = (username, password, app) => {
         payload: {
             user: { username: username, password: password }
         },
-        meta: { type: types.DO_LOGIN, url: apiAccount.concat("Login"), app: app }
+        meta: { type: types.DO_LOGIN, url: apiAccount().concat("Login"), app: app }
     };
     return loginRequest;
 }
@@ -340,7 +347,7 @@ export const getDivisons = (app) => {
         payload: {
 
         },
-        meta: { type: types.GET_DIVISIONS, url: apiAccount.concat("Divisions"), app: app }
+        meta: { type: types.GET_DIVISIONS, url: apiAccount().concat("Divisions"), app: app }
     };
     return loginRequest;
 }
@@ -359,7 +366,7 @@ export const getAllProductCategories = () => ({
     },
     meta: {
         type: types.FETCH_PRODUCT_CATEGORIES_ALL,
-        url: apiEntityBaseUrl.concat("Get")
+        url: apiEntityBaseUrl().concat("Get")
     }
 })
 
@@ -381,7 +388,7 @@ export const getSupplierList = (request, app) => {
         },
         meta: {
             type: types.FETCH_SUPPLIER_LIST,
-            url: apiBaseUrl.concat("get"),
+            url: apiBaseUrl().concat("get"),
             app: app
         }
     };
@@ -412,7 +419,7 @@ export const getProductList = (request, app) => {
         },
         meta: {
             type: types.FETCH_PRODUCT_LIST,
-            url: apiBaseUrl.concat("get"),
+            url: apiBaseUrl().concat("get"),
             app: app
         }
     };
@@ -445,7 +452,7 @@ export const getProductDetail = (code, app) => {
         },
         meta: {
             type: types.FETCH_PRODUCT_DETAIL,
-            url: apiBaseUrl.concat("get"),
+            url: apiBaseUrl().concat("get"),
             app: app
         }
     }
@@ -464,7 +471,7 @@ export const loadMoreSupplier = (page, productId, referrer) => {
         payload: { filter: { page: page, fieldsFilter: { "productId": productId } } },
         meta: {
             type: types.LOAD_MORE_SUPPLIER,
-            url: apiBaseUrl.concat("moresupplier"),
+            url: apiBaseUrl().concat("moresupplier"),
             referrer: referrer
         }
     }

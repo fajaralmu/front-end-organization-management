@@ -127,9 +127,12 @@ class App extends Component {
 
   render() {
 
+    const header =  <Header app={this} title="MPI Monitoring"   />;
+
     if (!this.state.requestId) {
       return (
         <div>
+          {header}
           Please wait..
         </div>
       )
@@ -157,7 +160,7 @@ class App extends Component {
     return (
       <div className="App">
         {loadingComponent}
-        <Header title="MPI Monitoring" enableShopping={this.state.enableShopping} cart={this.props.cart} />
+        {header}
         {/*this.props.loginStatus == true?"Logged In":"Un Logged"*/}
       
         <div id="main-layout">

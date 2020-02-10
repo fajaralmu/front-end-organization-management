@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import '../../css/Menu.css'
 import '../../css/Common.css'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-const logoUrl = "http://localhost:50084/Asset/Images/transparent.png";
+import * as url from '../../constant/Url'
+const logoUrl = url.baseImageUrl+"/Asset/Images/transparent.png";
 class Menu extends Component {
     constructor(props) {
         super(props);

@@ -4,7 +4,8 @@ import '../../css/Common.css'
 import * as menus from '../../constant/Menus'
 import ContentTitle from '../layout/ContentTitle';
 
-const logoUrl = "http://localhost:50084/Asset/Images/mpi.png";
+import * as url from '../../constant/Url'
+const logoUrl = url.baseImageUrl + "/Asset/Images/mpi.png";
 
 class Home extends Component {
     constructor(props) {
