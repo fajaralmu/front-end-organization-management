@@ -57,3 +57,11 @@ export const monthYearString = function (m, y) {
 	}
 	return months[m - 1] + " " + y;
 }
+
+export const dateInputVal = function (dd, mm, yyyy) {
+ 
+	let month = +mm < 10 ? "0" + mm : mm;
+	let day = +dd < 10 ? "0" + dd : dd;
+
+	return yyyy + "-" + month + "-" + day;
+}

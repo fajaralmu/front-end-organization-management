@@ -89,22 +89,7 @@ class Management extends Component {
                     text: "Anggota",
                     active: this.checkIfCurrentMenuName("member"),
                     onClick: () => { this.loadEntityManagement(entityConfig.memberConfig) }
-                }, 
-                // {
-                //     active: this.checkIfCurrentMenuName("supplier"),
-                //     text: "Supplier",
-                //     onClick: () => { this.loadEntityManagement(entityConfig.supplierList) }
-                // },
-                // {
-                //     active: this.checkIfCurrentMenuName("customer"),
-                //     text: "Customer",
-                //     onClick: () => { this.loadEntityManagement(entityConfig.customerList) }
-                // },
-                // {
-                //     active: this.checkIfCurrentMenuName("transaction"),
-                //     text: "Transaction",
-                //     onClick: () => { this.loadEntityManagement(entityConfig.transactionConfig) }
-                // }
+                },  
             ];
         }
 
@@ -145,7 +130,7 @@ class Management extends Component {
     }
 
     render() {
-
+        console.log("managedEntity: ",this.props.managedEntity);
         let entityList = this.props.entitiesData ? this.props.entitiesData.entities : [];
         if (null == entityList) { entityList = []; }
 

@@ -12,6 +12,7 @@ import { withRouter } from 'react-router';
 import * as actions from '../../redux/actionCreators'
 import { connect } from 'react-redux'
 import FullCalendar from './FullCalendar';
+import * as entityConfig from '../../utils/EntityConfigurations'
 
 class Timeline extends Component {
     constructor(props) {
@@ -37,7 +38,10 @@ class Timeline extends Component {
         }
 
         this.getEventByDate = (month, year) => {
-
+            console.log("_________", month, year);
+            this.setState({
+                update: new Date(), selectedMonth: month, selectedYear: year
+            });
             this.props.getEventByDate(month, year, this.props.app);
         }
 
@@ -57,7 +61,10 @@ class Timeline extends Component {
         this.detail = (day, month, year) => {
 
             let events = this.getEventDetail(+day);
-            this.setState({ detailView: true, detailEvents: events, selectedDay: day })
+            this.setState({
+                detailView: true, detailEvents: events, selectedDay: day,
+                selectedMonth: month, selectedYear: year
+            })
         }
 
         this.refresh = (selectedMonth, selectedYear) => {
@@ -65,6 +72,25 @@ class Timeline extends Component {
                 updated: new Date(),
                 selectedMonth: selectedMonth, selectedYear: selectedYear
             })
+        }
+
+        this.addEvent = () => {
+            let config = entityConfig.eventConfig;
+
+            this.props.getEntities({
+                entityName: config.entityName,
+                page: 0,
+                limit: 10,
+                entityConfig: config
+            }, this.props.app);
+
+            this.props.addEventFromTimeline(
+                this.state.selectedDay,
+                this.state.selectedMonth,
+                this.state.selectedYear
+            );
+
+            this.props.history.push("/management");
         }
     }
 
@@ -110,14 +136,17 @@ class Timeline extends Component {
                 ]
             }
             return <div>
+                <p>Detail in {this.state.selectedDay + "-" + this.state.selectedMonth + "-" + this.state.selectedYear}</p>
                 <ActionButton onClick={() => { this.setState({ detailView: false }) }} text="Back" />
                 <GridComponent cols={4} items={detailEvents} />
+                <ActionButton status="success" onClick={() => { this.addEvent() }} text="Add Event" />
             </div>
         }
 
         return (
             <div className="container">
                 <h2>TimeLine {this.props.division.name + " " + this.state.selectedYear}</h2>
+                <p>Detail in {this.state.selectedDay + "-" + this.state.selectedMonth + "-" + this.state.selectedYear}</p>
                 <FullCalendar
                     division={this.props.division}
                     detail={this.detail} getEventByDate={this.getEventByDate}
@@ -138,7 +167,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
+    getEntities: (request, app) => dispatch(actions.getEntityList(request, app)),
     getEventByDate: (m, y, app) => dispatch(actions.getEventByDate(m, y, app)),
+    addEventFromTimeline:(d,m,y) => dispatch(actions.addEventFromTimeline(d,m,y))
 })
 export default withRouter(connect(
     mapStateToProps,

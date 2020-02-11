@@ -3,6 +3,7 @@ import { initialState, rootReducer } from './reducers'
 import * as actionCreator from './actionCreators';
 import * as types from './types';
 import * as config from '../utils/WebConfig'
+import * as stringUtil from '../utils/StringUtil';
 
 const commonAuthorizedHeader = () => {
     return {
@@ -50,6 +51,7 @@ export const configureStore = () => {
             getEntityByIdMiddleware,
             updateEntityMiddleware,
             removeManagedEntityMiddleware,
+            addEventFromTimelineMiddleware,
 
             getEntitiesWithCallbackMiddleware
 
@@ -196,6 +198,18 @@ const sendChatMessageMiddleware = store => next => action => {
             store.dispatch(newAction);
         })
         .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
+}
+
+const addEventFromTimelineMiddleware= store => next => action => {
+    if (!action.meta || action.meta.type !== types.ADD_EVENT_FROM_TIMELINE) { return next(action); }
+
+    let eventEntity = {
+        date : stringUtil.dateInputVal(action.payload.day, action.payload.month, action.payload.year)
+    };
+
+    let newAction = Object.assign({}, action, { payload: {entity: eventEntity} });
+    delete newAction.meta;
+    store.dispatch(newAction);
 }
 
 const updateCartMiddleware = store => next => action => {

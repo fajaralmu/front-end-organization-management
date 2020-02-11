@@ -15,6 +15,15 @@ const apiAccount = () => usedHost() + "Account.aspx/"
 const apiAdmin = () => usedHost() + "Admin.aspx/"
 const apiTransaction = usedHost() + "api/transaction/";
 
+export const addEventFromTimeline = (day,month,year) => {
+    return { type: types.ADD_EVENT_FROM_TIMELINE, payload: {
+        day:day,
+        month:month,
+        year:year
+    }, meta: { type: types.ADD_EVENT_FROM_TIMELINE } };
+}
+
+
 export const resetProductStocks = () => {
     return { type: types.RESET_PRODUCT_STOCKS, payload: {}, meta: { type: types.RESET_PRODUCT_STOCKS } };
 }

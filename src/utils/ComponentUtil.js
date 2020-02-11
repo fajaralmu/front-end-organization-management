@@ -82,3 +82,4 @@ export const getDropdownOptionsYear = (from, to) => {
     }
     return options;
 }
+

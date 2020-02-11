@@ -37,7 +37,8 @@ class FullCalendar extends Component {
         this.entity_Name = 0; this.entity_Prop = 0; this.dateFormId = 0;
 
         this.setSelectedMonth = (val) => {
-            this.setState({ selectedMonth: val })
+            this.setState({ selectedMonth: val });
+            this.props.refresh(val, this.year_now);
         }
         this.changeInputYear = (val, id) => {
             this.setState({ inputYearValue: val, activeId: id });
@@ -305,7 +306,7 @@ class FullCalendar extends Component {
                     console.log("NOW", i);
                     this.calendarData[i].now = true;
                 } else {
-                    console.log("NOT NOW", i);
+                 //   console.log("NOT NOW", i);
                     this.calendarData[i].now = false;
                 }
                 this.calendarData[i].text = day;
@@ -445,7 +446,7 @@ class FullCalendar extends Component {
 
 
                 });
-                console.log(data.text, "EVENTS: ", events);
+             //   console.log(data.text, "EVENTS: ", events);
 
                 return (
                     <Card style={style} title={data.text}

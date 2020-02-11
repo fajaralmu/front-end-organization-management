@@ -1,4 +1,5 @@
 import * as types from './types'
+import * as entityUtil from '../utils/EntityConfigurations'
 
 export const initState = {
 
@@ -25,9 +26,13 @@ export const reducer = (state = initState, action) => {
 
             return { ...state, managedEntity: null };
         case types.GET_EVENTS_BY_DATE:
-            
+
             if (action.payload.entities)
                 return { ...state, events: action.payload.entities };
+        case types.ADD_EVENT_FROM_TIMELINE:
+
+        console.log("PAYLOAD:",action.payload);
+            return { ...state, managedEntity: action.payload.entity,entitiesData:{entityConfig:entityUtil.eventConfig} };
         default:
             return state;
     }
