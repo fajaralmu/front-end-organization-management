@@ -155,6 +155,7 @@ class Management extends Component {
                         getEntityById={this.getEntityById}
                         removeManagedEntity={this.removeManagedEntity}
                         updateEntity={this.updateEntity}
+                        addNew={this.props.addNew}
                     />
                 </div>
             </div>
@@ -167,7 +168,8 @@ const mapStateToProps = state => {
     //console.log(state);
     return {
         entitiesData: state.managementState.entitiesData,
-        managedEntity: state.managementState.managedEntity
+        managedEntity: state.managementState.managedEntity,
+        addNew: state.managementState.addNew
     }
 }
 

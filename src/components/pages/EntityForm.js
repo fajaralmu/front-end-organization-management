@@ -98,21 +98,39 @@ class EntityForm extends Component {
         }
 
         this.handleSubmit = () => {
-            const updateMode = this.props.managedEntity != null;
+            let addFromOtherPage = false;
+
+            const updateMode = this.props.managedEntity != null && this.props.addNew == false;
             if (updateMode) {
                 console.log("WILL UPDATE(props):", this.props.managedEntity);
                 if (this.props.updateEntity) {
                     this.props.updateEntity(this.props.entityConfig.entityName,
                         this.validateEntity(this.props.managedEntity), "update");
                 }
+            }else{
+                if( this.props.managedEntity != null && this.props.addNew == true){
+                    addFromOtherPage = true;
+                }
             }
 
             const addNewMod = this.state.managedEntity != null;
-            if (addNewMod) {
+            if (addNewMod  ) {
                 console.log("WILL SUBMIT NEW(state):", this.state.managedEntity);
                 if (this.props.updateEntity) {
                     this.props.updateEntity(this.props.entityConfig.entityName,
                         this.validateEntity(this.state.managedEntity), "addNew");
+                }
+            }
+
+            /**
+             * SPECIAL CASE
+             */
+
+            if ( addFromOtherPage) {
+                console.log("WILL SUBMIT NEW(SPECIAL CASE):", this.props.managedEntity);
+                if (this.props.updateEntity) {
+                    this.props.updateEntity(this.props.entityConfig.entityName,
+                        this.validateEntity(this.props.managedEntity), "addNew");
                 }
             }
             this.clear();
@@ -388,7 +406,7 @@ class EntityForm extends Component {
         if(!this.props.entityConfig.disabled){
             actionButtons  =   <ActionButtons buttonsData={[
                 {
-                    text: this.props.managedEntity ? "Update" : "Add Record",
+                    text: this.props.managedEntity && this.props.addNew == false ? "Update" : "Add Record",
                     onClick: this.handleSubmit,
                     status:"success"
                 },

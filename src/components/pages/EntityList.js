@@ -301,6 +301,7 @@ class EntityList extends Component {
                     {navButtons}
                     <div className="entityForm">
                         <EntityForm
+                            addNew={this.props.addNew}
                             app={this.props.app}
                             updateEntity={this.props.updateEntity}
                             removeManagedEntity={this.props.removeManagedEntity}
