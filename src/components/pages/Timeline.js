@@ -19,13 +19,12 @@ class Timeline extends Component {
 
         this.state = {
             selectedMonth: new Date().getMonth(),
-            inputYearValue: new Date().getFullYear(),
-            activeId: "",
+            selectedYear: new Date().getFullYear(),
             detailView: false,
             detailEvents: [],
             selectedDay: 0
-        } 
- 
+        }
+
         this.createTable = () => {
             //console.log("BUAT this.tabel"); 
             let calendarData = [];
@@ -55,14 +54,21 @@ class Timeline extends Component {
 
             return result;
         }
-        this.detail=  (day, month, year) => {
-         
-            let events = this.getEventDetail(+day); 
-             this.setState({ detailView: true, detailEvents: events, selectedDay: day })
+        this.detail = (day, month, year) => {
+
+            let events = this.getEventDetail(+day);
+            this.setState({ detailView: true, detailEvents: events, selectedDay: day })
+        }
+
+        this.refresh = (selectedMonth, selectedYear) => {
+            this.setState({
+                updated: new Date(),
+                selectedMonth: selectedMonth, selectedYear: selectedYear
+            })
         }
     }
 
-  
+
 
     componentDidUpdate() {
         if (!this.props.division) {
@@ -73,11 +79,6 @@ class Timeline extends Component {
     componentDidMount() {
 
     }
-    refresh() {
-        this.setState({ updated: new Date(), selectedMonth: this.month_now + 1, inputYearValue: this.year_now })
-    }
-
-
     render() {
 
 
@@ -116,10 +117,11 @@ class Timeline extends Component {
 
         return (
             <div className="container">
-                <h2>TimeLine {this.props.division.name + " " + this.state.inputYearValue}</h2>
+                <h2>TimeLine {this.props.division.name + " " + this.state.selectedYear}</h2>
                 <FullCalendar
                     division={this.props.division}
                     detail={this.detail} getEventByDate={this.getEventByDate}
+                    refresh={this.refresh}
                     events={this.props.events} getEventDetail={this.getEventDetail}
                 />
 

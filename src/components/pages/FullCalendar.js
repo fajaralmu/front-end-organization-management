@@ -16,9 +16,7 @@ class FullCalendar extends Component {
         this.state = {
             selectedMonth: new Date().getMonth(),
             inputYearValue: new Date().getFullYear(),
-            activeId: "",
-            detailView: false,
-            detailEvents: [],
+            activeId: "", 
             selectedDay: 0
         }
 
@@ -26,13 +24,10 @@ class FullCalendar extends Component {
         this.days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"];
 
 
-        this.month_now = 7;// 0;
-        //let this.begin = { week: 2, day: 1, dayCount: 31 };
+        this.month_now = 7;// 0; 
         this.begin = { week: 1, day: 3, dayCount: 31, info: "" };
         this.begin_old = { week: 0, day: 0, dayCount: 0, info: "" };
-        this.year_now = 1945;
-        //let month_label = document.getElementById("month");
-        //let year_label = document.getElementById("year"); 
+        this.year_now = 1945; 
         this.input_month = document.getElementById("input_month");
         this.date_info = document.getElementById("date-info");
         this.running_month = 7;
@@ -196,6 +191,7 @@ class FullCalendar extends Component {
     }
 
     prevMonth() {
+
         this.setState({ updated:new Date()})
         return this.doPrevMonth(false);
     }
@@ -231,13 +227,13 @@ class FullCalendar extends Component {
     }
 
     nextMonth() {
-        this.setState({ updated:new Date()})
+        
         return this.doNextMonth(false);
     }
 
     refresh() {
         if(this.props.refresh){
-            this.props.refresh();
+            this.props.refresh(this.month_now, this.year_now);
         }
     }
 
