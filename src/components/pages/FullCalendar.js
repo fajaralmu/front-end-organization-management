@@ -450,7 +450,7 @@ class FullCalendar extends Component {
 
                 return (
                     <Card style={style} title={data.text}
-                        onClick={() => this.detail(data.text, this.state.selectedMonth, this.year_now)}
+                        onClick={() => this.detail(data.text, this.month_now, this.year_now)}
                         content={eventList}
                     />
                 )
