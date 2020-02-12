@@ -177,7 +177,7 @@ class EntityList extends Component {
         const entityConfig = this.props.entityConfig;
 
         if (null == entitiesData || null == entityConfig || null == entitiesData.entities) {
-            return (<h2>Entity Not Found</h2>)
+            return (<h2>Please Select One Of Menu</h2>)
         }
 
         const rows = [

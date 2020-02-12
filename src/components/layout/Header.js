@@ -23,10 +23,13 @@ class Header extends Component {
     }
 
     render() {
+
+        const debugMode =  localStorage.getItem("debugMode");
+        const isDebugMode =  localStorage.getItem("debugMode") == "true";
         return (
             <div className="App-header">
                 {this.props.title}
-                <ToggleButton active={this.state.debugMode == true} onClick={this.handleClick} text="Debug Mode" />
+                <ToggleButton active={isDebugMode} onClick={this.handleClick} text={"Debug Mode: "+debugMode} />
             </div>
         )
     }

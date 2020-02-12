@@ -108,11 +108,12 @@ class Timeline extends Component {
     }
     render() {
 
-        let title = <h2>TimeLine {this.props.division.name + " " + this.state.selectedYear}</h2>;
         //validate division
         if (this.props.division == null) {
             return <h2>Silakan Pilih Badan Pengurus MPI</h2>
         }
+        let title = <h2>TimeLine {this.props.division.name + " " + this.state.selectedYear}</h2>;
+        
         let detailEvents = [];
         if (this.state.detailView == true) {
             this.state.detailEvents.forEach(event => {
