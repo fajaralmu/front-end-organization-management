@@ -7,7 +7,7 @@ import * as url from '../../constant/Url'
 import '../../css/Common.css'
 import ContentTitle from '../layout/ContentTitle' 
 
-const logoUrl = url.baseImageUrl + "/Asset/Images/asp.png";
+const logoUrl = url.baseImageUrl + "/organization-management/res/img/asp.png";
 
 class About extends Component {
 

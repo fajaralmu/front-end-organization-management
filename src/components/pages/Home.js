@@ -5,7 +5,7 @@ import * as menus from '../../constant/Menus'
 import ContentTitle from '../layout/ContentTitle';
 
 import * as url from '../../constant/Url'
-const logoUrl = url.baseImageUrl + "/Asset/Images/mpi.png";
+const logoUrl = url.baseImageUrl + "/organization-management/res/img/mpi.png";
 
 class Home extends Component {
     constructor(props) {
