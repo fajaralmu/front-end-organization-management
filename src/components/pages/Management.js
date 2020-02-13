@@ -149,7 +149,7 @@ class Management extends Component {
 
         let content = <h2>Content</h2>
 
-        if (this.state.entityConfig.entityName == "main") {
+        if (this.state.entityConfig.entityName == "main" && false) {
             content = <div>
                 <h2>{"Management Page"}
                 </h2></div>
