@@ -33,14 +33,20 @@ class EntityList extends Component {
         }
         this.getHeaderNames = (fieldNames) => {
             const headers = [];
-            for (let i = 0; i < fieldNames.length; i++) {
-                const name = fieldNames[i];
-                let headerName = name.name;
-                if (headerName.split(".").length > 1) {
-                    headerName = headerName.split(".")[0];
+
+            if (fieldNames == null) {
+                this.props.backToDashboard();
+
+            } else
+
+                for (let i = 0; i < fieldNames.length; i++) {
+                    const name = fieldNames[i];
+                    let headerName = name.name;
+                    if (headerName.split(".").length > 1) {
+                        headerName = headerName.split(".")[0];
+                    }
+                    headers.push(headerName.toUpperCase());
                 }
-                headers.push(headerName.toUpperCase());
-            }
             headers.push("OPTION");
             return headers;
         }
@@ -86,6 +92,11 @@ class EntityList extends Component {
 
         this.createFilterInputs = (fieldNames) => {
             let inputs = new Array();
+
+            if (!fieldNames) {
+                return inputs;
+            }
+
             for (let i = 0; i < fieldNames.length; i++) {
                 const fieldName = fieldNames[i];
                 let headerName = fieldName.name;
@@ -94,10 +105,10 @@ class EntityList extends Component {
                 }
 
                 let value = "";
-                
+
                 if (this.state.filter[headerName] != null) {
                     value = this.state.filter[headerName];
-                    
+
                 }
 
                 let input = <InputField value={value} id={headerName + "_filter_id"}
@@ -176,12 +187,12 @@ class EntityList extends Component {
         const entitiesData = this.props.entitiesData;
         const entityConfig = this.props.entityConfig;
         console.log("1");
-        if (null == entitiesData || null == entityConfig  ) {
+        if (null == entitiesData || null == entityConfig) {
             return (<h2>Please Select One Of Menu</h2>)
         }
 
 
-        if(null == entitiesData.entities){
+        if (null == entitiesData.entities) {
             entitiesData.entities = [];
         }
 
@@ -200,7 +211,7 @@ class EntityList extends Component {
         ];
 
 
-        const entities =  entitiesData.entities;
+        const entities = entitiesData.entities;
         const idField = entityConfig.id;
 
         for (let i = 0; i < entities.length; i++) {

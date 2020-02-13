@@ -53,19 +53,26 @@ export const reducer = (state = initState, action) => {
                 result.divisions = action.payload.divisions
             }
 
-            console.log("logged user: ", result.loggedUser);
+           
             return result;
         case types.REQUEST_ID:
             result = { ...state, requestId: action.payload.message };
 
             if (!action.payload.loggedIn) {
+                
                 result.loginStatus = false;
                 result.loggedUser = null;
             }else{
+                
                 if(action.payload.sessionData){
-                    result.division = action.payload.sessionData.Division
+                    
+                    result.division = action.payload.sessionData.division;
+                    result.loggedUser = action.payload.sessionData.user;
                 }
             }
+
+           
+          //  action.payload.referer.refresh();
 
             return result;
         case types.DO_LOGOUT:
@@ -87,6 +94,8 @@ export const reducer = (state = initState, action) => {
                 menus: updatedMenus,
                 loggedUser: action.payload.loggedUser
             };
+
+
             return result;
         case types.GET_DIVISIONS:
             result = {

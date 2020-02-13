@@ -97,6 +97,8 @@ class App extends Component {
       localStorage.setItem("requestId", this.props.requestId);
       this.props.refreshLogin();
     }
+
+    console.log("componentDidUpdate LOGIN USER: ",this.props.loggedUser)
   }
 
   componentDidMount() {

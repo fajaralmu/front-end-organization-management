@@ -21,6 +21,10 @@ class Management extends Component {
             if (this.props.loginStatus != true) this.props.history.push("/login");
         }
 
+        this.backToDashboard = () => {
+            this.props.history.push("/dashboard");
+        }
+
         this.refresh = () => {
             this.getEntityInPage(this.state.entityConfig, this.state.currentPage);
         }
@@ -169,6 +173,7 @@ class Management extends Component {
                 removeManagedEntity={this.removeManagedEntity}
                 updateEntity={this.updateEntity}
                 addNew={this.props.addNew}
+                backToDashboard={this.backToDashboard}
             />;
         }
 
