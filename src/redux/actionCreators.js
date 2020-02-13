@@ -42,6 +42,14 @@ export const resetCustomers = () => {
     return { type: types.RESET_CUSTOMERS, payload: {}, meta: { type: types.RESET_CUSTOMERS } };
 }
 
+export const resetManagementPage = () => {
+    return {
+        type: types.RESET_MANAGEMENT_PAGE,
+        payload: {},
+        meta: { type: types.RESET_MANAGEMENT_PAGE }
+    };
+}
+
 export const removeManagedEntity = () => {
     return {
         type: types.REMOVE_MANAGED_ENTITY,

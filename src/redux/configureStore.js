@@ -16,13 +16,8 @@ export const configureStore = () => {
     const store = createStore(
         rootReducer,
         initialState,
-        applyMiddleware(
-            getProductListMiddleware,
-            getProductDetailMiddleWare,
-            removeEntityMiddleware,
-            loadMoreSupplierMiddleware,
-            getAllProductCategoriesMiddleware,
-            getSupplierListMiddleware,
+        applyMiddleware( 
+            removeEntityMiddleware, 
 
             //user related
             performLoginMiddleware,
@@ -30,21 +25,14 @@ export const configureStore = () => {
             refreshLoginStatusMiddleware,
             getDivisionsMiddleware,
 
-            //transaction  
-            resetPurchaseTransactionMiddleware,
+            //transaction   
             selectDivisionMiddleware,
-            getEventByDateMiddleware,
-            resetProductsMiddleware,
-            resetSuppliersMiddleware,
-            resetCustomersMiddleware,
-            getProductStocksMiddleware,
-            resetProductStocksMiddleware,
-            getProductSalesDetailMiddleware,
+            getEventByDateMiddleware, 
             requestAppIdMiddleware,
-            sendChatMessageMiddleware,
+            
             storeChatMessageLocallyMiddleware,
             getMessagesMiddleware,
-            updateCartMiddleware,
+            sendChatMessageMiddleware,
 
             /*enntity management*/
             getEntityListMiddleware,
@@ -52,6 +40,7 @@ export const configureStore = () => {
             updateEntityMiddleware,
             removeManagedEntityMiddleware,
             addEventFromTimelineMiddleware,
+            resetManagementPageMiddleware,
 
             getEntitiesWithCallbackMiddleware
 
@@ -60,6 +49,8 @@ export const configureStore = () => {
 
     return store;
 }
+
+
 
 const getEntitiesWithCallbackMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_ENTITY_WITH_CALLBACK) { return next(action); }
@@ -233,6 +224,14 @@ const removeManagedEntityMiddleware = store => next => action => {
     store.dispatch(newAction);
 }
 
+const resetManagementPageMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.RESET_MANAGEMENT_PAGE) { return next(action); }
+    let newAction = Object.assign({}, action, { payload: action.payload });
+    delete newAction.meta;
+    store.dispatch(newAction);
+}
+
+
 const requestAppIdMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.REQUEST_ID) { return next(action); }
 
@@ -259,50 +258,7 @@ const requestAppIdMiddleware = store => next => action => {
         })
         .catch(err => console.error(err)).finally(param => action.meta.app.endLoading());
 }
-
-const getProductStocksMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_PRODUCT_STOCKS) { return next(action); }
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload),
-        headers: {
-            'Content-Type': 'application/json',
-            'requestId': localStorage.getItem("requestId"),
-            'loginKey': localStorage.getItem("loginKey")
-        }
-    }).then(response => response.json())
-        .then(data => {
-            console.debug("getEventByDateMiddleware Response:", data, "load more:", action.meta.loadMore);
-            if (data.code != "00") {
-                alert("Data not found");
-                return;
-            }
-
-            let newAction = Object.assign({}, action, { payload: data });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
-
-const getProductSalesDetailMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_PRODUCT_SALES_DETAIL) { return next(action); }
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload),
-        headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
-    }).then(response => response.json())
-        .then(data => {
-            console.debug("getProductSalesDetailMiddleware Response:", data);
-            if (data.code != "00") {
-                alert("Server error");
-                return;
-            }
-
-            let newAction = Object.assign({}, action, { payload: data });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
+ 
 
 const getEventByDateMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_EVENTS_BY_DATE) { return next(action); }
@@ -373,198 +329,8 @@ const getDivisionsMiddleware = store => next => action => {
             store.dispatch(newAction);
         })
         .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
+} 
 
-const getProductListTrxMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.FETCH_PRODUCT_LIST_TRX) { return next(action); }
-
-    if (action.payload.filter.fieldsFilter.name == null || action.payload.filter.fieldsFilter.name.trim() == "") {
-        let newAction = Object.assign({}, action, {
-            payload: { entities: [] }
-        });
-        delete newAction.meta;
-        store.dispatch(newAction);
-    } else
-        fetch(action.meta.url, {
-            method: POST_METHOD, body: JSON.stringify(action.payload), headers: commonAuthorizedHeader()
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.debug("getProductListTrxMiddleware Response:", data);
-                if (data.entities == null || data.entities.length == 0) {
-                    alert("Data not found!");
-                    return;
-                }
-                let newAction = Object.assign({}, action, { payload: data });
-                delete newAction.meta;
-                store.dispatch(newAction);
-            })
-            .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
-
-const getCustomerListMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.FETCH_CUSTOMER_LIST) { return next(action); }
-
-    if (action.payload.filter.fieldsFilter.name == null || action.payload.filter.fieldsFilter.name.trim() == "") {
-        let newAction = Object.assign({}, action, {
-            payload: { entities: [] }
-        });
-        delete newAction.meta;
-        store.dispatch(newAction);
-    } else
-        fetch(action.meta.url, {
-            method: POST_METHOD,
-            body: JSON.stringify(action.payload),
-            headers: commonAuthorizedHeader()
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.debug("Response:", data);
-                if (data.entities == null || data.entities.length == 0) {
-                    alert("Data not found!");
-                    return;
-                }
-                let newAction = Object.assign({}, action, { payload: data });
-                delete newAction.meta;
-                store.dispatch(newAction);
-            })
-            .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
-
-const resetProductStocksMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.RESET_PRODUCT_STOCKS) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: null });
-    delete newAction.meta;
-    store.dispatch(newAction);
-}
-
-const resetCustomersMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.RESET_CUSTOMERS) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: null });
-    delete newAction.meta;
-    store.dispatch(newAction);
-}
-
-const resetProductsMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.RESET_PRODUCTS) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: null });
-    delete newAction.meta;
-    store.dispatch(newAction);
-}
-const resetSuppliersMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.RESET_SUPPLIERS) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: null });
-    delete newAction.meta;
-    store.dispatch(newAction);
-}
-
-const resetPurchaseTransactionMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.RESET_TRX_PURCHASE) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: null });
-    delete newAction.meta;
-    store.dispatch(newAction);
-
-}
-
-const submitSupplyTransactionMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.SUBMIT_TRX_SUPPLY) {
-        return next(action);
-    }
-
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload),
-        headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.code != "00") {
-                alert("Transaction Failed!");
-                return;
-            }
-            alert("Transaction Success!")
-            data.transaction.productFlows = action.payload.productFlows;
-            let newAction = Object.assign({}, action, { payload: data });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
-
-
-const submitPurchaseTransactionMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.SUBMIT_TRX_PURCHASE) {
-        return next(action);
-    }
-
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload),
-        headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.code != "00") {
-                alert("Transaction Failed!");
-                return;
-            }
-            alert("Transaction Success!")
-            data.transaction.productFlows = action.payload.productFlows;
-            let newAction = Object.assign({}, action, { payload: data });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
-
-const getStockInfoMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.GET_STOCK_INFO) {
-        return next(action);
-    }
-
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload),
-        headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.productFlowStock == null) {
-                alert("Data not found!");
-                return;
-            }
-            let newAction = Object.assign({}, action, {
-                payload: data.productFlowStock
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
-
-const getSupplierListMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.FETCH_SUPPLIER_LIST) { return next(action); }
-
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload),
-        headers: commonAuthorizedHeader()
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.entities == null || data.entities.length == 0) {
-                alert("Data not found!");
-                return;
-            }
-            let newAction = Object.assign({}, action, {
-                payload: data
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err))
-        .finally(param => action.meta.app.endLoading());
-}
 
 const performLogoutMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.DO_LOGOUT) {
@@ -665,56 +431,7 @@ const refreshLoginStatusMiddleware = store => next => action => {
     delete newAction.meta;
     store.dispatch(newAction);
 
-}
-
-const getAllProductCategoriesMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.FETCH_PRODUCT_CATEGORIES_ALL) {
-        return next(action);
-    }
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload), headers: commonAuthorizedHeader()
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.entities == null || data.entities.length == 0) {
-                alert("Data not found!");
-                return;
-            }
-            let newAction = Object.assign({}, action, {
-                payload: data
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err));
-
-}
-
-const loadMoreSupplierMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.LOAD_MORE_SUPPLIER) {
-        return next(action);
-    }
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload), headers: commonAuthorizedHeader()
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.entities == null || data.entities.length == 0) {
-                alert("Data not found!");
-                return;
-            }
-            let newAction = Object.assign({}, action, {
-                payload: data, referrer: action.meta.referrer
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err))
-        .finally(parap => action.meta.referrer.props.app.endLoading());
-
-}
+} 
 
 const removeEntityMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.REMOVE_SHOP_ENTITY) { return next(action); }
@@ -723,54 +440,6 @@ const removeEntityMiddleware = store => next => action => {
     store.dispatch(newAction);
 
 }
-
-const getProductDetailMiddleWare = store => next => action => {
-    if (!action.meta || action.meta.type !== types.FETCH_PRODUCT_DETAIL) {
-        return next(action);
-    }
-    const app = action.meta.app;
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload), headers: commonAuthorizedHeader()
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.entities == null || data.entities.length == 0) {
-                alert("Data not found!");
-                return;
-            }
-            let newAction = Object.assign({}, action, {
-                payload: data
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err))
-        .finally(param => app.endLoading());
-}
-
-const getProductListMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.FETCH_PRODUCT_LIST) {
-        return next(action);
-    }
-
-    fetch(action.meta.url, {
-        method: POST_METHOD, body: JSON.stringify(action.payload), headers: commonAuthorizedHeader()
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.debug("Response:", data);
-            if (data.entities == null || data.entities.length == 0) {
-                alert("Data not found!");
-                return;
-            }
-            let newAction = Object.assign({}, action, {
-                payload: data
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
-}
+ 
 
 export default configureStore;

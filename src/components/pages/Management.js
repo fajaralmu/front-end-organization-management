@@ -37,7 +37,7 @@ class Management extends Component {
         }
 
         this.gotoMainPage = () => {
-            this.props.removeManagedEntity();
+            this.props.resetManagementPage();
             this.setState({ currentPage: 0, entityConfig: { entityName: "main" } });
         }
 
@@ -149,7 +149,7 @@ class Management extends Component {
 
         let content = <h2>Content</h2>
 
-        if (this.state.entityConfig.entityName == "main" && false) {
+        if (this.props.entitiesData.entityConfig == null) {
             content = <div>
                 <h2>{"Management Page"}
                 </h2></div>
@@ -200,6 +200,7 @@ const mapDispatchToProps = dispatch => ({
         let action = actions.getEntityById(name, id, app);
         dispatch(action);
     },
+    resetManagementPage : () =>dispatch(actions.resetManagementPage()),
     removeManagedEntity: () => dispatch(actions.removeManagedEntity()),
     updateEntity: (request, referer, callback) => dispatch(actions.updateEntity(request, referer, callback))
 
