@@ -3,7 +3,9 @@ import '../../css/Menu.css'
 import '../../css/Common.css'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import * as url from '../../constant/Url'
-const logoUrl = url.baseImageUrl+"/organization-management/res/img/transparent.png";
+
+const logoUrl = url.baseImageUrl+"/res/img/transparent.png";
+
 class Menu extends Component {
     constructor(props) {
         super(props);

@@ -1,8 +1,9 @@
 import * as types from './types'
 import * as config from '../utils/WebConfig'
+import * as url from '../constant/Url'
 
-const hostCloud = "/organization-management/api/";
-const hostLocal = "http://localhost:8080/organization-management/api/";
+const hostCloud = url.hostCloud+"/api/";
+const hostLocal = url.hostLocal+"/api/";
 const usedHost = () => {
     if (config.debugMode() == true)
         return hostLocal;
