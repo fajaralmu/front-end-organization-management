@@ -87,7 +87,7 @@ class Timeline extends Component {
 
             this.props.addEventFromTimeline(
                 this.state.selectedDay,
-                this.state.selectedMonth+1, /*IMPORTANT*/
+                this.state.selectedMonth + 1, /*IMPORTANT*/
                 this.state.selectedYear
             );
 
@@ -113,21 +113,35 @@ class Timeline extends Component {
             return <h2>Silakan Pilih Badan Pengurus MPI</h2>
         }
         let title = <h2>TimeLine {this.props.division.name + " " + this.state.selectedYear}</h2>;
-        
+
         let detailEvents = [];
         if (this.state.detailView == true) {
             this.state.detailEvents.forEach(event => {
 
+                const eventDate = new Date(event.date).toString();
+
+                let eventStatus = "Done";
+                if(event.done == 0){
+                    eventStatus = "Not Done";
+                }else if(event.done != 1){
+                    eventStatus = "Not Configured";
+                }
+
                 let content = <div>
-                    <p>{"Date:" + event.date}</p>
-                    <p>{"Info:" + event.info}</p>
-                    <p>{"Participant:" + event.participant}</p>
-                    <p>{"Location:" + event.location}</p>
-                    <p>{"Status:" + (event.done ? "done" : "not done")}</p>
+                     <p>{eventDate}</p>
+                    <GridComponent cols={2} items={[  
+                        <label>Location</label>, <label>{event.location}</label>,
+
+                        <label>Participant</label>, <label>{event.participant}</label>,
+
+                        <label>Status</label>, <label>{eventStatus}</label>,
+
+                        <label>Info</label>, <label>{event.info}</label>,
+                    ]} />
                 </div>
 
                 let eventCard = <Card title={event.name}
-                    content={content}
+                    content={content} style={{ width: '90%' }}
                 />
                 detailEvents.push(eventCard);
             });
@@ -144,7 +158,7 @@ class Timeline extends Component {
                     this.state.selectedYear
                 )}</p>
                 <ActionButton onClick={() => { this.setState({ detailView: false }) }} text="Back" />
-                <GridComponent cols={4} items={detailEvents} />
+                <GridComponent width={"30%"} cols={3} items={detailEvents} />
                 <ActionButton status="success" onClick={() => { this.addEvent() }} text="Add Event" />
             </div>
         }

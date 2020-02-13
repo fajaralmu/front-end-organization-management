@@ -184,7 +184,7 @@ class Management extends Component {
                     this.props.entitiesData && this.props.entitiesData.entityConfig ?
                         this.props.entitiesData.entityConfig.title : "")}
 
-                    description="manage master data" />
+                    description="master data management console" />
                 <div className="management-container">
                     <Tab tabsData={buttonsData} />
                     {content}

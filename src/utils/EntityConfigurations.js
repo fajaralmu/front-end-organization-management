@@ -1,6 +1,7 @@
 export const divisionConfig = {
     title: "Badan Pengurus",
     entityName: "division",
+    disabled: true,
     id: "id",
     fieldNames: [
         { name: "name", lableName: "Nama" },
@@ -86,6 +87,13 @@ export const programConfig = {
         }
     ]
 }
+
+const eventStatus =  [
+    { text: "-Not Configured-", value: -1 },
+    { text: "Done", value: 1 },
+    { text: "UnDone", value: 0 }
+];
+
 export const eventConfig = {
     title: "Kegiatan",
     entityName: "event",
@@ -93,15 +101,12 @@ export const eventConfig = {
     fieldNames: [
         { name: "name" },
         { name: "info" },
-        { name: "date", type: "date" },
+        { name: "date", type: "longDate" },
         { name: "location" },
         { name: "program.name" },
         { name: "participant" },
         {
-            name: "done", type: "staticDropdown", options: [
-                { text: "Done", value: 1 },
-                { text: "UnDone", value: 0 }
-            ]
+            name: "done", type: "staticDropdown", options:eventStatus
         }
     ],
     formData: [
@@ -136,10 +141,7 @@ export const eventConfig = {
             lableName: "Status Kegiatan",
             inputType: "staticDropDown",
             name: "done",
-            options: [
-                { text: "Done", value: 1 },
-                { text: "UnDone", value: 0 }
-            ]
+            options:eventStatus
         },
         {
             lableName: "Peserta",
@@ -153,6 +155,7 @@ export const positionConfig = {
     title: "Posisi",
     entityName: "position",
     id: "id",
+    disabled: true,
     fieldNames: [
         { name: "name" },
         { name: "description" },

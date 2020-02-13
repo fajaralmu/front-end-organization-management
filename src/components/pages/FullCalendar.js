@@ -439,7 +439,7 @@ class FullCalendar extends Component {
 
                         return <p key={"EVT_" + i}>{event.name}</p>
                     } else if (i == 4) {
-                        return <ActionButton onClick={() => { }} text={"detail " + i} />
+                        return <ActionButton onClick={() => { }} text={"more"} />
                     } else {
                         return null;
                     }

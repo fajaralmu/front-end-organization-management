@@ -387,6 +387,7 @@ class EntityForm extends Component {
         }
 
         this.handleStaticDropdownChange = (value, propName) =>{
+            
             this.updateSelectedEntity(propName, value);
         }
     }

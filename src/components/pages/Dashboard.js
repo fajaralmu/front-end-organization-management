@@ -80,7 +80,7 @@ class Dashboard extends Component {
 
         return (<div className="section-container">
             <ContentTitle title={"Admin Page"}
-                description="management organisasi" />
+                description="Welcome to the admin console" />
             <div className="management-container">
                 <Tab tabsData={buttonsData} />
                 {content}
