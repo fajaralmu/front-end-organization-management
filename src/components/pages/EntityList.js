@@ -175,9 +175,14 @@ class EntityList extends Component {
 
         const entitiesData = this.props.entitiesData;
         const entityConfig = this.props.entityConfig;
-
-        if (null == entitiesData || null == entityConfig || null == entitiesData.entities) {
+        console.log("1");
+        if (null == entitiesData || null == entityConfig  ) {
             return (<h2>Please Select One Of Menu</h2>)
+        }
+
+
+        if(null == entitiesData.entities){
+            entitiesData.entities = [];
         }
 
         const rows = [
@@ -195,7 +200,7 @@ class EntityList extends Component {
         ];
 
 
-        const entities = this.props.entitiesData.entities;
+        const entities =  entitiesData.entities;
         const idField = entityConfig.id;
 
         for (let i = 0; i < entities.length; i++) {

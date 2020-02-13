@@ -32,10 +32,22 @@ export const reducer = (state = initState, action) => {
                 return { ...state, events: action.payload.entities };
         case types.ADD_EVENT_FROM_TIMELINE:
 
-            return { ...state, addNew: true, managedEntity: action.payload.entity, entitiesData: { entityConfig: entityUtil.eventConfig } };
+            const eventsData = { entityConfig: entityUtil.eventConfig };
+            console.log("EVENTS DATA: ", eventsData);
+            return {
+                ...state, addNew: true, managedEntity: action.payload.entity,
+                entitiesData: eventsData
+            };
         case types.RESET_MANAGEMENT_PAGE:
 
             return initState;
+        case types.SET_ENTITY_CONFIG:
+            const entitiesData = state.entitiesData;
+
+            entitiesData.entityConfig = action.payload.entityConfig;
+            entitiesData.entities = [];
+
+            return { ...state, entitiesData: entitiesData };
         default:
             return state;
     }

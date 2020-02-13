@@ -42,6 +42,7 @@ export const configureStore = () => {
             removeManagedEntityMiddleware,
             addEventFromTimelineMiddleware,
             resetManagementPageMiddleware,
+            setEntityConfigMiddleware,
 
             getEntitiesWithCallbackMiddleware
 
@@ -211,6 +212,13 @@ const addEventFromTimelineMiddleware = store => next => action => {
     store.dispatch(newAction);
 }
 
+const setEntityConfigMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.SET_ENTITY_CONFIG) { return next(action); } 
+
+    let newAction = Object.assign({}, action, { payload: { entityConfig: action.payload.entityConfig } });
+    delete newAction.meta;
+    store.dispatch(newAction);
+}
 
 const storeChatMessageLocallyMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.STORE_MESSAGE) { return next(action); }

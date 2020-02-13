@@ -36,3 +36,4 @@ export const REFRESH_LOGIN = "refresh_login";
 export const RESET_MANAGEMENT_PAGE = "reset_management_page";
 
 export const ADD_EVENT_FROM_TIMELINE = "add_event_from_timeline";
+export const SET_ENTITY_CONFIG = "set-entity-config";

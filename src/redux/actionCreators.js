@@ -24,6 +24,11 @@ export const addEventFromTimeline = (day,month,year) => {
     }, meta: { type: types.ADD_EVENT_FROM_TIMELINE } };
 }
 
+export const setEntityConfig = (entityConfig) => {
+    return { type: types.SET_ENTITY_CONFIG, payload: {
+        entityConfig:entityConfig
+    }, meta: { type: types.SET_ENTITY_CONFIG } };
+}
 
 export const resetProductStocks = () => {
     return { type: types.RESET_PRODUCT_STOCKS, payload: {}, meta: { type: types.RESET_PRODUCT_STOCKS } };

@@ -27,7 +27,10 @@ class Management extends Component {
 
         this.loadEntityManagement = (config) => {
             this.props.removeManagedEntity();
+
             this.setState({ currentPage: 0, entityConfig: config });
+
+            this.props.setEntityConfig(config);
             this.props.getEntities({
                 entityName: config.entityName,
                 page: 0,
@@ -142,6 +145,8 @@ class Management extends Component {
 
     render() {
         console.log("managedEntity: ", this.props.managedEntity);
+      
+
         let entityList = this.props.entitiesData ? this.props.entitiesData.entities : [];
         if (null == entityList) { entityList = []; }
 
@@ -195,6 +200,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
+    setEntityConfig:(config)=>dispatch(actions.setEntityConfig(config)),
     getEntities: (request, app) => dispatch(actions.getEntityList(request, app)),
     getEntityById: (name, id, app) => {
         let action = actions.getEntityById(name, id, app);
