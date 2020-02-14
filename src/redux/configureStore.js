@@ -4,6 +4,7 @@ import * as actionCreator from './actionCreators';
 import * as types from './types';
 import * as config from '../utils/WebConfig'
 import * as stringUtil from '../utils/StringUtil';
+import * as rc from '../constant/ResponseCode'
 
 const commonAuthorizedHeader = () => {
     return {
@@ -64,7 +65,7 @@ function timeout(ms, promise) {
 const getEntitiesWithCallbackMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_ENTITY_WITH_CALLBACK) { return next(action); }
 
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: commonAuthorizedHeader()
     }))
@@ -92,7 +93,7 @@ const getEntitiesWithCallbackMiddleware = store => next => action => {
 const updateEntityMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.UPDATE_ENTITY) { return next(action); }
 
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: commonAuthorizedHeader()
     }))
@@ -146,7 +147,7 @@ const getEntityByIdMiddleware = store => next => action => {
 const getEntityListMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_ENTITY) { return next(action); }
 
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: commonAuthorizedHeader()
     }))
@@ -171,7 +172,7 @@ const getEntityListMiddleware = store => next => action => {
 
 const getMessagesMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_MESSAGE) { return next(action); }
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId") }
     })).then(response => response.json())
@@ -186,7 +187,7 @@ const getMessagesMiddleware = store => next => action => {
 
 const sendChatMessageMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.SEND_MESSAGE) { return next(action); }
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId") }
     })).then(response => response.json())
@@ -213,7 +214,7 @@ const addEventFromTimelineMiddleware = store => next => action => {
 }
 
 const setEntityConfigMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.SET_ENTITY_CONFIG) { return next(action); } 
+    if (!action.meta || action.meta.type !== types.SET_ENTITY_CONFIG) { return next(action); }
 
     let newAction = Object.assign({}, action, { payload: { entityConfig: action.payload.entityConfig } });
     delete newAction.meta;
@@ -262,7 +263,7 @@ const requestAppIdMiddleware = store => next => action => {
                 return;
             }
 
-            data.referer =  action.meta.app;
+            data.referer = action.meta.app;
 
             let newAction = Object.assign({}, action, { payload: data });
             delete newAction.meta;
@@ -296,7 +297,7 @@ const getEventByDateMiddleware = store => next => action => {
 
 const selectDivisionMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.SELECT_DIVISION) { return next(action); }
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     })).then(response => response.json())
@@ -319,7 +320,7 @@ const selectDivisionMiddleware = store => next => action => {
 
 const getDivisionsMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_DIVISIONS) { return next(action); }
-   
+
     timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
@@ -330,13 +331,18 @@ const getDivisionsMiddleware = store => next => action => {
 
             console.debug("getDivisionsMiddleware Response:", data);
             if (data.code != "00") {
-                alert("Server error");
-                return;
+                alert(data.message);
+                if (data.code == rc.CODE_INVALID_SESSION) {
+                    data.invalidSession = true;
+                } else {
+                    if (data.divisions == null) {
+                        alert("Server Error")
+                        return;
+                    }
+                    return;
+                } 
             }
-
-            if (data.divisions == null) {
-                return;
-            }
+ 
 
             let newAction = Object.assign({}, action, { payload: data });
             delete newAction.meta;
@@ -352,7 +358,7 @@ const performLogoutMiddleware = store => next => action => {
     }
     const app = action.meta.app;
 
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: { 'Content-Type': 'application/json', 'requestId': localStorage.getItem("requestId"), 'loginKey': localStorage.getItem("loginKey") }
     }))
@@ -383,7 +389,7 @@ const performLoginMiddleware = store => next => action => {
         return next(action);
     }
     const app = action.meta.app;
-    timeout(TIMEOUT,fetch(action.meta.url, {
+    timeout(TIMEOUT, fetch(action.meta.url, {
         method: POST_METHOD, body: JSON.stringify(action.payload), headers: commonAuthorizedHeader()
     }))
         .then(response => { return Promise.all([response.json(), response]); })

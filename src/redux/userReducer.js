@@ -98,10 +98,21 @@ export const reducer = (state = initState, action) => {
 
             return result;
         case types.GET_DIVISIONS:
-            result = {
-                ...state,
-                divisions: action.payload.divisions,
-            };
+            if(action.payload.invalidSession != true){
+                result = {
+                    ...state,
+                    divisions: action.payload.divisions,
+                }; 
+            }else{
+                result = {
+                    ...state,
+                    divisions: [],
+                    loggedUser: null,
+                    loginStatus: false
+                };
+            }
+           
+            
             return result;
         case types.SELECT_DIVISION:
             result = {
