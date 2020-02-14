@@ -91,7 +91,8 @@ export const getEntitiesWithCallback = (request, referer, callback) => {
             "entity": request.entityName,
             "filter": {
                 "limit": 10,
-                'fieldsFilter': {}
+                'fieldsFilter': {},
+                "entryPoint":"inputField"
             }
         },
         meta: {
