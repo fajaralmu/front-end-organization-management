@@ -443,7 +443,7 @@ const refreshLoginStatusMiddleware = store => next => action => {
 
     let newAction = Object.assign({}, action, {
         payload: {
-            loginStatus: loggedUser ? true : false,
+            loginStatus: action.payload.loginStatus,
             loginKey: localStorage.getItem("loginKey"),
             loggedUser: JSON.parse(loggedUser)
         }

@@ -58,10 +58,11 @@ export const reducer = (state = initState, action) => {
         case types.REQUEST_ID:
             result = { ...state, requestId: action.payload.message };
 
-            if (!action.payload.loggedIn) {
+            if (action.payload.loggedIn != true) {
                 
                 result.loginStatus = false;
-                result.loggedUser = null;
+                result.loggedUser = null; 
+
             }else{
                 
                 if(action.payload.sessionData){
@@ -71,7 +72,7 @@ export const reducer = (state = initState, action) => {
                 }
             }
 
-           
+           console.log("o o o result.loginStatus:",result.loginStatus)
           //  action.payload.referer.refresh();
 
             return result;

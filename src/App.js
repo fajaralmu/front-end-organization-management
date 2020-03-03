@@ -95,10 +95,10 @@ class App extends Component {
     if (this.props.requestId != this.state.requestId) {
       this.setState({ requestId: this.props.requestId });
       localStorage.setItem("requestId", this.props.requestId);
-      this.props.refreshLogin();
+      this.props.refreshLogin(this.props.loginStatus);
     }
 
-    console.log("componentDidUpdate LOGIN USER: ",this.props.loggedUser)
+    console.log("App componentDidUpdate LOGIN STATUS: ",this.props.loginStatus)
   }
 
   componentDidMount() {
@@ -211,7 +211,7 @@ class App extends Component {
               }></Route>
                <Route exact path="/management" render={
                 (renderProps) =>
-                  <Management app={this} loginStatus={this.props.loginStatus} setMenuCode={this.setMenuCode} />
+                  <Management app={this} loginStatus={this.props.loginStatus}   setMenuCode={this.setMenuCode} />
 
               }></Route>
             </Switch>
@@ -251,7 +251,7 @@ const mapDispatchToProps = dispatch => ({
   performLogin: (username, password, app) => dispatch(actions.performLogin(username, password, app)),
   performLogout: (app) => dispatch(actions.performLogout(app)),
   requestAppId: (app) => dispatch(actions.requestAppId(app)),
-  refreshLogin: () => dispatch(actions.refreshLoginStatus())
+  refreshLogin: (loginStatus) => dispatch(actions.refreshLoginStatus(loginStatus))
   // getProductCatalog: (page) => dispatch(actions.getProductList(page))
 
 })

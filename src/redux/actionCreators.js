@@ -4,6 +4,7 @@ import * as url from '../constant/Url'
 
 const hostCloud = url.hostCloud+"/api/";
 const hostLocal = url.hostLocal+"/api/";
+
 const usedHost = () => {
     if (config.debugMode() == true)
         return hostLocal;
@@ -13,8 +14,7 @@ const usedHost = () => {
 const apiBaseUrl  = () => usedHost() + "public/";
 const apiEntityBaseUrl  = () => usedHost() + "management/"
 const apiAccount = () => usedHost() + "account/"
-const apiAdmin = () => usedHost() + "admin/"
-const apiTransaction = usedHost() + "api/transaction/";
+const apiAdmin = () => usedHost() + "admin/" 
 
 export const addEventFromTimeline = (day,month,year) => {
     return { type: types.ADD_EVENT_FROM_TIMELINE, payload: {
@@ -29,25 +29,7 @@ export const setEntityConfig = (entityConfig) => {
         entityConfig:entityConfig
     }, meta: { type: types.SET_ENTITY_CONFIG } };
 }
-
-export const resetProductStocks = () => {
-    return { type: types.RESET_PRODUCT_STOCKS, payload: {}, meta: { type: types.RESET_PRODUCT_STOCKS } };
-}
-
-export const updateCart = (cart, app) => {
-    return { type: types.UPDATE_CART, payload: { cart: cart, app: app }, meta: { type: types.UPDATE_CART } };
-}
-
-export const resetProducts = () => {
-    return { type: types.RESET_PRODUCTS, payload: {}, meta: { type: types.RESET_PRODUCTS } };
-}
-export const resetSuppliers = () => {
-    return { type: types.RESET_SUPPLIERS, payload: {}, meta: { type: types.RESET_SUPPLIERS } };
-}
-export const resetCustomers = () => {
-    return { type: types.RESET_CUSTOMERS, payload: {}, meta: { type: types.RESET_CUSTOMERS } };
-}
-
+ 
 export const resetManagementPage = () => {
     return {
         type: types.RESET_MANAGEMENT_PAGE,
@@ -154,18 +136,7 @@ export const getEntityList = (request, app) => {
     };
     return requested;
 }
-
-export const getProductStocks = (name, app) => {
-    app.startLoading(true);
-    return {
-        type: types.GET_PRODUCT_STOCKS,
-        payload: { product: { name: name } },
-        meta: {
-            app: app, type: types.GET_PRODUCT_STOCKS,
-            url: apiTransaction().concat("stocks")
-        }
-    };
-}
+ 
 
 export const requestAppId = (app) => {
     app.startLoading();
@@ -220,21 +191,7 @@ export const sendChatMessage = (message, username, app) => {
     };
 }
 
-export const getProductSalesDetail = (request, app) => {
-    app.startLoading(true);
-    return {
-        type: types.GET_PRODUCT_SALES_DETAIL,
-        payload: {
-            filter:
-                { page: request.page, limit: 10, month: request.fromMonth, year: request.fromYear, monthTo: request.toMonth, yearTo: request.toYear }
-        },
-        meta: {
-            app: app,
-            type: types.GET_PRODUCT_SALES_DETAIL,
-            loadMore: request.loadMore == true, url: apiTransaction().concat("productsalesdetail/" + request.productId)
-        }
-    };
-}
+ 
 
 export const getEventByDate = (month, year, app) => {
     app.startLoading();
@@ -257,79 +214,7 @@ export const selectDivision = (id, app) => {
         }
     };
 }
-
-export const getProductListTrx = (name, app) => {
-    app.startLoading();
-    return {
-        type: types.FETCH_PRODUCT_LIST_TRX,
-        payload: {
-            entity: "product", filter: { page: 0, limit: 10, fieldsFilter: { name: name } }
-        },
-        meta: {
-            type: types.FETCH_PRODUCT_LIST, url: apiEntityBaseUrl().concat("get"), app: app
-        }
-    }
-}
-
-export const getCustomerList = (name, app) => {
-    app.startLoading();
-    return {
-        type: types.FETCH_CUSTOMER_LIST,
-        payload: {
-            entity: "customer", filter: { page: 0, limit: 10, fieldsFilter: { name: name } }
-        },
-        meta: {
-            type: types.FETCH_CUSTOMER_LIST, url: apiEntityBaseUrl().concat("get"), app: app
-        }
-    }
-}
-
-export const resetPurchaseTransaction = () => ({
-    type: types.RESET_TRX_PURCHASE,
-    payload: {},
-    meta: { type: types.RESET_TRX_PURCHASE }
-})
-export const submitPurchaseTransaction = (request, app) => {
-    app.startLoading(true);
-    console.log("Submit Supply Purchase...")
-    let requested = {
-        type: types.SUBMIT_TRX_PURCHASE,
-        payload: {
-            customer: request.customer,
-            productFlows: request.productFlows
-        },
-        meta: {
-            app: app, type: types.SUBMIT_TRX_PURCHASE, url: apiTransaction().concat("purchase")
-        }
-    };
-    return requested;
-}
-export const submitSupplyTrx = (request, app) => {
-    console.log("Submit Supply Trx...")
-    app.startLoading(true);
-    let requested = {
-        type: types.SUBMIT_TRX_SUPPLY,
-        payload: {
-            supplier: request.supplier,
-            productFlows: request.productFlows
-        },
-        meta: {
-            app: app, type: types.SUBMIT_TRX_SUPPLY, url: apiTransaction().concat("supply")
-        }
-    };
-    return requested;
-}
-
-export const getStockInfo = (stockId, app) => {
-    app.startLoading();
-    return {
-        type: types.GET_STOCK_INFO,
-        payload: { productFlow: { id: stockId } },
-        meta: {
-            app: app, type: types.GET_STOCK_INFO, url: apiTransaction().concat("stockinfo")
-        }
-    }
-}
+ 
 
 export const performLogout = (app) => {
     app.startLoading();
@@ -353,11 +238,11 @@ export const performLogin = (username, password, app) => {
     return loginRequest;
 }
 
-export const refreshLoginStatus = () => {
+export const refreshLoginStatus = (loginStatus) => {
 
     let loginRequest = {
         type: types.REFRESH_LOGIN,
-        payload: {},
+        payload: {loginStatus:loginStatus},
         meta: { type: types.REFRESH_LOGIN }
     };
     return loginRequest;
@@ -375,129 +260,12 @@ export const getDivisons = (app) => {
     };
     return loginRequest;
 }
-
-export const getAllProductCategories = () => ({
-    type: types.FETCH_PRODUCT_CATEGORIES_ALL,
-    payload: {
-        entity: "category",
-        filter: {
-            limit: 0,
-            page: 0,
-            orderBy: null,
-            orderType: null,
-            fieldsFilter: {}
-        }
-    },
-    meta: {
-        type: types.FETCH_PRODUCT_CATEGORIES_ALL,
-        url: apiEntityBaseUrl().concat("get")
-    }
-})
-
-export const getSupplierList = (request, app) => {
-    app.startLoading();
-    let requested = {
-        type: types.FETCH_SUPPLIER_LIST,
-        payload: {
-            entity: "supplier",
-            filter: {
-                limit: 10,
-                page: request.page,
-                fieldsFilter: {
-                    name: request.name
-                },
-                orderBy: request.orderby,
-                orderType: request.ordertype
-            }
-        },
-        meta: {
-            type: types.FETCH_SUPPLIER_LIST,
-            url: apiBaseUrl().concat("get"),
-            app: app
-        }
-    };
-
-    if (request.categoryId != null) {
-        requested.payload.filter.fieldsFilter["category,id[EXACTS]"] = request.categoryId;
-    }
-
-    return requested;
-}
-
-export const getProductList = (request, app) => {
-    app.startLoading(request.withStock == true);
-    let requested = {
-        type: types.FETCH_PRODUCT_LIST,
-        payload: {
-            entity: "product",
-            filter: {
-                limit: 10,
-                page: request.page,
-                fieldsFilter: {
-                    name: request.name,
-                    withStock: request.withStock
-                },
-                orderBy: request.orderby,
-                orderType: request.ordertype
-            }
-        },
-        meta: {
-            type: types.FETCH_PRODUCT_LIST,
-            url: apiBaseUrl().concat("get"),
-            app: app
-        }
-    };
-
-    if (request.categoryId != null) {
-        requested.payload.filter.fieldsFilter["category,id[EXACTS]"] = request.categoryId;
-    }
-
-    return requested;
-}
-
-
-export const getProductDetail = (code, app) => {
-    app.startLoading(true);
-    return {
-        type: types.FETCH_PRODUCT_DETAIL,
-        payload: {
-
-            entity: "product",
-            filter: {
-                limit: 1,
-                exacts: true,
-                contains: false,
-                fieldsFilter: {
-                    code: code,
-                    withStock: true,
-                    withSupplier: true
-                }
-            }
-        },
-        meta: {
-            type: types.FETCH_PRODUCT_DETAIL,
-            url: apiBaseUrl().concat("get"),
-            app: app
-        }
-    }
-}
+ 
 
 export const removeEntity = () => ({
     type: types.REMOVE_SHOP_ENTITY,
     payload: {},
     meta: { type: types.REMOVE_SHOP_ENTITY }
 })
-
-export const loadMoreSupplier = (page, productId, referrer) => {
-    referrer.props.app.startLoading();
-    return {
-        type: types.LOAD_MORE_SUPPLIER,
-        payload: { filter: { page: page, fieldsFilter: { "productId": productId } } },
-        meta: {
-            type: types.LOAD_MORE_SUPPLIER,
-            url: apiBaseUrl().concat("moresupplier"),
-            referrer: referrer
-        }
-    }
-}
+ 
 
