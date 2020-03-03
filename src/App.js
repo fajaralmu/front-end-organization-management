@@ -83,16 +83,16 @@ class App extends Component {
 
     this.handleMessage = (msg) => {
       let percentage = Math.floor(msg.percentage);
-      this.startLoading(true);
+      // this.startLoading(true);
      
-      if(msg.requestId != localStorage.getItem("requestId")){
-        return;
-      }
+      // if(msg.requestId != localStorage.getItem("requestId")){
+      //   return;
+      // }
 
-      if (msg.percentage < 0 || msg.percentage > 100) {
-        this.endLoading();
-      }
-      this.setState({ loadingPercentage: percentage });
+      // if (msg.percentage < 0 || msg.percentage > 100) {
+      //   this.endLoading();
+      // }
+      // this.setState({ loadingPercentage: percentage });
     }
   }
 

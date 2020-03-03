@@ -183,9 +183,9 @@ export const memberConfig = {
     id: "id",
     fieldNames: [
         { name: "name" },
-        { name: "position" },
-        { name: "section" },
-        { name: "description" }
+        { name: "position.name" },
+        { name: "section.name" },
+        { name: "description.name" }
 
     ],
     formData: [
