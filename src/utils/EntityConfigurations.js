@@ -213,7 +213,7 @@ export const memberConfig = {
         {
             lableName: "Deskripsi",
             inputType: "textarea",
-            name: "name"
+            name: "description"
         },
 
     ]
