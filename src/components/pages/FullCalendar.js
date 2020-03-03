@@ -14,7 +14,7 @@ class FullCalendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedMonth: new Date().getMonth(),
+            selectedMonth: new Date().getMonth() + 1,
             inputYearValue: new Date().getFullYear(),
             activeId: "", 
             selectedDay: 0
