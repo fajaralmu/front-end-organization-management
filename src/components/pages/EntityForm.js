@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import InputFile from '../input/InputFile'
 import * as url from '../../constant/Url'
 import InputFileMultiple from '../input/InputFileMultiple'
+import { TYPE_DYNAMIC_DROPDOWN, TYPE_STATIC_DROPDOWN, TYPE_MULTIPLE_IMAGE, TYPE_SINGLE_IMAGE } from '../../utils/EntityConfigurations'
 
 class EntityForm extends Component {
     constructor(props) {
@@ -441,7 +442,7 @@ class EntityForm extends Component {
                     let inputComponent = null;
                     const inputId = "input-for-" + data.name;
 
-                    if (data.inputType == "dynamicDropdown") {
+                    if (data.inputType == TYPE_DYNAMIC_DROPDOWN) {
                         /**
                          * if dynamic dropDown
                          */
@@ -458,7 +459,7 @@ class EntityForm extends Component {
                             dropdownList={this.state.dropdownList[data.name]}
                             onKeyUp={(value, id) => { this.onKeyUpDynamicDropdown(value, id, data.name, data.reffEntity) }} />
 
-                    } else  if (data.inputType == "staticDropDown") {
+                    } else  if (data.inputType == TYPE_STATIC_DROPDOWN) {
                         /**
                          * if static drop down
                          */
@@ -469,7 +470,7 @@ class EntityForm extends Component {
                             options={data.options} id={stringUtil.uniqueId()}
                          />
 
-                    } else if (data.inputType == "singleImage") {
+                    } else if (data.inputType == TYPE_SINGLE_IMAGE) {
                         /**
                          * handle image single
                          */
@@ -481,7 +482,7 @@ class EntityForm extends Component {
 
                         />
 
-                    } else if (data.inputType == "multipleImage") {
+                    } else if (data.inputType == TYPE_MULTIPLE_IMAGE) {
                         /**
                          * handle multiple single
                          */

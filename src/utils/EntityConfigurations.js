@@ -1,3 +1,14 @@
+export const TYPE_DYNAMIC_DROPDOWN  = "dynamicDropdown";
+export const TYPE_TEXTAREA = "textarea";
+
+export const TYPE_LONG_DATE = "longDate";
+export const TYPE_STATIC_DROPDOWN = "staticDropdown";
+export const TYPE_NUMBER = "number";
+export const TYPE_TEXT = "text";
+
+export const TYPE_MULTIPLE_IMAGE = "multipleImage";
+export const TYPE_SINGLE_IMAGE = "singleImage";
+
 export const divisionConfig = {
     title: "Badan Pengurus",
     entityName: "division",
@@ -10,18 +21,18 @@ export const divisionConfig = {
     formData: [
         {
             lableName: "Nama BPD",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
 
         {
             lableName: "Deskripsi BPD",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "description"
         },
         {
             lableName: "Division Insitusi",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "institution.name",
             reffEntity: "Institution",
             idField: "id",
@@ -41,13 +52,13 @@ export const sectionConfig = {
     formData: [
         {
             lableName: "Nama Divisi",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
 
         {
             lableName: "BPD",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "division.name",
             reffEntity: "division",
             idField: "id",
@@ -69,17 +80,17 @@ export const programConfig = {
     formData: [
         {
             lableName: "Nama Proker",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
             lableName: "Deskripsi Proker",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "description"
         },
         {
             lableName: "Nama Divisi",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "section.name",
             reffEntity: "section",
             idField: "id",
@@ -101,18 +112,18 @@ export const eventConfig = {
     fieldNames: [
         { name: "name" },
         { name: "info" },
-        { name: "date", type: "longDate" },
+        { name: "date", type: TYPE_LONG_DATE },
         { name: "location" },
         { name: "program.name" },
         { name: "participant" },
         {
-            name: "done", type: "staticDropdown", options:eventStatus
+            name: "done", type: TYPE_STATIC_DROPDOWN, options:eventStatus
         }
     ],
     formData: [
         {
             lableName: "Nama Kegiatan",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
@@ -122,16 +133,16 @@ export const eventConfig = {
         },
         {
             lableName: "Info Kegiatan",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "info"
         }, {
             lableName: "Lokasi Kegiatan",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "location"
         },
         {
             lableName: "Nama Program",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "program.name",
             reffEntity: "program",
             idField: "id",
@@ -139,13 +150,13 @@ export const eventConfig = {
         },
         {
             lableName: "Status Kegiatan",
-            inputType: "staticDropDown",
+            inputType: TYPE_STATIC_DROPDOWN,
             name: "done",
             options:eventStatus
         },
         {
             lableName: "Peserta",
-            inputType: "number",
+            inputType: TYPE_NUMBER,
             name: "participant"
         },
     ]
@@ -164,12 +175,12 @@ export const positionConfig = {
     formData: [
         {
             lableName: "Nama Posisi",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
             lableName: "Deskripsi",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "description"
         },
 
@@ -191,12 +202,12 @@ export const memberConfig = {
     formData: [
         {
             lableName: "Nama Anggota",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
             lableName: "Nama Posisi",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "position.name",
             reffEntity: "position",
             idField: "id",
@@ -204,7 +215,7 @@ export const memberConfig = {
         },
         {
             lableName: "Nama Divisi",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "section.name",
             reffEntity: "section",
             idField: "id",
@@ -212,7 +223,7 @@ export const memberConfig = {
         },
         {
             lableName: "Deskripsi",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "description"
         },
 
@@ -238,18 +249,18 @@ export const productConfig = {
     fieldNames: [
         { name: "name" }, { name: "code" },
         { name: "description" }, { name: "unit.name" },
-        { name: "price", type: "number" }, { name: "category.name" },
+        { name: "price", type: TYPE_NUMBER }, { name: "category.name" },
         { name: "imageUrl", type: "imageMultiple" }
     ],
     formData: [
         {
             lableName: "Product Name",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
             lableName: "Product Code",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "code"
         },
         {
@@ -259,12 +270,12 @@ export const productConfig = {
         },
         {
             lableName: "Product Description",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "description"
         },
         {
             lableName: "Product Unit",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "unit.name",
             reffEntity: "Unit",
             idField: "id",
@@ -272,12 +283,12 @@ export const productConfig = {
         },
         {
             lableName: "Product Price",
-            inputType: "number",
+            inputType: TYPE_NUMBER,
             name: "price"
         },
         {
             lableName: "Product Category",
-            inputType: "dynamicDropdown",
+            inputType: TYPE_DYNAMIC_DROPDOWN,
             name: "category.name",
             reffEntity: "Category",
             idField: "id",
@@ -298,17 +309,17 @@ export const supplierList = {
     formData: [
         {
             lableName: "Supplier Name",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
             lableName: "Supplier Address",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "address"
         },
         {
             lableName: "Supplier Contact",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "contact"
         },
         {
@@ -318,7 +329,7 @@ export const supplierList = {
         },
         {
             lableName: "Supplier Website",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "website"
         }
     ]
@@ -333,22 +344,22 @@ export const customerList = {
     formData: [
         {
             lableName: "Customer Unique Name",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "username"
         },
         {
             lableName: "Customer Name",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "name"
         },
         {
             lableName: "Customer Address",
-            inputType: "textarea",
+            inputType: TYPE_TEXTAREA,
             name: "address"
         },
         {
             lableName: "Customer Phone",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "phone"
         },
         {
@@ -365,34 +376,34 @@ export const transactionConfig = {
     disabled: true,
     id: "id",
     fieldNames: [
-        { name: "code" }, { name: "transactionDate", type: "longDate" },
+        { name: "code" }, { name: "transactionDate", type: TYPE_LONG_DATE },
         { name: "type" }, { name: "supplier.name" },
         { name: "customer.name" }
     ],
     formData: [
         {
             lableName: "Transaction Code",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "code"
         },
         {
             lableName: "Date",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "transactionDate"
         },
         {
             lableName: "Transaction Type",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "type"
         },
         {
             lableName: "Supplier",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "supplier.name"
         },
         {
             lableName: "Customer",
-            inputType: "text",
+            inputType: TYPE_TEXT,
             name: "customer.name",
         },
 
