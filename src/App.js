@@ -17,6 +17,7 @@ import Footer from './components/layout/Footer';
 import SockJsClient from 'react-stomp';
 import ChatRoom from './components/pages/ChatRoom';
 import Management from './components/pages/Management'; 
+import { uniqueId } from './utils/StringUtil';
 
 
 class App extends Component {
@@ -82,6 +83,12 @@ class App extends Component {
 
     this.handleMessage = (msg) => {
       let percentage = Math.floor(msg.percentage);
+      this.startLoading(true);
+     
+      if(msg.requestId != localStorage.getItem("requestId")){
+        return;
+      }
+
       if (msg.percentage < 0 || msg.percentage > 100) {
         this.endLoading();
       }
@@ -133,7 +140,7 @@ class App extends Component {
 
     if (!this.state.requestId) {
       return (
-        <div>
+        <div key={uniqueId()}>
           {header}
           Please wait..
         </div>
@@ -157,7 +164,7 @@ class App extends Component {
     let menus = this.setMenus();
  
     let cloudHost = "https://nuswantoroshop.herokuapp.com/";
-    let localHost = "http://localhost:8080/universal-good-shop/";
+    let localHost = "http://localhost:8080/organization-management/";
     const usedHost = localHost;
     return (
       <div className="App">
@@ -219,7 +226,7 @@ class App extends Component {
           </div>
          
         </div>
-        <SockJsClient url={usedHost+'shop-app'} topics={['/wsResp/progress']}
+        <SockJsClient url={usedHost+'realtime-app'} topics={['/wsResp/progress']}
           onMessage={(msg) => { this.handleMessage(msg) }}
           ref={(client) => { this.clientRef = client }} />
         <Footer />

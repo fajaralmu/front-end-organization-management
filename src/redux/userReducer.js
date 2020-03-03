@@ -69,6 +69,7 @@ export const reducer = (state = initState, action) => {
                     
                     result.division = action.payload.sessionData.division;
                     result.loggedUser = action.payload.sessionData.user;
+                    result.loginStatus = action.payload.loggedIn;
                 }
             }
 

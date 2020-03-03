@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../../css/Common.css'
 import '../../css/Button.css'
 import GridComponent from '../layout/GridComponent';
+import { uniqueId } from '../../utils/StringUtil';
 
 class ToggleButton extends Component {
     constructor(props) {
@@ -31,12 +32,9 @@ class ToggleButton extends Component {
         return (
             <div style={{fontSize:'13px'}}>
                 <GridComponent items={[
-                    <div onClick={this.onClick} className={outerClass}>
-                        <div  className={innerClass} > 
-                         
-                            </div>
-                    </div>,
-                    <span>{this.props.text}</span>
+                    <div key={uniqueId()} onClick={this.onClick} className={outerClass}>
+                        <div  className={innerClass} ></div></div>,
+                    <span  key={uniqueId()}>{this.props.text}</span>
                 ]} />
             </div>
         )

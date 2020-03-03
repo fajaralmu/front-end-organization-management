@@ -252,11 +252,7 @@ const requestAppIdMiddleware = store => next => action => {
         method: POST_METHOD, body: JSON.stringify(action.payload),
         headers: headers
     })).then(response => response.json())
-        .then(data => {
-            data = (data);
-
-
-
+        .then(data => { 
             console.debug(config.debugMode(), "requestAppIdMiddleware Response:", data);
             if (data.code != "00") {
                 alert("Error requesting app ID");

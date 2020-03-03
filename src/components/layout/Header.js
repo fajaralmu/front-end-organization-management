@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../../css/Header.css'
 import ToggleButton from '../buttons/ToggleButton';
 import * as config from '../../utils/WebConfig'
+import { uniqueId } from '../../utils/StringUtil';
 
 class Header extends Component {
 
@@ -27,7 +28,7 @@ class Header extends Component {
         const debugMode =  localStorage.getItem("debugMode");
         const isDebugMode =  localStorage.getItem("debugMode") == "true";
         return (
-            <div className="App-header">
+            <div key={uniqueId()} className="App-header">
                 {this.props.title}
                 <ToggleButton active={isDebugMode} onClick={this.handleClick} text={"Debug Mode: "+debugMode} />
             </div>
