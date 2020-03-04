@@ -2,6 +2,7 @@ export const TYPE_DYNAMIC_DROPDOWN  = "dynamicDropdown";
 export const TYPE_TEXTAREA = "textarea";
 
 export const TYPE_LONG_DATE = "longDate";
+export const TYPE_DATE = "date";
 export const TYPE_STATIC_DROPDOWN = "staticDropdown";
 export const TYPE_NUMBER = "number";
 export const TYPE_TEXT = "text";

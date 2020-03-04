@@ -13,6 +13,7 @@ import EntityForm from './EntityForm';
 import * as url from '../../constant/Url'
 import Label from '../Label'
 import GridComponent from '../layout/GridComponent'
+import { TYPE_LONG_DATE, TYPE_STATIC_DROPDOWN, TYPE_MULTIPLE_IMAGE, TYPE_DATE } from '../../utils/EntityConfigurations'
 
 class EntityList extends Component {
     constructor(props) {
@@ -115,7 +116,7 @@ class EntityList extends Component {
                     onKeyUp={this.handleFilterChange} key={"input_field_" + stringUtil.uniqueId()}
                     placeholder={headerName} />
 
-                if (fieldName.type == "date") {
+                if (fieldName.type == TYPE_DATE || fieldName.type == TYPE_LONG_DATE) {
                     const valueDay = this.state.filter[headerName + "-day"];
                     const valueMonth = this.state.filter[headerName + "-month"];
                     const valueYear = this.state.filter[headerName + "-year"];
@@ -235,14 +236,14 @@ class EntityList extends Component {
                         entityValue = <a href={entityValue}><u>{entityValue}</u></a>
                     } else if (fieldItem.type == "image") {
                         entityValue = <img width="60" height="60" alt={url.baseImageUrl + entityValue} src={url.baseImageUrl + entityValue} />
-                    } else if (fieldItem.type == "imageMultiple") {
+                    } else if (fieldItem.type == TYPE_MULTIPLE_IMAGE) {
                         let imgName = entityValue.split("~")[0];
 
                         entityValue = <img width="60" height="60" src={url.baseImageUrl + imgName} />
-                    } else if (fieldItem.type == "longDate") {
+                    } else if (fieldItem.type == TYPE_LONG_DATE) {
                         const dateStr = new Date(entityValue).toDateString();
                         entityValue = <Label text={dateStr} />;
-                    } else if (fieldItem.type == "staticDropdown") {
+                    } else if (fieldItem.type == TYPE_STATIC_DROPDOWN) {
                         const options = fieldItem.options;
 
                         options.forEach(opt => {
