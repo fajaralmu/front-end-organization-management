@@ -17,8 +17,19 @@ import Footer from './components/layout/Footer';
 import SockJsClient from 'react-stomp';
 import ChatRoom from './components/pages/ChatRoom';
 import Management from './components/pages/Management'; 
-import { uniqueId } from './utils/StringUtil';
+import { uniqueId } from './utils/StringUtil'; 
+import * as config from './utils/WebConfig'
+import * as url from './constant/Url'
 
+const hostCloud = url.hostCloud;
+const hostLocal = url.hostLocal;
+
+const usedHost = () => {
+    if (config.debugMode() == true)
+        return hostLocal;
+    else
+        return hostCloud;
+} 
 
 class App extends Component {
 
@@ -163,9 +174,7 @@ class App extends Component {
 
     let menus = this.setMenus();
  
-    let cloudHost = "https://nuswantoroshop.herokuapp.com/";
-    let localHost = "http://localhost:8080/organization-management/";
-    const usedHost = localHost;
+    
     return (
       <div className="App">
         {loadingComponent}
@@ -226,7 +235,7 @@ class App extends Component {
           </div>
          
         </div>
-        <SockJsClient url={usedHost+'realtime-app'} topics={['/wsResp/progress']}
+        <SockJsClient url={usedHost()+'/realtime-app'} topics={['/wsResp/progress']}
           onMessage={(msg) => { this.handleMessage(msg) }}
           ref={(client) => { this.clientRef = client }} />
         <Footer />

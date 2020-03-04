@@ -1,0 +1,293 @@
+<!doctype html><html>
+<head>
+<title>Divisi</title>
+
+<script type="text/javascript">
+var TITLE = 0;
+var PARAGRAPH = 2;
+var LIST = 1;
+
+var contents = [ 
+    {	"id":"div_media",
+        "contents": [
+            {
+                "type": TITLE,
+                "text": "Divisi Media"
+            },
+            {
+                "type": PARAGRAPH,
+                "text": "Divisi Media bertanggungjawab dalam mendokumentasikan dan mempublikasikan segala kegiatan dan hal yang berkaitan dengan organisasi MPI kepada umat  hususnya mahasiswa melalui perangkat media yang ada. Adapun tugas dasar dari Divisi Media adalah:"
+            },
+            {
+                "type": LIST,
+                "text": "",
+                "items": [
+                    "Medokumentasikan segala kegiatan MPI.",
+                    "Berkejasama dan berkoordinasi dengan divisi MPI lainya untuk membantu keberhasilan kegiatan menggunakan perangkat media yang ada.",
+                    "Melakukan kegiatan image building organisasi secara khusus untuk mahasiswa dan umat pada umumnya dengan menggunakan perangkat media yang ada"
+                ]
+            }
+        ]
+    },
+    {
+		"id":"div_humas",
+        "contents": [
+            {
+                "type": TITLE,
+                "text": "Divisi Humas"
+            },
+            {
+                "type": PARAGRAPH,
+                "text": "Divisi Humas bertanggungjawab dalam mendokumentasikan dan mempublikasikan segala kegiatan dan hal yang berkaitan dengan organisasi MPI kepada umat  hususnya mahasiswa melalui perangkat media yang ada. Adapun tugas dasar dari Divisi Media adalah:"
+            },
+            {
+                "type": LIST,
+                "text": "",
+                "items": [
+                    "Humas Medokumentasikan segala kegiatan MPI.",
+                    "Humas Berkejasama dan berkoordinasi dengan divisi MPI lainya untuk membantu keberhasilan kegiatan menggunakan perangkat media yang ada.",
+                    "Humas Melakukan kegiatan image building organisasi secara khusus untuk mahasiswa dan umat pada umumnya dengan menggunakan perangkat media yang ada"
+                ]
+            }
+        ]
+    },
+    {
+		"id":"div_kaderisasi",
+        "contents": [
+            {
+                "type": TITLE,
+                "text": "Divisi Kaderisasi"
+            },
+            {
+                "type": PARAGRAPH,
+                "text": "Divisi Kaderisasi bertanggungjawab dalam mendokumentasikan dan mempublikasikan segala kegiatan dan hal yang berkaitan dengan organisasi MPI kepada umat  hususnya mahasiswa melalui perangkat media yang ada. Adapun tugas dasar dari Divisi Media adalah:"
+            },
+            {
+                "type": LIST,
+                "text": "",
+                "items": [
+                    "Kaderisasi Medokumentasikan segala kegiatan MPI.",
+                    "Kaderisasi Berkejasama dan berkoordinasi dengan divisi MPI lainya untuk membantu keberhasilan kegiatan menggunakan perangkat media yang ada.",
+                    "Kaderisasi Melakukan kegiatan image building organisasi secara khusus untuk mahasiswa dan umat pada umumnya dengan menggunakan perangkat media yang ada"
+                ]
+            }
+        ]
+    },
+    {
+		"id":"div_syiar",
+        "contents": [
+            {
+                "type": TITLE,
+                "text": "Divisi Syiar"
+            },
+            {
+                "type": PARAGRAPH,
+                "text": "Divisi Media bertanggungjawab dalam mendokumentasikan dan mempublikasikan segala kegiatan dan hal yang berkaitan dengan organisasi MPI kepada umat  hususnya mahasiswa melalui perangkat media yang ada. Adapun tugas dasar dari Divisi Media adalah:"
+            },
+            {
+                "type": LIST,
+                "text": "",
+                "items": [
+                    "Medokumentasikan segala kegiatan MPI.",
+                    "Berkejasama dan berkoordinasi dengan divisi MPI lainya untuk membantu keberhasilan kegiatan menggunakan perangkat media yang ada.",
+                    "Melakukan kegiatan image building organisasi secara khusus untuk mahasiswa dan umat pada umumnya dengan menggunakan perangkat media yang ada"
+                ]
+            }
+        ]
+    }
+]; 
+
+
+</script>
+
+<style>
+	body{
+		background-color: gray;
+	}
+
+	.page-container{
+		background-color:  white;
+		margin:auto;
+		width:80%;
+		padding:5px;
+	}
+	
+	/**************** TAB *************/
+	
+	.tab-menu{ 
+	
+		font-family: Arial;
+		border-top: solid 1px;
+		border-left: solid 1px;
+		border-right: solid 1px; 
+		text-align: center;
+		vertical-align: middle;
+		padding: 5px;
+	
+	}
+	
+	.tab-menu:hover{
+		cursor: pointer;
+		background-color: lightGray;
+	}
+	
+	.tab-parent{
+		display: grid;
+		grid-template-columns: 15% 15% 15% 15% auto;
+		vertical-align: middle;
+		
+	}
+	
+	.active{
+	 border-bottom: none;
+	
+	}
+	.inactive {
+		color: green;
+		border: solid 1px black;
+	}
+	
+
+</style>
+</head>
+<body onload="populateInfo()">
+
+<div class="page-container">
+<h2>
+Divisi Mahasiswa Pencinta Islam
+</h2>
+<div class="tab-parent" >
+<div data="div_humas" onclick="showContent(this)" id="nav-div_humas" class="tab-menu">Divisi Humas</div>
+<div data="div_syiar" onclick="showContent(this)"  id="nav-div_syiar" class="tab-menu">Divisi Syiar</div>
+<div data="div_kaderisasi" onclick="showContent(this)"  id="nav-div_kaderisasi" class="tab-menu">Divisi Kaderisasi</div>
+<div data="div_media" onclick="showContent(this)"  id="nav-div_media" class="tab-menu">Divisi Media</div>
+<div style="width: 100%; border-bottom: solid 1px;"></div>
+</div>
+<div id="content" class="content">
+<h2>
+Content
+</h2>
+</div>
+</div>
+<script  type="text/javascript">
+
+const contentBody 	= document.getElementById("content");
+const tabMenus		= document.getElementsByClassName("tab-menu");
+ 
+function showContent(e){
+
+	const data = e.getAttribute("data");
+	doPopulateContent(data);
+
+}
+ 
+function getContentById(id){
+
+	for(let i=0;i<contents.length;i++){
+		
+		let content = contents[i];
+		if(content.id == id){
+			return content;
+		}
+	
+	}
+
+	return null;
+}
+ 
+
+function setActiveTab(id){
+
+	for(let i=0;i<tabMenus.length;i++){
+		
+		const tabMenu = tabMenus[i];
+		 
+		
+		if(tabMenu.id == "nav-"+id){
+			tabMenus[i].setAttribute("class","tab-menu active");
+		}else{
+			tabMenus[i].setAttribute("class","tab-menu inactive");
+		}
+		
+		console.log("tab menu class: ",tabMenu.class, tabMenu.id );
+	
+	}
+
+}
+
+function populateInfo(){
+
+	let content = contents[0];
+	doPopulateContent(content.id);
+	 
+}
+
+function doPopulateContent(id){
+	
+	let content = getContentById(id);
+	if(content == null){
+		return;
+	
+	}
+	
+	contentBody.innerHTML = "";
+	
+	const contentId = content.id;
+	const theContents  = content.contents;
+	
+	for(let i=0;i<theContents.length;i++){
+		
+		let contentItem = theContents[i];
+		let type		= contentItem.type;
+		let contentText = contentItem.text;
+		
+		if(type == TITLE){
+			
+			let el = createElement("h2", contentText);
+			contentBody.appendChild(el);
+		
+		}else if(type == PARAGRAPH){
+		
+			let el = createElement("p", contentText);
+			contentBody.appendChild(el);
+		
+		}else if(type == LIST){
+			
+			let ul 		= createElement("ul", null);
+			let list 	= contentItem.items;
+			
+			for(let j=0;j<list.length;j++){
+				
+				let li = createElement("li", list[j]);
+				ul.appendChild(li);
+			
+			}
+			
+			contentBody.appendChild(ul);
+		
+		}
+		
+	}
+	
+	setActiveTab(contentId);
+	
+	
+
+}
+
+function createElement(tag, html){
+	let el = document.createElement(tag);
+	if(html!=null){
+		el.innerHTML = html;
+	
+	}
+	
+	return el;
+
+}
+
+
+</script>
+
+</body>
+</html>
