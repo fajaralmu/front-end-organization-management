@@ -155,9 +155,15 @@ const getEntityListMiddleware = store => next => action => {
         .then(data => {
 
             data = (data);
+
+            if(data.code != "00"){
+                alert("error requesting: "+data.message);
+                return;
+            }
+
             console.debug("Response:", data);
             if (data.entities == null || data.entities.length == 0) {
-                data.entitie = [];
+                data.entities = [];
             }
             data.entityConfig = action.meta.entityConfig;
             let newAction = Object.assign({}, action, {
