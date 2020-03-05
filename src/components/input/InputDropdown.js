@@ -48,21 +48,24 @@ class InputDropdown extends Component {
     render() {
         let dropdownList = [];
         let dropdownComponent = "";
-        if (this.state.focus && this.props.dropdownList && this.props.dropdownList.length > 0) {
+        if (this.props.dropdownList && this.props.dropdownList.length > 0) {
             dropdownList = this.props.dropdownList;
-            // console.log("RENDERD HOVER:", this.state.hoverIndex);
+
             dropdownComponent = <div className="dropdown">
                 {dropdownList.map(
                     (data, i) => {
                         let className = "dropdown-item";
+                        const key = "dropdown-item-" + i;
+
                         if (this.state.hoverIndex == i) className = "dropdown-item-hovered";
                         return (
                             <div
-                                id={stringUtil.uniqueId()}
-                                key={"dropdown-xx-" + stringUtil.uniqueId()}
-                                onClick={() => this.onSelect(data.value, data.text)}
+                                key={key}
+                                onClick={(e) => this.onSelect(data.value, data.text)}
                                 className={className}>
-                                <DropdownItem onHover={this.onHover} index={i} text={data.text} />
+                                <DropdownItem onClick={(e) => this.onSelect(data.value, data.text)}
+                                    onHover={this.onHover}
+                                    index={i} text={data.text} />
                             </div>
                         )
                     })}
@@ -76,6 +79,7 @@ class InputDropdown extends Component {
                 onMouseOver={() => this.setState({ focus: true })}
                 onMouseLeave={this.onBlur}
                 className="dropdown-wrapper input-field">
+
                 <input
                     className={inputClassName}
                     onFocus={() => this.setState({ focus: true })}

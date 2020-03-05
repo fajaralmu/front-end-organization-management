@@ -4,10 +4,12 @@
 }
 
 .action-button{
-    margin:1px
+    margin:1px;
+    width:max-content;
 }
 
 button{ 
+   
     padding-right:7px;
     padding-left:7px;
     padding-top:5px;

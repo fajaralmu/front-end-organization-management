@@ -9,9 +9,17 @@ class DropdownItem extends Component {
             hover: false
         }
 
+        this.handleClick = (e) => {
+            console.log("selected: ",e.target.innerHTML);
+            if(this.props.onClick){
+                this.props.onClick(e);
+            }
+        }
+
         this.onHover = (e) => {
+          
             if(this.props.onHover)
-                this.props.onHover( this.props.index);
+                this.props.onHover( this.props.index); 
         }
         this.unHover = (e) => { 
             this.setState({ hover: false })
@@ -21,8 +29,12 @@ class DropdownItem extends Component {
 
     render() {
           return (
-            <div onMouseLeave={this.unHover} onMouseOver ={this.onHover}  >
+              <div>
+                
+                <div    onMouseLeave={this.unHover} onMouseOver ={this.onHover}  >
                 {this.props.text}</div>
+              </div>
+          
         )
     }
 }
