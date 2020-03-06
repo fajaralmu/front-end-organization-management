@@ -10,22 +10,23 @@ class Tab extends React.Component {
     render() {
         let tabsData = this.props.tabsData ? this.props.tabsData : [];
 
-        let autoColumns = "5% "+("max-content ".repeat(tabsData.length ))+" auto";
+        let autoColumns = "5% " + ("max-content ".repeat(tabsData.length)) + " auto";
         return (
             <div className="tab-container" style={{
                 ...this.props.style,
-                width:'auto',
-                gap:'0px',
+                width: 'auto',
+                gap: '0px',
                 display: 'grid',
+                msGridColumns: autoColumns,
                 gridTemplateColumns: autoColumns
             }} >
-                 <div style={{width:'100%', borderBottom:'solid 1px lightgray'}}></div>
+                <div style={{ width: '100%', borderBottom: 'solid 1px lightgray' }}></div>
                 {tabsData.map(tabData => {
                     return <div key={stringUtil.uniqueId()} className={tabData.active ? "tab-element tab-item-active rounded-top" : "tab-element tab-item"} onClick={tabData.onClick ? tabData.onClick : () => { }}>
                         {tabData.text}
                     </div>
                 })}
-                <div style={{width:'100%', borderBottom:'solid 1px lightgray'}}></div>
+                <div style={{ width: '100%', borderBottom: 'solid 1px lightgray' }}></div>
             </div>
         )
     }
