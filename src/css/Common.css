@@ -67,3 +67,8 @@ h1{
 body{
     background-color: lightgrey
 }
+
+.grid-container{
+    display: grid;
+    display: -ms-grid;
+}

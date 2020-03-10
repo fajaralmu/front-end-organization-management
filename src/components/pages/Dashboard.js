@@ -67,12 +67,12 @@ class Dashboard extends Component {
         let content = null;
         switch (this.state.menu) {
             case 'home':
-                content = <DashboardMain  division={this.props.division} 
-                    selectDivision={this.selectDivision} 
-                    divisions={this.props.divisions} />
+                    content         = <DashboardMain  division={this.props.division} 
+                    selectDivision  ={this.selectDivision} 
+                    divisions       ={this.props.divisions} />
                 break;
             case "timeline":
-                    content = <Timeline app={this.props.app} />
+                    content         = <Timeline app={this.props.app} />
                 break;
             default:
                 break;

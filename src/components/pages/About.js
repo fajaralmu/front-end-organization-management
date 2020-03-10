@@ -26,9 +26,9 @@ class About extends Component {
             <div className="section-container about-section  " >
                 <ContentTitle title="About Us" />
                 <div className=" abount-content" style={{
-                    padding: '5px',
-                    width: '90%',
-                    fontFamily: 'Consolas', margin: '5px'
+                    padding     : '5px',
+                    width       : '90%',
+                    fontFamily  : 'Consolas', margin: '5px'
                 }}>
                     <InstantTable
                         rows={[

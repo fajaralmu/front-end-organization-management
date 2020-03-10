@@ -15,12 +15,19 @@ class ActionButton extends Component {
 
     render() {
         let className = "action-button rounded";
+
         if(this.props.status!= null ){
             className=className.concat(" ").concat(this.props.status);
         }
         return (
             <div >
-                <button style={{...this.props.style}} className={className} id={this.props.id} onClick={this.onClick}>{this.props.text}</button>
+                <button 
+                style       ={{...this.props.style}} 
+                className   ={className} 
+                id          ={this.props.id} 
+                onClick     ={this.onClick}>
+                {this.props.text}
+                </button>
             </div>
         )
     }

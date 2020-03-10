@@ -14,18 +14,29 @@ class NavButtons extends Component {
         if (this.props.buttonsData) {
             buttonsData = this.props.buttonsData;
         }
-        const gridTemplateColumns = "auto ".repeat(buttonsData.length);
+        const gridTemplateColumns   = "auto ".repeat(buttonsData.length);
+        const msGridTemplateColumns = "1fr ".repeat(buttonsData.length);
         return (
-            <div className="nav-button-wrapper" style={{ width: 'min-content', display: 'grid', gridTemplateColumns: gridTemplateColumns }}>
+            <div className  ="nav-button-wrapper grid-container" 
+                style       ={{ 
+                    width               : 'min-content', 
+                 //   display             : 'grid', 
+                    gridTemplateColumns : gridTemplateColumns,
+                    msGridColumns       : msGridTemplateColumns }}
+                    >
                 {buttonsData.map(
                     buttonData => {
                         return (
-                            <ActionButton style={{
-                                backgroundColor: buttonData.active ? 'lightsteelblue' : 'darkcyan'
-                            }}
+                            <ActionButton 
+                                style   ={{
+                                         backgroundColor: buttonData.active ? 'lightsteelblue' : 'darkcyan'
+                                         }}
 
-                                id={buttonData.id} onClick={buttonData.buttonClick}
-                                key={stringUtil.uniqueId() + "_nav"} text={buttonData.text} />
+                                id      ={buttonData.id} 
+                                onClick ={buttonData.buttonClick}
+                                key     ={stringUtil.uniqueId() + "_nav"} 
+                                text    ={buttonData.text} 
+                                />
                         )
                     }
                 )}

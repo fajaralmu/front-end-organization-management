@@ -10,8 +10,9 @@ class ContentTitle extends Component {
 
     render() {
 
-        let title = this.props.title ? this.props.title : "";
+        let title       = this.props.title ? this.props.title : "";
         let description = this.props.description ? this.props.description : "";
+        
         return (
             <div className="content-title">
                 <h2>{title}</h2>
