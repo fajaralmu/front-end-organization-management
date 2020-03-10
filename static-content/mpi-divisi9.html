@@ -113,7 +113,8 @@ var contents = [
 	}
 	
 	/**************** TAB *************/
-	
+	body { margin: 0; }
+	 
 	.tab-menu{ 
 	
 		font-family: Arial;
@@ -123,6 +124,11 @@ var contents = [
 		text-align: center;
 		vertical-align: middle;
 		padding: 5px;
+		-ms-grid-column: 1;
+  		
+  		-ms-grid-column-span: 1; 
+
+	
 	
 	}
 	
@@ -131,23 +137,29 @@ var contents = [
 		background-color: lightGray;
 	}
 	
-	.tab-parent{
+	.tab-parent{ 
+		//grid-template-areas: "a b c d";
 		display: -ms-grid;
-		display: grid;
-		-ms-grid-columns: 15% 15% 15% 15% auto;
-		grid-template-columns: 15% 15% 15% 15% auto;
-		vertical-align: middle;
+  display: grid;
+  grid-gap: 10px;
+  -ms-grid-columns: 50px 50px;
+  grid-template-columns: 50px 50px;
+  -ms-grid-rows: 50px 50px;
+  grid-template-rows: 50px 50px;
+  background-color: #fff;
+  color: #444;
 		
 	}
 	
 	.active{
-	 border-bottom: none;
+	 	border-bottom: none;
 	
 	}
 	.inactive {
 		color: green;
 		border: solid 1px black;
 	}
+ 
 	
 
 </style>
@@ -159,11 +171,11 @@ var contents = [
 Divisi Mahasiswa Pencinta Islam
 </h2>
 <div class="tab-parent" >
-<div data="div_humas" onclick="showContent(this)" id="nav-div_humas" class="tab-menu">Divisi Humas</div>
-<div data="div_syiar" onclick="showContent(this)"  id="nav-div_syiar" class="tab-menu">Divisi Syiar</div>
-<div data="div_kaderisasi" onclick="showContent(this)"  id="nav-div_kaderisasi" class="tab-menu">Divisi Kaderisasi</div>
-<div data="div_media" onclick="showContent(this)"  id="nav-div_media" class="tab-menu">Divisi Media</div>
-<div style="width: 100%; border-bottom: solid 1px;"></div>
+<div data="div_humas" style="grid-area: a; -ms-grid-column: 1;" onclick="showContent(this)" id="nav-div_humas" class="tab-menu">Divisi Humas</div>
+<div data="div_syiar" style="grid-area: b; -ms-grid-column: 2;" onclick="showContent(this)"  id="nav-div_syiar" class="tab-menu">Divisi Syiar</div>
+<div data="div_kaderisasi" style="grid-area: c; -ms-grid-column: 3;" onclick="showContent(this)"  id="nav-div_kaderisasi" class="tab-menu">Divisi Kaderisasi</div>
+<div data="div_media" style="grid-area: d; -ms-grid-column: 4;" onclick="showContent(this)"  id="nav-div_media" class="tab-menu">Divisi Media</div>
+ 
 </div>
 <div id="content" class="content">
 <h2>

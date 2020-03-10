@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { uniqueId } from '../../utils/StringUtil';
 
 class GridComponent extends Component {
     constructor(props) {
@@ -12,19 +13,28 @@ class GridComponent extends Component {
         }
         const width = this.props.width ? this.props.width : "auto ";
         const repeat = this.props.cols ? this.props.cols : items.length;
-        const gridAutoColumns = width.repeat(repeat);
-
+        const gridAutoColumns = width ==  width.repeat(repeat);
+        const msGridAutoColumns = width == "auto"? "1fr".repeat(repeat) : width.repeat(repeat);
+        let i = 1;
 
         return (
             <div style={{
                 ...this.props.style,
                 display: 'grid',
+                display: '-ms-grid',
                 verticalAlign: 'middle',
                 gridTemplateColumns: gridAutoColumns,
-                msGridColumns: gridAutoColumns,
+                msGridColumns: msGridAutoColumns, 
             }} >
                 {items.map(item => {
-                    return item;
+
+                    let style = {
+                        msGridColumn: i 
+                    }
+
+                    i++;
+
+                    return <div key={uniqueId()} style={style}>{item}</div>;
                 })}
             </div>
         )
