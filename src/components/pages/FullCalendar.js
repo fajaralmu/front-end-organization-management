@@ -8,6 +8,7 @@ import InputField from '../input/InputField'
 import { _byId } from '../../utils/ComponentUtil'
 import GridComponent from '../layout/GridComponent';
 import Card from '../card/Card';
+import { uniqueId } from '../../utils/StringUtil';
 
 
 class FullCalendar extends Component {
@@ -415,13 +416,13 @@ class FullCalendar extends Component {
             data => {
 
                 if (data.text == null || data.text == "") {
-                    return <div></div>
+                    return <div key={uniqueId()}></div>
                 }
 
                 let style = { width: '80%', minHeight: '150px', marginBottom: '15px' };
 
                 if (data.title == true) {
-                    return (<div>{data.text}</div>)
+                    return (<div key={uniqueId()}>{data.text}</div>)
                 }
 
                 if (data.now == true) {
@@ -449,7 +450,7 @@ class FullCalendar extends Component {
              //   console.log(data.text, "EVENTS: ", events);
 
                 return (
-                    <Card style={style} title={data.text}
+                    <Card key={uniqueId()} style={style} title={data.text}
                         onClick={() => this.detail(data.text, this.month_now, this.year_now)}
                         content={eventList}
                     />
@@ -463,13 +464,13 @@ class FullCalendar extends Component {
             <GridComponent cols={3} style={{
                 textAlign: 'center', width: '400px'
             }} items={[
-                <ComboBox id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
+                <ComboBox key={uniqueId()} id="input_month" defaultValue={this.state.selectedMonth} onChange={this.setSelectedMonth}
                     options={timeLineConstant.month} />,
-                <InputField type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />,
-                <ActionButton onClick={(e) => this.setCalendar()} text={"Go"} />,
-                <ActionButton onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />,
-                <input disabled className="form-control" id="date-info" />,
-                <ActionButton onClick={(e) => this.doNextMonth(true)} text={"Next"} />
+                <InputField key={uniqueId()}  type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />,
+                <ActionButton key={uniqueId()}  onClick={(e) => this.setCalendar()} text={"Go"} />,
+                <ActionButton key={uniqueId()}  onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />,
+                <input key={uniqueId()}  disabled className="form-control" id="date-info" />,
+                <ActionButton key={uniqueId()}  onClick={(e) => this.doNextMonth(true)} text={"Next"} />
             ]}
 
             />

@@ -13,15 +13,14 @@ class GridComponent extends Component {
         }
         const width = this.props.width ? this.props.width : "auto ";
         const repeat = this.props.cols ? this.props.cols : items.length;
-        const gridAutoColumns = width ==  width.repeat(repeat);
+        const gridAutoColumns =  width.repeat(repeat);
         const msGridAutoColumns = width == "auto"? "1fr".repeat(repeat) : width.repeat(repeat);
         let i = 1;
 
         return (
             <div style={{
                 ...this.props.style,
-                display: 'grid',
-                display: '-ms-grid',
+                display: 'grid', 
                 verticalAlign: 'middle',
                 gridTemplateColumns: gridAutoColumns,
                 msGridColumns: msGridAutoColumns, 
