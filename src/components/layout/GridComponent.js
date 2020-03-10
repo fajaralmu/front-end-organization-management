@@ -15,7 +15,9 @@ class GridComponent extends Component {
         const repeat            = this.props.cols ? this.props.cols : items.length;
         const gridAutoColumns   = width.repeat(repeat);
         const msGridAutoColumns = width == "auto"? "1fr".repeat(repeat) : width.repeat(repeat);
-        let i = 1;
+
+        let gridColumn = 1;
+        let gridRow    = 1;
 
         return (
             <div className="grid-container" style={{
@@ -29,13 +31,15 @@ class GridComponent extends Component {
                 {items.map(item => {
 
                     let style = {
-                        msGridColumn: i 
+                        msGridColumn: gridColumn,
+                        msGridRow   : gridRow
                     }
 
-                    i++;
+                    gridColumn++;
 
-                    if(i > repeat){
-                        i = 1;
+                    if(gridColumn > repeat){
+                        gridColumn = 1;
+                        gridRow++;
                     }  
 
                     return <div key={uniqueId()} style={style}>{item}</div>;
