@@ -440,7 +440,7 @@ class FullCalendar extends Component {
 
                         return <p key={"EVT_" + i}>{event.name}</p>
                     } else if (i == 4) {
-                        return <ActionButton onClick={() => { }} text={"more"} />
+                        return <ActionButton key={uniqueId()} onClick={() => { }} text={"more"} />
                     } else {
                         return null;
                     }
@@ -458,7 +458,7 @@ class FullCalendar extends Component {
             }
         )
 
-
+        let dateInfoText = timeLineConstant.month[this.month_now].name + " " + this.year_now;
         let content = <div id="calendar-wrapper">
 
             <GridComponent cols={3} style={{
@@ -469,7 +469,7 @@ class FullCalendar extends Component {
                 <InputField key={uniqueId()}  type="number" id="input_year" value={selectedYear} onKeyUp={this.changeInputYear} />,
                 <ActionButton key={uniqueId()}  onClick={(e) => this.setCalendar()} text={"Go"} />,
                 <ActionButton key={uniqueId()}  onClick={(e) => this.doPrevMonth(true)} text={"Prev"} />,
-                <input key={uniqueId()}  disabled className="form-control" id="date-info" />,
+                <input key={uniqueId()} value={dateInfoText}  disabled className="form-control" id="date-info" />,
                 <ActionButton key={uniqueId()}  onClick={(e) => this.doNextMonth(true)} text={"Next"} />
             ]}
 
