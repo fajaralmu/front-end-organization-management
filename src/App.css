@@ -20,15 +20,18 @@
   width: 100%;
   min-height: 85vh;
   display: grid; 
+  display: -ms-grid;
   grid-template-columns: 160px auto;
-  -ms-grid-columns: 160px auto;
+  -ms-grid-columns: 160px 1fr;
 }
 
 #main-menu{ 
   background-color: rgb(0,145,60);
+  grid-column: 1;
 }
 
 #main-content{
+  grid-column: 2;
   margin-left:10px;
   margin-right:10px;
   margin-bottom:10px;

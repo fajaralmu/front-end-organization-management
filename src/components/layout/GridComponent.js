@@ -30,8 +30,11 @@ class GridComponent extends Component {
                     let style = {
                         msGridColumn: i 
                     }
-
                     i++;
+                    if(i > repeat){
+                        i = 1;
+                    } 
+                    
 
                     return <div key={uniqueId()} style={style}>{item}</div>;
                 })}
