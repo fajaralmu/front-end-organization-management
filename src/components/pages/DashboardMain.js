@@ -12,12 +12,19 @@ class DashboardMain extends React.Component{
     }
 
     onDivisionListChange = (value) => {
+        if(value == 0){
+            return;
+        }
+
         this.setState({divisionId:value});
         this.props.selectDivision(value);
     }
     
     divionOptions = () => {
-        let options = [];
+        let options = [{
+            value: 0,
+            text:"-Pilih BPD-"
+        }];
         let divisions = this.props.divisions? this.props.divisions : [];
 
         divisions.forEach(division => {
@@ -41,7 +48,11 @@ class DashboardMain extends React.Component{
         return(
             <div >
                 <p>Login Sebagai</p>
-                <ComboBox defaultValue={divisionId} onChange={this.onDivisionListChange} options={this.divionOptions()} />
+                <ComboBox 
+                    defaultValue    ={divisionId} 
+                    onChange        ={this.onDivisionListChange} 
+                    options         ={this.divionOptions()} 
+                    />
 
                 <p>Current Selection:</p>
                 <p>{division?division.name:""}</p>
