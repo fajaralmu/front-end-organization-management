@@ -25,9 +25,10 @@ export const addEventFromTimeline = (day,month,year) => {
 }
 
 export const setEntityConfig = (entityConfig) => {
-    return { type: types.SET_ENTITY_CONFIG, payload: {
-        entityConfig:entityConfig
-    }, meta: { type: types.SET_ENTITY_CONFIG } };
+    return { 
+        type: types.SET_ENTITY_CONFIG,
+        payload: {  entityConfig : entityConfig  }, 
+        meta: { type: types.SET_ENTITY_CONFIG } };
 }
  
 export const resetManagementPage = () => {
@@ -51,7 +52,7 @@ export const updateEntity = (request, referer, callback) => {
     let requested = {
         type: types.UPDATE_ENTITY,
         payload: {
-            "entity": request.entityName
+            entity: request.entityName
         },
         meta: {
             type: types.UPDATE_ENTITY,
@@ -70,11 +71,11 @@ export const getEntitiesWithCallback = (request, referer, callback) => {
     let requested = {
         type: types.GET_ENTITY_WITH_CALLBACK,
         payload: {
-            "entity": request.entityName,
-            "filter": {
-                "limit": 10,
-                'fieldsFilter': {},
-                "entryPoint":"inputField"
+            entity: request.entityName,
+            filter: {
+                limit: 10,
+                fieldsFilter: {},
+                entryPoint:"inputField"
             }
         },
         meta: {
@@ -94,13 +95,13 @@ export const getEntityById = (name, id, app) => {
     let requested = {
         type: types.GET_ENTITY_BY_ID,
         payload: {
-            "entity": name,
-            "filter": {
-                "limit": 1,
-                "page": 0,
-                "exacts": true,
-                "contains": false,
-                "fieldsFilter": { "id": id }
+            entity: name,
+            filter: {
+                limit: 1,
+                page: 0,
+                exacts: true,
+                contains: false,
+                fieldsFilter: { id: id }
             }
         },
         meta: {
