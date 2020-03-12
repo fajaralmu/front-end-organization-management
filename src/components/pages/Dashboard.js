@@ -10,12 +10,16 @@ import ContentTitle from '../layout/ContentTitle';
 import DashboardMain from './DashboardMain';
 import Timeline from './Timeline'
 
+const MENU_HOME ='home';
+const MENU_TIMELINE = 'timeline';
+
+
 class Dashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            menu: "home"
+            menu: MENU_HOME
         }
 
         this.setMenuCode = (code) => {
@@ -46,13 +50,13 @@ class Dashboard extends Component {
         return [
             {
                 text: "Home",
-                active: this.state.menu == "home",
-                onClick: () => {this.setMenuCode('home') }
+                active: this.state.menu == MENU_HOME,
+                onClick: () => {this.setMenuCode(MENU_HOME) }
             },
             {
                 text: "Time Line",
-                active: this.state.menu == "timeline", 
-                onClick: () => {this.setMenuCode('timeline') }
+                active: this.state.menu == MENU_TIMELINE, 
+                onClick: () => {this.setMenuCode(MENU_TIMELINE) }
             } 
         ];
     }
@@ -66,12 +70,12 @@ class Dashboard extends Component {
 
         let content = null;
         switch (this.state.menu) {
-            case 'home':
+            case MENU_HOME:
                     content         = <DashboardMain  division={this.props.division} 
                     selectDivision  ={this.selectDivision} 
                     divisions       ={this.props.divisions} />
                 break;
-            case "timeline":
+            case MENU_TIMELINE:
                     content         = <Timeline app={this.props.app} />
                 break;
             default:

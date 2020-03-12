@@ -10,11 +10,27 @@ import ContentTitle from '../layout/ContentTitle';
 import Label from '../Label';
 import GridComponent from '../layout/GridComponent'
 import { uniqueId } from '../../utils/StringUtil';
+import Tab from '../buttons/Tab';
+
+const MENU_MESSAGE = "0xfffre";
+const MENU_LIST    = "0x44444";
+ 
+let cloudHost = "https://nuswantoroshop.herokuapp.com/";
+let localHost = "http://localhost:8080/universal-good-shop/";
+const usedHost = localHost;
 
 class ChatRoom extends Component {
     constructor(props) {
         super(props);
-        this.state = { messages: null, username: null, activeId: null }
+        this.state = {
+            messages: null,
+            username: null,
+            activeId: null,
+            receiver: null,
+            menu: MENU_LIST
+
+        }
+
         this.sendChatMessage = () => {
             if (!_byId("input-msg").value) {
                 alert("Message must not be null");
@@ -40,6 +56,25 @@ class ChatRoom extends Component {
             this.setState({ username: value, activeId: id });
         }
 
+        this.setMenuCode = (code) => {
+            this.setState({ menu: code });
+        }
+
+    }
+
+    getButtonsData = () => {
+        return [
+            {
+                text: "Online Users",
+                active: this.state.menu == MENU_LIST,
+                onClick: () => {this.setMenuCode(MENU_LIST) }
+            },
+            {
+                text: "Message",
+                active: this.state.menu == MENU_MESSAGE, 
+                onClick: () => {this.setMenuCode(MENU_MESSAGE) }
+            } 
+        ];
     }
 
     componentWillMount() {
@@ -59,11 +94,10 @@ class ChatRoom extends Component {
     }
 
     render() {
-        let userAlias = this.props.userAlias ? this.props.userAlias : "";
-        let cloudHost = "https://nuswantoroshop.herokuapp.com/";
-        let localHost = "http://localhost:8080/universal-good-shop/";
-        const usedHost = localHost;
+       
         const availableSessions = this.props.availableSessions;
+
+        const buttonsData = this.getButtonsData();
 
         return (
             // <div className="section-container">
@@ -93,7 +127,8 @@ class ChatRoom extends Component {
             // </div>
             <div>
                 <ContentTitle title="under construction" />
-                {availableSessions.map(session=>{
+                <Tab tabsData={buttonsData} />
+                {availableSessions.map(session => {
                     return <div key={uniqueId()}>{session.key}</div>;
                 })}
             </div>
