@@ -230,7 +230,7 @@ const setEntityConfigMiddleware = store => next => action => {
 
 const storeChatMessageLocallyMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.STORE_MESSAGE) { return next(action); }
-    let newAction = Object.assign({}, action, { payload: action.payload });
+    let newAction = Object.assign({}, action, { payload: action.payload.messages });
     delete newAction.meta;
     store.dispatch(newAction);
 }

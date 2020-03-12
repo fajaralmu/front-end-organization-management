@@ -48,11 +48,22 @@ class ChatRoom extends Component {
 
         this.handleMessage = (response) => {
             console.log("Responses handleMessage: ", response.code);
-            if (response.code != currentRequestId()) {
+            if (response.code != currentRequestId() && !this.exist(response.receivers)) {
                 return;
             }
             this.props.storeChatMessageLocally(response.messages);
             this.setState({ messages: response.messages });
+        }
+
+        this.exist = (receivers) =>{
+            for (let i = 0; i < receivers.length; i++) {
+                const receiver = receivers[i];
+                if(receiver == currentRequestId()){
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         this.changeUsername = (value, id) => {
@@ -71,13 +82,16 @@ class ChatRoom extends Component {
         this.getMessagesByReceiver = (receiver) => {
             let messages = [];
             const propMessages = this.props.messages ? this.props.messages : [];
+            console.log("propMessages with c: ",receiver, propMessages);
             for (let i = 0; i < propMessages.length; i++) {
                 const message = propMessages[i];
+                console.log(message.receiver,":", message.receiver == receiver);
+                console.log(message.sender,":", message.sender == receiver)
                 if (message.receiver == receiver || message.sender == receiver) {
                     messages.push(message);
                 }
             }
-
+            console.log("[filtered] propMessages: ",messages);
             return messages;
         }
     }
