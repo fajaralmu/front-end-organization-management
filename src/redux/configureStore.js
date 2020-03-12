@@ -45,7 +45,8 @@ export const configureStore = () => {
             resetManagementPageMiddleware,
             setEntityConfigMiddleware,
 
-            getEntitiesWithCallbackMiddleware
+            getEntitiesWithCallbackMiddleware,
+            getAvailableSessionsMiddleware
 
         )
     );
@@ -463,5 +464,36 @@ const removeEntityMiddleware = store => next => action => {
 
 }
 
+  const getAvailableSessionsMiddleware  = store => next => action => {
+
+    const requestId = localStorage.getItem("requestId");
+
+    if (!action.meta || action.meta.type !== types.GET_SESSIONS) { return next(action); }
+    timeout(TIMEOUT, fetch(action.meta.url, {
+        method: POST_METHOD, body: JSON.stringify(action.payload),
+        headers: { 'Content-Type': 'application/json', 'requestId': requestId }
+    })).then(response => response.json())
+        .then(data => {
+
+            const sessions = data.sessionKeys;
+            const filteredSessions = new Array();
+
+            for(var session in sessions){
+                if(sessions[session] != requestId){
+                    filteredSessions.push({
+                        key:session,
+                        value:sessions[session]
+                    });
+                }
+            }
+
+
+            console.debug("getAvailableSessionsMiddleware Response:", data);
+            let newAction = Object.assign({}, action, { payload: filteredSessions });
+            delete newAction.meta;
+            store.dispatch(newAction);
+        })
+        .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
+    }
 
 export default configureStore;

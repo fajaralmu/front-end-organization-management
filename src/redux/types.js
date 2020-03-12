@@ -7,9 +7,7 @@ export const SELECT_DIVISION = "SET_DIVISION";
 export const GET_EVENTS_BY_DATE = "GET_EVENTS_BY_DATE";
      
 export const REQUEST_ID = "req_ID";
-export const SEND_MESSAGE = "send_message";
-export const STORE_MESSAGE = "store_message";
-export const GET_MESSAGE = "GET_MESSAGE"; 
+
 export const GET_ENTITY = "get_entity";
 export const GET_ENTITY_BY_ID = "get_entity_by_id";
 export const UPDATE_ENTITY = "update_entity";
@@ -20,3 +18,8 @@ export const RESET_MANAGEMENT_PAGE = "reset_management_page";
 
 export const ADD_EVENT_FROM_TIMELINE = "add_event_from_timeline";
 export const SET_ENTITY_CONFIG = "set-entity-config";
+ 
+export const SEND_MESSAGE = "send_message";
+export const STORE_MESSAGE = "store_message";
+export const GET_MESSAGE = "GET_MESSAGE"; 
+export const GET_SESSIONS = "GET_SESSIONS"; 

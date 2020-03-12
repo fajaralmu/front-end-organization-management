@@ -9,6 +9,7 @@ import ChatList from '../ChatList';
 import ContentTitle from '../layout/ContentTitle';
 import Label from '../Label';
 import GridComponent from '../layout/GridComponent'
+import { uniqueId } from '../../utils/StringUtil';
 
 class ChatRoom extends Component {
     constructor(props) {
@@ -19,7 +20,9 @@ class ChatRoom extends Component {
                 alert("Message must not be null");
                 return;
             }
-            this.props.sendChatMessage(_byId("input-msg").value, this.state.username, this.props.app);
+            this.props.sendChatMessage(_byId("input-msg").value, this.state.username,
+                this.state.receiver,
+                this.props.app);
             _byId("input-msg").value = "";
         }
 
@@ -46,6 +49,7 @@ class ChatRoom extends Component {
         if (this.props.userAlias) {
             this.setState({ username: this.props.userAlias })
         }
+        this.props.getAvailableSessions(this.props.app);
     }
 
     componentDidUpdate() {
@@ -59,6 +63,8 @@ class ChatRoom extends Component {
         let cloudHost = "https://nuswantoroshop.herokuapp.com/";
         let localHost = "http://localhost:8080/universal-good-shop/";
         const usedHost = localHost;
+        const availableSessions = this.props.availableSessions;
+
         return (
             // <div className="section-container">
             //     <ContentTitle title="What Do You Feel?" description=
@@ -85,7 +91,12 @@ class ChatRoom extends Component {
             //             ref={(client) => { this.clientRef = client }} />
             //     </div>
             // </div>
-            <ContentTitle title="under construction" />
+            <div>
+                <ContentTitle title="under construction" />
+                {availableSessions.map(session=>{
+                    return <div key={uniqueId()}>{session.key}</div>;
+                })}
+            </div>
         )
     }
 }
@@ -94,14 +105,16 @@ const mapStateToProps = state => {
     //console.log(state);
     return {
         messages: state.shopState.messages,
-        userAlias: state.shopState.userAlias
+        userAlias: state.shopState.userAlias,
+        availableSessions: state.chatState.availableSessions
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    sendChatMessage: (message, username, app) => dispatch(actions.sendChatMessage(message, username, app)),
+    sendChatMessage: (message, username, receiver, app) => dispatch(actions.sendChatMessage(message, username, receiver, app)),
     storeChatMessageLocally: (messages) => dispatch(actions.storeMessageLocally(messages)),
-    getMessages: (app) => dispatch(actions.getMessageList(app))
+    getMessages: (app) => dispatch(actions.getMessageList(app)),
+    getAvailableSessions: (app) => dispatch(actions.getAvailableSessions(app))
 
 })
 export default connect(

@@ -15,6 +15,7 @@ const apiBaseUrl  = () => usedHost() + "public/";
 const apiEntityBaseUrl  = () => usedHost() + "management/"
 const apiAccount = () => usedHost() + "account/"
 const apiAdmin = () => usedHost() + "admin/" 
+const apiMessage = () => usedHost() + "message/" 
 
 export const addEventFromTimeline = (day,month,year) => {
     return { type: types.ADD_EVENT_FROM_TIMELINE, payload: {
@@ -158,7 +159,7 @@ export const getMessageList = (app) => {
         payload: {},
         meta: {
             type: types.GET_MESSAGE, app: app,
-            url: apiAdmin().concat("getmessages")
+            url: apiMessage().concat("getmessages")
         }
     };
 }
@@ -176,23 +177,36 @@ export const storeMessageLocally = (messages) => {
     };
 }
 
-export const sendChatMessage = (message, username, app) => {
+export const sendChatMessage = (message, username, receiver, app) => {
     app.startLoading();
     return {
         type: types.SEND_MESSAGE,
         payload: {
             value: message,
-            username: username
+            username: username,
+            receiver:receiver
         },
         meta: {
             app: app,
             type: types.SEND_MESSAGE,
-            url: apiAdmin().concat("sendmessage")
+            url: apiMessage().concat("sendmessage")
         }
     };
 }
 
- 
+export const getAvailableSessions = ( app) => {
+    app.startLoading();
+    return {
+        type: types.GET_SESSIONS,
+        payload: { },
+        meta: {
+            app: app,
+            type: types.GET_SESSIONS,
+            url: apiMessage().concat("getsessions")
+        }
+    };
+}
+
 
 export const getEventByDate = (month, year, app) => {
     app.startLoading();
