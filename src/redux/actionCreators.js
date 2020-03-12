@@ -169,7 +169,7 @@ export const storeMessageLocally = (messages) => {
     return {
         type: types.STORE_MESSAGE,
         payload: {
-            entities: messages
+            messages: messages
         },
         meta: {
             type: types.STORE_MESSAGE,
@@ -182,9 +182,11 @@ export const sendChatMessage = (message, username, receiver, app) => {
     return {
         type: types.SEND_MESSAGE,
         payload: {
-            value: message,
-            username: username,
-            receiver:receiver
+            message:{
+                receiver:receiver,
+                text:message
+            }, 
+            username: username, 
         },
         meta: {
             app: app,

@@ -13,17 +13,17 @@ import { uniqueId } from '../../utils/StringUtil';
 import Tab from '../buttons/Tab';
 
 const MENU_MESSAGE = "0xfffre";
-const MENU_LIST    = "0x44444";
- 
+const MENU_LIST = "0x44444";
+
 let cloudHost = "https://nuswantoroshop.herokuapp.com/";
-let localHost = "http://localhost:8080/universal-good-shop/";
+let localHost = "http://localhost:8080/organization-management/";
 const usedHost = localHost;
 
 class ChatRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: null,
+            messages: [], //NEVER NULL
             username: null,
             activeId: null,
             receiver: null,
@@ -60,6 +60,23 @@ class ChatRoom extends Component {
             this.setState({ menu: code });
         }
 
+        this.setReceiver = (receiver) => {
+            const messages = this.getMessagesByReceiver(receiver);
+            this.setState({ receiver: receiver, menu: MENU_MESSAGE, messages: messages });
+        }
+
+        this.getMessagesByReceiver = (receiver) => {
+            let messages = [];
+            const propMessages = this.props.messages? this.props.messages:[];
+            for (let i = 0; i < propMessages.length; i++) {
+                const message = propMessages[i];
+                if(message.receiver == receiver || message.sender == receiver){
+                    messages.push(message);
+                }
+            }
+            
+            return messages;
+        }
     }
 
     getButtonsData = () => {
@@ -67,13 +84,13 @@ class ChatRoom extends Component {
             {
                 text: "Online Users",
                 active: this.state.menu == MENU_LIST,
-                onClick: () => {this.setMenuCode(MENU_LIST) }
+                onClick: () => { this.setMenuCode(MENU_LIST) }
             },
             {
                 text: "Message",
-                active: this.state.menu == MENU_MESSAGE, 
-                onClick: () => {this.setMenuCode(MENU_MESSAGE) }
-            } 
+                active: this.state.menu == MENU_MESSAGE,
+                onClick: () => { this.setMenuCode(MENU_MESSAGE) }
+            }
         ];
     }
 
@@ -91,13 +108,41 @@ class ChatRoom extends Component {
         if (this.state.activeId && _byId(this.state.activeId)) {
             _byId(this.state.activeId).focus();
         }
+
+        console.log("messages: ",this.props.messages)
     }
 
     render() {
-       
+
         const availableSessions = this.props.availableSessions;
 
         const buttonsData = this.getButtonsData();
+
+        let content = "";
+
+        if(this.state.menu == MENU_MESSAGE){
+            let messages = this.state.messages;
+            content = <div>
+                <Label text={"Receiver: "+this.state.receiver} />
+                <div>
+                    {messages.map(message=>{
+                        return <div key={uniqueId()} style={{margin:'5px', backgroundColor:'khaki'}}>
+                                <Label text={message.date} />
+                                <Label text={"From: "+message.sender} />
+                                <Label text={message.text} />
+                            </div>
+                    })}
+                </div>
+                <InputField style={{ width: '80%' }} type="textarea" placeholder="input message" id="input-msg" />
+                <ActionButton status="success" text="Send" onClick={this.sendChatMessage} />
+            </div>;
+        }else if(this.state.menu == MENU_LIST){
+            content = <div>
+                {availableSessions.map(session => {
+                    return <ActionButton key={uniqueId()} onClick={()=>this.setReceiver(session.value)} text={session.key}/>;
+                })}
+            </div>
+        }
 
         return (
             // <div className="section-container">
@@ -127,10 +172,12 @@ class ChatRoom extends Component {
             // </div>
             <div>
                 <ContentTitle title="under construction" />
-                <Tab tabsData={buttonsData} />
-                {availableSessions.map(session => {
-                    return <div key={uniqueId()}>{session.key}</div>;
-                })}
+                <Tab tabsData={buttonsData} /> 
+                {content}
+
+                <SockJsClient url={usedHost+'realtime-app'} topics={['/wsResp/messages']}
+                       onMessage={(msg) => { this.handleMessage(msg) }}
+                       ref={(client) => { this.clientRef = client }} />
             </div>
         )
     }
@@ -139,7 +186,7 @@ class ChatRoom extends Component {
 const mapStateToProps = state => {
     //console.log(state);
     return {
-        messages: state.shopState.messages,
+        messages: state.chatState.messages,
         userAlias: state.shopState.userAlias,
         availableSessions: state.chatState.availableSessions
     }
