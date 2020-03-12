@@ -19,6 +19,10 @@ let cloudHost = "https://nuswantoroshop.herokuapp.com/";
 let localHost = "http://localhost:8080/organization-management/";
 const usedHost = localHost;
 
+const currentRequestId = () => {
+    return localStorage.getItem("requestId");
+}
+
 class ChatRoom extends Component {
     constructor(props) {
         super(props);
@@ -44,12 +48,11 @@ class ChatRoom extends Component {
 
         this.handleMessage = (response) => {
             console.log("Responses handleMessage: ", response.code);
-            console.log("LOCAL STORAGE:", localStorage.getItem("requestId"))
-            if (response.code != localStorage.getItem("requestId")) {
+            if (response.code != currentRequestId()) {
                 return;
             }
-            this.props.storeChatMessageLocally(response.entities);
-            // this.setState({ messages: response.entities });
+            this.props.storeChatMessageLocally(response.messages);
+            this.setState({ messages: response.messages });
         }
 
         this.changeUsername = (value, id) => {
@@ -67,14 +70,14 @@ class ChatRoom extends Component {
 
         this.getMessagesByReceiver = (receiver) => {
             let messages = [];
-            const propMessages = this.props.messages? this.props.messages:[];
+            const propMessages = this.props.messages ? this.props.messages : [];
             for (let i = 0; i < propMessages.length; i++) {
                 const message = propMessages[i];
-                if(message.receiver == receiver || message.sender == receiver){
+                if (message.receiver == receiver || message.sender == receiver) {
                     messages.push(message);
                 }
             }
-            
+
             return messages;
         }
     }
@@ -107,9 +110,7 @@ class ChatRoom extends Component {
     componentDidUpdate() {
         if (this.state.activeId && _byId(this.state.activeId)) {
             _byId(this.state.activeId).focus();
-        }
-
-        console.log("messages: ",this.props.messages)
+        } 
     }
 
     render() {
@@ -120,26 +121,40 @@ class ChatRoom extends Component {
 
         let content = "";
 
-        if(this.state.menu == MENU_MESSAGE){
+        if (this.state.menu == MENU_MESSAGE) {
             let messages = this.state.messages;
             content = <div>
-                <Label text={"Receiver: "+this.state.receiver} />
+                <Label text={"Receiver: " + this.state.receiver} />
                 <div>
-                    {messages.map(message=>{
-                        return <div key={uniqueId()} style={{margin:'5px', backgroundColor:'khaki'}}>
-                                <Label text={message.date} />
-                                <Label text={"From: "+message.sender} />
-                                <Label text={message.text} />
-                            </div>
+                    {messages.map(message => {
+                        const currentSender = message.sender == currentRequestId();
+                        let style = {  
+                            marginRight: '30%',
+                            marginLeft: '5px'
+                        }
+
+                        if(currentSender){
+                            style = { 
+                                marginLeft: '30%',
+                                marginRight: '5px'
+                            }
+                        }
+
+                        return <div key={uniqueId()}
+                         style={{ ...style, padding:'5px', textAlign:'left', marginBottom: '5px', backgroundColor: 'khaki' }}>
+                            <Label  text={message.date} />
+                            {currentSender ? <Label   text={<b>{"You"}</b>} /> : null}
+                            <Label text={message.text} />
+                        </div>
                     })}
                 </div>
                 <InputField style={{ width: '80%' }} type="textarea" placeholder="input message" id="input-msg" />
                 <ActionButton status="success" text="Send" onClick={this.sendChatMessage} />
             </div>;
-        }else if(this.state.menu == MENU_LIST){
+        } else if (this.state.menu == MENU_LIST) {
             content = <div>
                 {availableSessions.map(session => {
-                    return <ActionButton key={uniqueId()} onClick={()=>this.setReceiver(session.value)} text={session.key}/>;
+                    return <ActionButton key={uniqueId()} onClick={() => this.setReceiver(session.value)} text={session.key} />;
                 })}
             </div>
         }
@@ -172,12 +187,12 @@ class ChatRoom extends Component {
             // </div>
             <div>
                 <ContentTitle title="under construction" />
-                <Tab tabsData={buttonsData} /> 
+                <Tab tabsData={buttonsData} />
                 {content}
 
-                <SockJsClient url={usedHost+'realtime-app'} topics={['/wsResp/messages']}
-                       onMessage={(msg) => { this.handleMessage(msg) }}
-                       ref={(client) => { this.clientRef = client }} />
+                <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/messages']}
+                    onMessage={(msg) => { this.handleMessage(msg) }}
+                    ref={(client) => { this.clientRef = client }} />
             </div>
         )
     }
