@@ -142,6 +142,13 @@ class ChatRoom extends Component {
                 <div>
                     {messages.map(message => {
                         const currentSender = message.sender == currentRequestId();
+                        const invalidReceiver = !currentSender && this.state.receiver != message.sender;
+                        const invalidSender = currentSender && message.receiver != this.state.receiver;
+
+                        if(invalidReceiver || invalidSender){
+                            return null;
+                        }
+
                         let style = {  
                             marginRight: '30%',
                             marginLeft: '5px'
@@ -158,6 +165,7 @@ class ChatRoom extends Component {
                          style={{ ...style, padding:'5px', textAlign:'left', marginBottom: '5px', backgroundColor: 'khaki' }}>
                             <Label  text={message.date} />
                             {currentSender ? <Label   text={<b>{"You"}</b>} /> : null}
+                            <small>{message.sender}</small>
                             <Label text={message.text} />
                         </div>
                     })}
@@ -204,7 +212,7 @@ class ChatRoom extends Component {
                 <Tab tabsData={buttonsData} />
                 {content}
 
-                <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/messages']}
+                <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/messages/'+currentRequestId()]}
                     onMessage={(msg) => { this.handleMessage(msg) }}
                     ref={(client) => { this.clientRef = client }} />
             </div>
