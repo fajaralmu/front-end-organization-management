@@ -11,7 +11,7 @@ import Label from '../Label';
 import GridComponent from '../layout/GridComponent'
 import { uniqueId } from '../../utils/StringUtil';
 import Tab from '../buttons/Tab';
-
+import '../../css/Chat.css'
 const MENU_MESSAGE = "0xfffre";
 const MENU_LIST = "0x44444";
 
@@ -161,13 +161,7 @@ class ChatRoom extends Component {
                             }
                         }
 
-                        return <div key={uniqueId()}
-                         style={{ ...style, padding:'5px', textAlign:'left', marginBottom: '5px', backgroundColor: 'khaki' }}>
-                            <Label  text={message.date} />
-                            {currentSender ? <Label   text={<b>{"You"}</b>} /> : null}
-                            <small>{message.sender}</small>
-                            <Label text={message.text} />
-                        </div>
+                        return <ChatItem message={message} currentUser={currentSender} />
                     })}
                 </div>
                 <InputField style={{ width: '80%' }} type="textarea" placeholder="input message" id="input-msg" />
@@ -218,6 +212,21 @@ class ChatRoom extends Component {
             </div>
         )
     }
+}
+
+const ChatItem = props => {
+    let className = "chat-item rounded paper-shadow  " + (props.currentUser == false ? " admin " : "user");
+     
+    let sender = props.message.sender;
+    let senderComponent = <span>
+        {sender}<span style={{ marginLeft: '11px', fontSize: '0.7em', float: 'right' }} >{props.message.date}</span>
+    </span>
+    return (
+        <div className={className}>
+            <Label style={{ fontSize: '0.8em', color: 'black' }} text={senderComponent} />
+            <Label text={props.message.text} />
+        </div>
+    )
 }
 
 const mapStateToProps = state => {
