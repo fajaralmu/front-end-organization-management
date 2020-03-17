@@ -1,5 +1,5 @@
 .chat-item{
-    margin-right: 15px;
+    
     margin-bottom: 10px;
     background-color: lightgreen;
     color:darkblue;
@@ -8,12 +8,11 @@
 }
 
 .admin{
-    background-color: lightyellow;
-    margin-right: 40px;
+    background-color: lightyellow; 
 }
 
 .user{
-    margin-left: 40px;
+    margin-left: 10%
 }
 .chat-container{
     

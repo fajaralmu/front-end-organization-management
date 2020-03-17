@@ -478,11 +478,11 @@ const removeEntityMiddleware = store => next => action => {
             const sessions = data.sessionKeys;
             const filteredSessions = new Array();
 
-            for(var session in sessions){
-                if(sessions[session] != requestId){
+            for(var i in sessions){
+                if(sessions[i].key != requestId){
                     filteredSessions.push({
-                        key:session,
-                        value:sessions[session]
+                        key:sessions[i].key,
+                        value:sessions[i].userAgent
                     });
                 }
             }

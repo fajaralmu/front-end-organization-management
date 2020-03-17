@@ -4,11 +4,9 @@ import * as actions from '../../redux/actionCreators'
 import { _byId } from '../../utils/ComponentUtil'
 import InputField from '../input/InputField';
 import ActionButton from '../buttons/ActionButton';
-import SockJsClient from 'react-stomp';
-import ChatList from '../ChatList';
+import SockJsClient from 'react-stomp'; 
 import ContentTitle from '../layout/ContentTitle';
-import Label from '../Label';
-import GridComponent from '../layout/GridComponent'
+import Label from '../Label'; 
 import { uniqueId } from '../../utils/StringUtil';
 import Tab from '../buttons/Tab';
 import '../../css/Chat.css'
@@ -129,7 +127,7 @@ class ChatRoom extends Component {
 
     render() {
 
-        const availableSessions = this.props.availableSessions;
+        const sessionsMap = this.props.sessionsMap;
 
         const buttonsData = this.getButtonsData();
 
@@ -137,7 +135,7 @@ class ChatRoom extends Component {
 
         if (this.state.menu == MENU_MESSAGE) {
             let messages = this.state.messages;
-            content = <div>
+            content = <div style={{padding: '2%', width: '80%',  backgroundColor: 'yellow', margin: '3%'}}>
                 <Label text={"Receiver: " + this.state.receiver} />
                 <div>
                     {messages.map(message => {
@@ -147,30 +145,21 @@ class ChatRoom extends Component {
 
                         if(invalidReceiver || invalidSender){
                             return null;
-                        }
-
-                        let style = {  
-                            marginRight: '30%',
-                            marginLeft: '5px'
-                        }
-
-                        if(currentSender){
-                            style = { 
-                                marginLeft: '30%',
-                                marginRight: '5px'
-                            }
-                        }
+                        } 
 
                         return <ChatItem message={message} currentUser={currentSender} />
                     })}
                 </div>
-                <InputField style={{ width: '80%' }} type="textarea" placeholder="input message" id="input-msg" />
+                <InputField style={{  width: '100%' }} type="textarea" placeholder="input message" id="input-msg" />
                 <ActionButton status="success" text="Send" onClick={this.sendChatMessage} />
             </div>;
         } else if (this.state.menu == MENU_LIST) {
             content = <div>
-                {availableSessions.map(session => {
-                    return <ActionButton key={uniqueId()} onClick={() => this.setReceiver(session.value)} text={session.key} />;
+                {sessionsMap.map(session => {
+                    return <ActionButton 
+                        key     ={uniqueId()} 
+                        onClick ={() => this.setReceiver(session.key)} 
+                        text    ={session.value} />;
                 })}
             </div>
         }
@@ -215,14 +204,14 @@ class ChatRoom extends Component {
 }
 
 const ChatItem = props => {
-    let className = "chat-item rounded paper-shadow  " + (props.currentUser == false ? " admin " : "user");
+    let className = "chat-item rounded paper-shadow  "  + (props.currentUser == false ? " admin " : "user");
      
     let sender = props.message.sender;
     let senderComponent = <span>
-        {sender}<span style={{ marginLeft: '11px', fontSize: '0.7em', float: 'right' }} >{props.message.date}</span>
+        {sender}<span style={{ fontSize: '0.7em'  }} >{props.message.date}</span>
     </span>
     return (
-        <div className={className}>
+        <div className={className} style={{width:'90%' }}>
             <Label style={{ fontSize: '0.8em', color: 'black' }} text={senderComponent} />
             <Label text={props.message.text} />
         </div>
@@ -234,7 +223,7 @@ const mapStateToProps = state => {
     return {
         messages: state.chatState.messages,
         userAlias: state.shopState.userAlias,
-        availableSessions: state.chatState.availableSessions
+        sessionsMap: state.chatState.sessionsMap
     }
 }
 

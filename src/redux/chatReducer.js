@@ -1,7 +1,7 @@
 import * as types from './types'
 
 export const initState = {
-    availableSessions: [],
+    sessionsMap: [],
     messages: []
 
 };
@@ -9,7 +9,7 @@ export const initState = {
 export const reducer = (state = initState, action) => {
     switch (action.type) {
         case types.GET_SESSIONS:
-            return { ...state, availableSessions: action.payload    };
+            return { ...state, sessionsMap: action.payload    };
         case types.GET_MESSAGE:
             return { ...state, messages: action.payload    };
         case types.STORE_MESSAGE:
