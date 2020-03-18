@@ -10,12 +10,21 @@ import Label from '../Label';
 import { uniqueId } from '../../utils/StringUtil';
 import Tab from '../buttons/Tab';
 import '../../css/Chat.css'
+import * as config from '../../utils/WebConfig'
+import * as url from '../../constant/Url'
+
+const hostCloud = url.hostCloud;
+const hostLocal = url.hostLocal; 
 const MENU_MESSAGE = "0xfffre";
 const MENU_LIST = "0x44444";
 
-let cloudHost = "https://nuswantoroshop.herokuapp.com/";
-let localHost = "http://localhost:8080/organization-management/";
-const usedHost = localHost;
+const usedHost = () => {
+    if (config.debugMode() == true)
+        return hostLocal;
+    else
+        return hostCloud;
+} 
+ 
 
 const currentRequestId = () => {
     return localStorage.getItem("requestId");
@@ -195,7 +204,7 @@ class ChatRoom extends Component {
                 <Tab tabsData={buttonsData} />
                 {content}
 
-                <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/messages/'+currentRequestId()]}
+                <SockJsClient url={usedHost() + '/realtime-app'} topics={['/wsResp/messages/'+currentRequestId()]}
                     onMessage={(msg) => { this.handleMessage(msg) }}
                     ref={(client) => { this.clientRef = client }} />
             </div>
