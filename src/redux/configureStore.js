@@ -35,6 +35,7 @@ export const configureStore = () => {
             storeChatMessageLocallyMiddleware,
             getMessagesMiddleware,
             sendChatMessageMiddleware,
+            updateLiveSessionsMiddleware,
 
             /*enntity management*/
             getEntityListMiddleware,
@@ -231,6 +232,13 @@ const setEntityConfigMiddleware = store => next => action => {
 const storeChatMessageLocallyMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.STORE_MESSAGE) { return next(action); }
     let newAction = Object.assign({}, action, { payload: action.payload.messages });
+    delete newAction.meta;
+    store.dispatch(newAction);
+}
+
+const updateLiveSessionsMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.UPDATE_SESSIONS) { return next(action); }
+    let newAction = Object.assign({}, action, { payload:{...action.payload, ...action.meta }});
     delete newAction.meta;
     store.dispatch(newAction);
 }

@@ -164,6 +164,18 @@ export const getMessageList = (app) => {
     };
 }
 
+export const updateLiveSessions = (session, app) => {
+    
+    return {
+        type: types.UPDATE_SESSIONS,
+        payload: {session:session},
+        meta: {
+            app:app,
+            type: types.UPDATE_SESSIONS 
+        }
+    };
+}
+
 export const storeMessageLocally = (messages) => {
 
     return {

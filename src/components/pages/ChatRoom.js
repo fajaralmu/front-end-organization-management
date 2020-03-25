@@ -38,8 +38,13 @@ class ChatRoom extends Component {
             username: null,
             activeId: null,
             receiver: null,
-            menu: MENU_LIST
+            menu: MENU_LIST,
+            updated: new Date()
 
+        }
+
+        this.refresh = () => {
+            this.setState({updated: new Date()});
         }
 
         this.sendChatMessage = () => {
@@ -60,6 +65,16 @@ class ChatRoom extends Component {
             }
             this.props.storeChatMessageLocally(response.messages);
             this.setState({ messages: response.messages });
+        }
+
+        this.handleLiveNotif = (response) => {
+            console.log("LIVE MESSAGE NOTIFY:", response);
+            const newSession = {
+               key: response.sessionKeys['0'].key,
+               value: response.sessionKeys['0'].userAgent
+            }
+            this.props.updateLiveSessions(newSession, this);
+
         }
 
         this.exist = (receivers) =>{
@@ -207,6 +222,9 @@ class ChatRoom extends Component {
                 <SockJsClient url={usedHost() + '/realtime-app'} topics={['/wsResp/messages/'+currentRequestId()]}
                     onMessage={(msg) => { this.handleMessage(msg) }}
                     ref={(client) => { this.clientRef = client }} />
+              <SockJsClient url={usedHost() + '/realtime-app'} topics={['/wsResp/live/'+currentRequestId()]}
+                    onMessage={(msg) => { this.handleLiveNotif(msg) }}
+                    ref={(client) => { this.clientRef = client }} />
             </div>
         )
     }
@@ -240,7 +258,8 @@ const mapDispatchToProps = dispatch => ({
     sendChatMessage: (message, username, receiver, app) => dispatch(actions.sendChatMessage(message, username, receiver, app)),
     storeChatMessageLocally: (messages) => dispatch(actions.storeMessageLocally(messages)),
     getMessages: (app) => dispatch(actions.getMessageList(app)),
-    getAvailableSessions: (app) => dispatch(actions.getAvailableSessions(app))
+    getAvailableSessions: (app) => dispatch(actions.getAvailableSessions(app)),
+    updateLiveSessions: (session, app) => dispatch(actions.updateLiveSessions(session, app))
 
 })
 export default connect(

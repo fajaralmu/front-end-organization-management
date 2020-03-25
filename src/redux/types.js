@@ -23,3 +23,4 @@ export const SEND_MESSAGE = "send_message";
 export const STORE_MESSAGE = "store_message";
 export const GET_MESSAGE = "GET_MESSAGE"; 
 export const GET_SESSIONS = "GET_SESSIONS"; 
+export const UPDATE_SESSIONS = "update_sessions";
