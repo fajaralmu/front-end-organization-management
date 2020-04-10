@@ -145,18 +145,41 @@ class LiveStreaming extends Component {
         }
 
         this.takepicture = () => {
-            var context = this.canvas.getContext('2d');
-            if (this.width && this.height) {
-                this.canvas.width = this.width/ 5;
-                this.canvas.height = this.height/ 5;
-                context.drawImage(this.video, 0, 0, this.width/ 5, this.height/ 5);
-    
-                var data = this.canvas.toDataURL('image/png');   
+            const _class = this;
+            this.resizeWebcamImage().then((data)=>{
+                _class.sendVideoImage(data);
+            })
 
-                this.sendVideoImage(data);
-            } else {
-                this.clearphoto();
-            }
+            // var context = this.canvas.getContext('2d');
+            // if (this.width && this.height) {
+            //     this.canvas.width = this.width/ 5;
+            //     this.canvas.height = this.height/ 5;
+            //     context.drawImage(this.video, 0, 0, this.width/ 5, this.height/ 5);
+    
+                 
+
+              
+            // } else {
+            //     this.clearphoto();
+            // }
+        }
+
+        this.resizeWebcamImage = () => {
+            const _class = this;
+            return new Promise((resolve, reject)=>{
+                var context = _class.canvas.getContext('2d');
+                if (_class.width && _class.height) {
+                    _class.canvas.width = _class.width/ 5;
+                    _class.canvas.height = _class.height/ 5;
+                    context.drawImage(_class.video, 0, 0, _class.width/ 5, _class.height/ 5);
+                    var data = _class.canvas.toDataURL('image/png');  
+                    resolve(data);
+                }else {
+                    _class.clearphoto();
+                }
+            })
+
+           
         }
 
         this.imageToDataUri = (img, width, height) => {
@@ -177,13 +200,13 @@ class LiveStreaming extends Component {
         }
     
         this.clearphoto = () => {
-            var context = this.canvas.getContext('2d');
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            // var context = this.canvas.getContext('2d');
+            // context.fillStyle = "#AAA";
+            // context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
-            var data = this.canvas.toDataURL('image/png'); 
-            var img = new Image();
-            img.src = data;
+            // var data = this.canvas.toDataURL('image/png'); 
+            // var img = new Image();
+            // img.src = data;
         }
 
 
@@ -201,7 +224,7 @@ class LiveStreaming extends Component {
             });
         }
        this.animate = () => {
-    
+            
             this.clearphoto();
             this.takepicture(); 
             const _class = this;
@@ -247,7 +270,7 @@ class LiveStreaming extends Component {
                         <h2>You</h2>
                         <video controls id="video">Video stream not available.</video>
                         <div>
-                            <button id="startbutton" onClick={this.takepicture}>Take photo</button>
+                            <button  id="startbutton" onClick={this.takepicture}>Take photo</button>
                             <button onClick={this.clearphoto}>Clear Photo</button>
                             <button onClick={this.terminate}>Terminate</button>
                         </div>
