@@ -7,6 +7,7 @@ import ActionButton from '../buttons/ActionButton';
 import SockJsClient from 'react-stomp'; 
 import ContentTitle from '../layout/ContentTitle';
 import Label from '../Label'; 
+import LiveStreaming from './LiveStreaming'
 import { uniqueId } from '../../utils/StringUtil';
 import Tab from '../buttons/Tab';
 import '../../css/Chat.css'
@@ -17,6 +18,7 @@ const hostCloud = url.hostCloud;
 const hostLocal = url.hostLocal; 
 const MENU_MESSAGE = "0xfffre";
 const MENU_LIST = "0x44444";
+const MENU_LIVE_STREAMING = "0x555555";
 
 const usedHost = () => {
     if (config.debugMode() == true)
@@ -129,6 +131,11 @@ class ChatRoom extends Component {
                 text: "Message",
                 active: this.state.menu == MENU_MESSAGE,
                 onClick: () => { this.setMenuCode(MENU_MESSAGE) }
+            },
+            {
+                text: "Live Streaming",
+                active: this.state.menu == MENU_LIVE_STREAMING,
+                onClick: () => {this.setMenuCode(MENU_LIVE_STREAMING)}
             }
         ];
     }
@@ -186,6 +193,8 @@ class ChatRoom extends Component {
                         text    ={session.value} />;
                 })}
             </div>
+        }else if(this.state.menu == MENU_LIVE_STREAMING){
+            content = <LiveStreaming />
         }
 
         return (
@@ -215,7 +224,7 @@ class ChatRoom extends Component {
             //     </div>
             // </div>
             <div>
-                <ContentTitle title="under construction" />
+                <ContentTitle title="Live Chat With Online Users" />
                 <Tab tabsData={buttonsData} />
                 {content}
 
