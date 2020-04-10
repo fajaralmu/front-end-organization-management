@@ -11,6 +11,7 @@ import Label from '../Label';
 import { uniqueId } from '../../utils/StringUtil';
 import Tab from '../buttons/Tab';
 import '../../css/Chat.css'
+import GridComponent from '../layout/GridComponent';
 import * as config from '../../utils/WebConfig'
 import * as url from '../../constant/Url'
 
@@ -239,20 +240,27 @@ class LiveStreaming extends Component {
         return (
             <div>
                 <h2>Live Streaming</h2>
-                <p>{"Stream ID: "+streamId}</p>
-                <p>{"Receiver ID: "+receiver}</p>
-                <div className="camera">
-                    <video controls id="video">Video stream not available.</video>
-                    <button id="startbutton" onClick={this.takepicture}>Take photo</button>
-                    <button onClick={this.clearphoto}>Clear Photo</button>
-                    <button onClick={this.terminate}>Terminate</button>
-                </div>
-                <hr />
-                <canvas id="canvas">
-                </canvas> 
-                <div className="output-receiver x" style={{width:'400px', height:'400px', backgroundColor: 'green'}}>
-                    <img width="300" height="300" id="photo-receiver" alt="The screen RECEIVER will appear in this box." />
-                </div>
+                <p>{"Stream ID: "+streamId}</p> 
+                <canvas id="canvas"> </canvas> 
+                <GridComponent items={[
+                    <div className="camera">
+                        <h2>You</h2>
+                        <video controls id="video">Video stream not available.</video>
+                        <div>
+                            <button id="startbutton" onClick={this.takepicture}>Take photo</button>
+                            <button onClick={this.clearphoto}>Clear Photo</button>
+                            <button onClick={this.terminate}>Terminate</button>
+                        </div>
+                        
+                    </div>,
+                    <div className="output-receiver x" style={{width:'500px', height:'450px', border:'solid 1px green'}}>
+                        <h2>{"Receiver ID: "+receiver}</h2>
+                        <img width="300" height="300" id="photo-receiver" alt="The screen RECEIVER will appear in this box." />
+                    </div>
+                ]} />
+                 <hr/>
+                
+                
                 <SockJsClient url={usedHost() + '/realtime-app'} topics={[  '/wsResp/livestream/'+receiver]}
                     onMessage={(msg) => { this.handleLiveStream(msg) }}
                     ref={(client) => { this.clientRef = client }} />
