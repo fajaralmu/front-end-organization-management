@@ -23,6 +23,10 @@ export const reducer = (state = initState, action) => {
             action.payload.app.refresh();
 
             return {...state, sessionsMap: sessionsMap};
+        case types.SEND_VIDEO_IMAGE:
+
+            action.payload.app.setSendingVideoFalse();
+            return {...state  }
         default:
             return state;
     }

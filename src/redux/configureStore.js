@@ -47,7 +47,9 @@ export const configureStore = () => {
             setEntityConfigMiddleware,
 
             getEntitiesWithCallbackMiddleware,
-            getAvailableSessionsMiddleware
+            getAvailableSessionsMiddleware,
+
+            sendVideoImageMiddleware,
 
         )
     );
@@ -503,5 +505,29 @@ const removeEntityMiddleware = store => next => action => {
         })
         .catch(err => console.log(err)).finally(param => action.meta.app.endLoading());
     }
+
+    
+
+    const sendVideoImageMiddleware  = store => next => action => { 
+       
+            //     return; 
+            const requestId = localStorage.getItem("requestId");
+             
+            if (!action.meta || action.meta.type !== types.SEND_VIDEO_IMAGE) { return next(action); }
+            timeout(TIMEOUT, fetch(action.meta.url, {
+                method: POST_METHOD, body: JSON.stringify(action.payload),
+                headers: { 'Content-Type': 'application/json', 'requestId': requestId }
+            })).then(response => response.json())
+                .then(data => {
+        
+                // console.debug("sendVideoImageMiddleware Response:", data);
+                    let newAction = Object.assign({}, action, { payload:{...data, app:action.meta.app} });
+                    delete newAction.meta;
+                    store.dispatch(newAction);
+                })
+                .catch(err => console.log(err)).finally(param => { });
+            }
+         
+    
 
 export default configureStore;

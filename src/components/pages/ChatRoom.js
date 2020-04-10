@@ -178,7 +178,7 @@ class ChatRoom extends Component {
                             return null;
                         } 
 
-                        return <ChatItem message={message} currentUser={currentSender} />
+                        return <ChatItem key={uniqueId()} message={message} currentUser={currentSender} />
                     })}
                 </div>
                 <InputField style={{  width: '100%' }} type="textarea" placeholder="input message" id="input-msg" />
@@ -194,7 +194,7 @@ class ChatRoom extends Component {
                 })}
             </div>
         }else if(this.state.menu == MENU_LIVE_STREAMING){
-            content = <LiveStreaming />
+            content = <LiveStreaming receiver={this.state.receiver} />
         }
 
         return (

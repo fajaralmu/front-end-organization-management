@@ -24,3 +24,5 @@ export const STORE_MESSAGE = "store_message";
 export const GET_MESSAGE = "GET_MESSAGE"; 
 export const GET_SESSIONS = "GET_SESSIONS"; 
 export const UPDATE_SESSIONS = "update_sessions";
+
+export const SEND_VIDEO_IMAGE = "send_video_image";

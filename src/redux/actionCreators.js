@@ -16,7 +16,7 @@ const apiEntityBaseUrl  = () => usedHost() + "management/"
 const apiAccount = () => usedHost() + "account/"
 const apiAdmin = () => usedHost() + "admin/" 
 const apiMessage = () => usedHost() + "message/" 
-
+const apiLiveStreaming = () => usedHost() + "livestreaming/" 
 export const addEventFromTimeline = (day,month,year) => {
     return { type: types.ADD_EVENT_FROM_TIMELINE, payload: {
         day:day,
@@ -172,6 +172,22 @@ export const updateLiveSessions = (session, app) => {
         meta: {
             app:app,
             type: types.UPDATE_SESSIONS 
+        }
+    };
+}
+
+export const sendVideoImage = (imageData, requestId, destination, app) => {
+    console.log("=========== sendVideoImage"); 
+
+    return {
+        type: types.SEND_VIDEO_IMAGE,
+        payload: {requestId: requestId,
+            destination: destination,
+            imageData: imageData},
+        meta: { 
+            url: apiLiveStreaming().concat("sendimage"),
+            type: types.SEND_VIDEO_IMAGE,
+            app: app
         }
     };
 }
