@@ -27,6 +27,7 @@ const usedHost = () => {
         return hostCloud;
 }
 
+const theCanvas = document.createElement("canvas");
 
 const currentRequestId = () => {
     return localStorage.getItem("requestId");
@@ -46,7 +47,7 @@ class LiveStreaming extends Component {
            
         }
         this. sendingVideo=  false
-        this.width = 320;    // We will scale the photo width to this
+        this.width = 200;    // We will scale the photo width to this
         this.height = 0;     // This will be computed based on the input stream
 
         this.streaming = false;
@@ -168,35 +169,37 @@ class LiveStreaming extends Component {
             const _class = this;
             return new Promise((resolve, reject)=>{
                 var context = _class.canvas.getContext('2d');
-                if (_class.width && _class.height) {
-                    _class.canvas.width = _class.width/ 5;
-                    _class.canvas.height = _class.height/ 5;
-                    context.drawImage(_class.video, 0, 0, _class.width/ 5, _class.height/ 5);
-                    var data = _class.canvas.toDataURL('image/png');  
-                    resolve(data);
-                }else {
-                    _class.clearphoto();
-                }
+                resolve(_class.canvas.toDataURL('image/png'));
+                context.drawImage(_class.video, 0, 0, _class.width , _class.height );
+                 
+                // if (_class.width && _class.height) {
+                //     const dividier = 1;
+                //     _class.canvas.width = _class.width/ dividier;
+                //     _class.canvas.height = _class.height/ dividier;
+                //     context.drawImage(_class.video, 0, 0, _class.width/ dividier, _class.height/dividier);
+                //     var data = _class.canvas.toDataURL('image/png');  
+                //     resolve(data);
+                // }else {
+                //     _class.clearphoto();
+                // }
             })
 
            
         }
 
         this.imageToDataUri = (img, width, height) => {
-
-            // create an off-screen canvas
-            var canvas = document.createElement('canvas');
-            var ctx = canvas.getContext('2d');
+ 
+            var ctx = theCanvas.getContext('2d');
         
             // set its dimension to target size
-            canvas.width = width;
-            canvas.height = height;
+            theCanvas.width = width;
+            theCanvas.height = height;
         
             // draw source image into the off-screen canvas:
             ctx.drawImage(img, 0, 0, width, height);
         
             // encode image to data-uri with base64 version of compressed image
-            return canvas.toDataURL('image/png');
+            return theCanvas.toDataURL('image/png');
         }
     
         this.clearphoto = () => {
